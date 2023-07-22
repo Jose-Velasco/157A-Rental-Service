@@ -14,7 +14,7 @@ default MYSQL_DATABASE: `apiDB`
 
 default mysql port: `3306`
 
-### Visual Studio code (vscode) & Docker
+### Visual Studio code (vscode) & Docker (Recommended)
 
 This method requires vscode to be installed as this method will attach to running local development containers using vscode. Futhermore, in vscode, two extension are **needed** `Dev Containers` and the `Docker` extension. These can be found and installed in vscode under the *Extensions* tab. Specificity, Dev Containers will allow us to to attach a vscode instance to a running container. Dev Containers can also spin up the containers too if they are not running already when attaching. 
 
