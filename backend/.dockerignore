@@ -1,0 +1,6 @@
+# matches any number of directories (including zero)
+**
+
+# used to make exceptions to exclusions
+!app/
+!requirements.txt
