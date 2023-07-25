@@ -13,7 +13,7 @@ CREATE TABLE Address(
     city VARCHAR(255) NOT NULL,
     zip_code INTEGER NOT NULL,
     state VARCHAR(255) NOT NULL,
-    country VARCHAR(255),
+    country VARCHAR(255) NOT NULL,
     PRIMARY KEY(user_id, street, city),
     FOREIGN KEY(user_id) REFERENCES User(user_id)
     ON DELETE CASCADE,
