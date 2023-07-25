@@ -1,4 +1,5 @@
-from pydantic import BaseSettings, AnyHttpUrl, validator
+from pydantic import AnyHttpUrl, validator
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     PROJECT_NAME: str

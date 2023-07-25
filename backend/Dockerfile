@@ -24,4 +24,4 @@ COPY . .
 EXPOSE 8000
 
 # Run the application
-ENTRYPOINT ["uvicorn", "--host", "0.0.0.0", "app:app"]
+ENTRYPOINT ["uvicorn", "--host", "0.0.0.0", "app.main:app"]
