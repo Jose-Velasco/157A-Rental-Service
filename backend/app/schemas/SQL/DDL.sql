@@ -1,5 +1,5 @@
 CREATE TABLE User(
-    user_id INTEGER PRIMARY KEY,
+    user_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     password VARCHAR(255) NOT NULL,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
@@ -221,6 +221,24 @@ CREATE TABLE Inventory_Stock(
     PRIMARY KEY(rental_id, media_id),
     FOREIGN KEY(rental_id) REFERENCES Inventory(rental_id),
     FOREIGN KEY(media_id) REFERENCES Media(media_id),
+    ON DELETE CASCADE,
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE Customer(
+    user_id INTEGER,
+    password VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    birthday date NOT NULL,
+    profile_pic_URL VARCHAR(1023) NOT NULL,
+    PRIMARY KEY(user_id),
+    FOREIGN KEY(user_id) REFERENCES User(user_id),
+    FOREIGN KEY(password) REFERENCES User(password),
+    FOREIGN KEY(first_name) REFERENCES User(first_name),
+    FOREIGN KEY(last_name) REFERENCES User(last_name),
+    FOREIGN KEY(birthday) REFERENCES User(birthday),
+    FOREIGN KEY(profile_pic_URL) REFERENCES User(profile_pic_URL),
     ON DELETE CASCADE,
     ON UPDATE CASCADE
 );
