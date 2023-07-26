@@ -5,7 +5,8 @@ class Settings(BaseSettings):
     PROJECT_NAME: str
     SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
-    MYSQL_SERVER: str
+    MYSQL_HOST: str
+    MYSQL_PORT: int
     MYSQL_USER: str
     MYSQL_PASSWORD: str
     MYSQL_DB: str
