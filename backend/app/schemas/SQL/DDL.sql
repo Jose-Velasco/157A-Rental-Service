@@ -1,10 +1,11 @@
 CREATE TABLE User(
-    user_id INTEGER PRIMARY KEY,
+    user_id INTEGER PRIMARY KEY AUTO INCREMENT,
     password VARCHAR(255) NOT NULL,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     birthday date NOT NULL,
-    profile_pic_URL VARCHAR(1023) NOT NULL
+    profile_pic_URL VARCHAR(1023) NOT NULL,
+    age INTEGER NOT NULL
 );
 
 CREATE TABLE Address(
@@ -39,27 +40,28 @@ CREATE TABLE Phone_Number(
 CREATE TABLE Employee(
     user_id INTEGER NOT NULL,
     ssn INTEGER PRIMARY KEY,
+    employee_type ENUM('Manager', 'Admin') NOT NULL,
     FOREIGN KEY(user_id) REFERENCES User(user_id),
     ON DELETE CASCADE,
     ON UPDATE CASCADE
 );
 
-CREATE TABLE Manager(
-    ssn INTEGER PRIMARY KEY,
-    FOREIGN KEY(ssn) REFERENCES Employee(ssn),
-    ON DELETE CASCADE,
-    ON UPDATE CASCADE
-);
+-- CREATE TABLE Manager(
+--     ssn INTEGER PRIMARY KEY,
+--     FOREIGN KEY(ssn) REFERENCES Employee(ssn),
+--     ON DELETE CASCADE,
+--     ON UPDATE CASCADE
+-- );
 
-CREATE TABLE Admin(
-    ssn INTEGER PRIMARY KEY,
-    FOREIGN KEY(ssn) REFERENCES Employee(ssn),
-    ON DELETE CASCADE,
-    ON UPDATE CASCADE
-);
+-- CREATE TABLE Admin(
+--     ssn INTEGER PRIMARY KEY,
+--     FOREIGN KEY(ssn) REFERENCES Employee(ssn),
+--     ON DELETE CASCADE,
+--     ON UPDATE CASCADE
+-- );
 
 CREATE TABLE Media(
-    media_id INTEGER PRIMARY KEY,
+    media_id INTEGER PRIMARY KEY AUTO INCREMENT,
     title VARCHAR(255) NOT NULL,
     genre VARCHAR(255) NOT NULL,
     rent_price INTEGER NOT NULL,
@@ -89,7 +91,7 @@ CREATE TABLE Film(
 );
 
 CREATE TABLE Review(
-    review_id INTEGER,
+    review_id INTEGER AUTO INCREMENT,
     user_id INTEGER,
     media_id INTEGER,
     publish_date DATE NOT NULL,
@@ -103,7 +105,7 @@ CREATE TABLE Review(
 );
 
 CREATE TABLE Inventory(
-    rental_id INTEGER,
+    rental_id INTEGER AUTO INCREMENT,
     media_id INTEGER,
     rent_availability_status BOOLEAN NOT NULL,
     PRIMARY KEY(rental_id, media_id),
@@ -113,7 +115,7 @@ CREATE TABLE Inventory(
 );
 
 CREATE TABLE Transaction(
-    transaction_id INTEGER,
+    transaction_id INTEGER AUTO INCREMENT,
     user_id INTEGER,
     rental_id INTEGER NOT NULL,
     total_cost INTEGER NOT NULL,
@@ -124,8 +126,9 @@ CREATE TABLE Transaction(
     ON UPDATE CASCADE
 );
 
+--Who owns the cart
 CREATE TABLE Cart(
-    cart_id INTEGER,
+    cart_id INTEGER AUTO INCREMENT,
     user_id INTEGER,
     PRIMARY KEY(cart_id, user_id),
     FOREIGN KEY(user_id) REFERENCES User(user_id),
@@ -133,6 +136,7 @@ CREATE TABLE Cart(
     ON UPDATE CASCADE
 );
 
+--Whats in the cart
 CREATE TABLE In_Cart(
     cart_id INTEGER,
     rental_id INTEGER,
@@ -141,4 +145,8 @@ CREATE TABLE In_Cart(
     ON DELETE CASCADE,
     ON UPDATE CASCADE
 );
+
+
+
+
 
