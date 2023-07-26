@@ -232,3 +232,21 @@ CREATE TABLE Inventory_Stock(
     ON DELETE CASCADE,
     ON UPDATE CASCADE
 );
+
+CREATE TABLE Customer(
+    user_id INTEGER,
+    password VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    birthday date NOT NULL,
+    profile_pic_URL VARCHAR(1023) NOT NULL,
+    PRIMARY KEY(user_id),
+    FOREIGN KEY(user_id) REFERENCES User(user_id),
+    FOREIGN KEY(password) REFERENCES User(password),
+    FOREIGN KEY(first_name) REFERENCES User(first_name),
+    FOREIGN KEY(last_name) REFERENCES User(last_name),
+    FOREIGN KEY(birthday) REFERENCES User(birthday),
+    FOREIGN KEY(profile_pic_URL) REFERENCES User(profile_pic_URL),
+    ON DELETE CASCADE,
+    ON UPDATE CASCADE
+);
