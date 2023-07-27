@@ -1,5 +1,5 @@
-from schemas.pydantic.email import Email, EmailCreate, EmailUpdate
-from models.database_manager import DatabaseManager
+from app.schemas.pydantic.email import Email, EmailCreate, EmailUpdate
+from app.models.database_manager import DatabaseManager
 
 class EmailDao:
     

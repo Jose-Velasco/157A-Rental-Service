@@ -1,9 +1,9 @@
-from schemas.pydantic.user import Employee, EmployeeCreate, EmployeeUpdate
-from schemas.pydantic.address import Address, AddressCreate, AddressUpdate
-from schemas.pydantic.email import Email, EmailCreate, EmailUpdate
-from models.database_manager import DatabaseManager
-from address_dao import AddressDao
-from email_dao import EmailDao
+from app.schemas.pydantic.user import Employee, EmployeeCreate, EmployeeUpdate
+from app.schemas.pydantic.address import Address, AddressCreate, AddressUpdate
+from app.schemas.pydantic.email import Email, EmailCreate, EmailUpdate
+from app.models.database_manager import DatabaseManager
+from app.dao.address_dao import AddressDao
+from app.dao.email_dao import EmailDao
 from typing import List
 
 class EmployeeDAO:
@@ -14,8 +14,8 @@ class EmployeeDAO:
     def create_employee(self, employee: EmployeeCreate) -> int:
         first_name = employee.first_name
         last_name = employee.last_name
-        birth_date = employee.birth_date
-        profile_picture_url = employee.profile_picture_url
+        birthday = employee.birthday
+        profile_pic_URL = employee.profile_pic_URL
         age = employee.age
         address_list = employee.address
         email_list = employee.email
@@ -23,12 +23,13 @@ class EmployeeDAO:
         salary = employee.salary
         start_date = employee.start_date
         employee_type = employee.employee_type
+        password = employee.password
 
         try:
             with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `User` (`first_name`, `last_name`, `birth_date`, `profile_picture_url`, `age`) VALUES (%s, %s, %s, %s, %s)"
+                sql = "INSERT INTO `User` (`password`, `first_name`, `last_name`, `birthday`, `profile_pic_URL`, `age`) VALUES (%s, %s, %s, %s, %s, %s)"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (first_name, last_name, birth_date, profile_picture_url, age))
+                cursor.execute(sql, (password, first_name, last_name, birthday, profile_pic_URL, age))
                 self.connection.commit()
                 user_id = cursor.lastrowid
 
