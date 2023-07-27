@@ -25,14 +25,14 @@ class ReviewDAO:
             return None
             raise Exception("Error generating review")
     
-    def search_review(self, review_id: int) -> Review:
+    def search_review_by_id(self, user_id: int) -> Review:
         try:
             with self.connection.cursor() as cursor:
                 sql = "SELECT * FROM `Review` WHERE `review_id`=%s"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (review_id))
+                cursor.execute(sql, (user_id))
                 result = cursor.fetchone()
-                return Review(**result)
+                return [Review(**result) for row in result]
         except Exception as e:
             print(e)
             return None
@@ -50,3 +50,16 @@ class ReviewDAO:
             print(e)
             return None
             raise Exception("Error updating review")
+        
+    def delete_review(self, review_id: int) -> int:
+        try:
+            with self.connection.cursor() as cursor:
+                sql = "DELETE FROM `Review` WHERE `review_id`=%s"
+                self.connection.ping(reconnect=True)
+                cursor.execute(sql, (review_id))
+                self.connection.commit()
+                return cursor.rowcount
+        except Exception as e:
+            print(e.message)
+            
+    
