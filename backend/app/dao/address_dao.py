@@ -1,5 +1,6 @@
-from schemas.pydantic.addresses import Address, AddressCreate, AddressUpdate
+from schemas.pydantic.address import Address, AddressCreate, AddressUpdate
 from models.database_manager import DatabaseManager
+from typing import List
 
 class AddressDao:
 

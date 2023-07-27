@@ -1,9 +1,10 @@
-from schemas.pydantic.users import Customer, CustomerCreate, CustomerUpdate
+from schemas.pydantic.user import Customer, CustomerCreate, CustomerUpdate
 from schemas.pydantic.address import Address, AddressCreate, AddressUpdate
 from schemas.pydantic.email import Email, EmailCreate, EmailUpdate
 from models.database_manager import DatabaseManager
 from address_dao import AddressDao
 from email_dao import EmailDao
+from typing import List
 
 class CustomerDAO:
 
@@ -68,8 +69,8 @@ class CustomerDAO:
                 
                 customer_list = []
                 for row in result:
-                    AddressDao.get_address_by_id(row['user_id'])
-                    EmailDao.get_email_by_id(row['user_id'])
+                    address_list = AddressDao.get_address_by_id(row['user_id'])
+                    email_list = EmailDao.get_email_by_id(row['user_id'])
                     customer_list.append(Customer(**row, address=address_list, email=email_list))
 
                 return customer_list

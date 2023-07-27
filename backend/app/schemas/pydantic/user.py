@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from address import Address, AddressCreate, AddressUpdate
 from email import Email, EmailCreate, EmailUpdate
+from typing import List
 
 # Shared properties
 class UserBase(BaseModel):
