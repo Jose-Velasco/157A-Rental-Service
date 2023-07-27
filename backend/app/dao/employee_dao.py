@@ -1,9 +1,10 @@
-from schemas.pydantic.users import Employee, EmployeeCreate, EmployeeUpdate
+from schemas.pydantic.user import Employee, EmployeeCreate, EmployeeUpdate
 from schemas.pydantic.address import Address, AddressCreate, AddressUpdate
 from schemas.pydantic.email import Email, EmailCreate, EmailUpdate
 from models.database_manager import DatabaseManager
-from address import AddressDao
-from email import EmailDao
+from address_dao import AddressDao
+from email_dao import EmailDao
+from typing import List
 
 class EmployeeDAO:
 

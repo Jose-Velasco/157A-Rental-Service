@@ -41,7 +41,7 @@ class EmailDao:
                 with self.connection.cursor() as cursor:
                     sql = "UPDATE `Email` SET `email`=%s WHERE `user_id`=%s"
                     self.connection.ping(reconnect=True)
-                    cursor.execute(sql, (user_id, emailmail_address))
+                    cursor.execute(sql, (user_id, email_address))
                     self.connection.commit()
     
                     return cursor.rowcount
