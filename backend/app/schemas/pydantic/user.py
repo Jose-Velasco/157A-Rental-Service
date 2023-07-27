@@ -1,24 +1,24 @@
 from pydantic import BaseModel
-from datetime import datetime
-from address import Address, AddressCreate, AddressUpdate
-from email import Email, EmailCreate, EmailUpdate
+from datetime import date
+from app.schemas.pydantic.address import Address, AddressCreate, AddressUpdate, AddressBase
+from app.schemas.pydantic.email import Email, EmailCreate, EmailUpdate, EmailBase
 from typing import List
 
 # Shared properties
 class UserBase(BaseModel):
     first_name: str
     last_name: str
-    birth_date: datetime.date
-    profile_picture_url: str
+    birthday: date
+    profile_pic_URL: str
     age: int
-    address: List[Address]
-    email: List[Email]
+    address: List[AddressBase]
+    email: List[EmailBase]
 
 class Customer(UserBase):
     user_id: int
 
 class CustomerCreate(UserBase):
-    pass
+    password: str
 
 class CustomerUpdate(Customer):
     pass
@@ -26,14 +26,14 @@ class CustomerUpdate(Customer):
 class EmployeeBase(UserBase):
     ssn: int
     salary: int
-    start_date: datetime.date
+    start_date: date
     employee_type: str
 
 class Employee(EmployeeBase):
     user_id: int
 
 class EmployeeCreate(EmployeeBase):
-    pass
+    password: str
 
 class EmployeeUpdate(Employee):
     pass
