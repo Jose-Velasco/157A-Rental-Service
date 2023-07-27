@@ -40,6 +40,8 @@ CREATE TABLE Phone_Number(
 CREATE TABLE Employee(
     user_id INTEGER NOT NULL,
     ssn INTEGER PRIMARY KEY,
+    salary INTEGER NOT NULL,
+    start_date date, NOT NULL
     employee_type ENUM('Manager', 'Admin') NOT NULL,
     FOREIGN KEY(user_id) REFERENCES User(user_id),
     ON DELETE CASCADE,
