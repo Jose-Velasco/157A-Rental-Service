@@ -1,14 +1,16 @@
 import pymysql.cursors
+from pymysql import Connection
+from app.configs.api_config import settings
 
 class DatabaseManager:
-    host = MYSQL_HOST
-    user = MYSQL_USER
-    password = MYSQL_PASSWORD
-    name = MYSQL_DB
+    host = settings.MYSQL_HOST
+    user = settings.MYSQL_USER
+    password = settings.MYSQL_PASSWORD
+    name = settings.MYSQL_DB
     
 
     def __init__(self):
-        self.connection = connect()
+        self.connection: Connection = self.connect()
 
     def connect(self):
         try:

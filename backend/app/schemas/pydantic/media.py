@@ -18,7 +18,7 @@ class Media(MediaBase):
     media_id: int
 
 # Properties to receive on Media creation (currenly the same as base)
-class MediaBaseCreate(MediaBase):
+class MediaCreate(MediaBase):
     pass
 
 # Properties to receive on Media update (currenly the same as base)
