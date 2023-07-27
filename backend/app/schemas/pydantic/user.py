@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
+from address import Address, AddressCreate, AddressUpdate
+from email import Email, EmailCreate, EmailUpdate
 
 # Shared properties
 class UserBase(BaseModel):
@@ -8,6 +10,8 @@ class UserBase(BaseModel):
     birth_date: datetime.date
     profile_picture_url: str
     age: int
+    address: List[Address]
+    email: List[Email]
 
 class Customer(UserBase):
     user_id: int
@@ -15,29 +19,25 @@ class Customer(UserBase):
 class CustomerCreate(UserBase):
     pass
 
-class CustomerUpdate(UserBase):
+class CustomerUpdate(Customer):
     pass
 
 class EmployeeBase(UserBase):
     ssn: int
+    salary: int
+    start_date: datetime.date
+    employee_type: str
 
-class Admin(EmployeeBase):
+class Employee(EmployeeBase):
     user_id: int
 
-class AdminCreate(EmployeeBase):
+class EmployeeCreate(EmployeeBase):
     pass
 
-class AdminUpdate(EmployeeBase):
+class EmployeeUpdate(Employee):
     pass
 
-class Manager(EmployeeBase):
-    user_id: int
 
-class ManagerCreate(EmployeeBase):
-    pass
-
-class ManagerUpdate(EmployeeBase):
-    pass
 
 
 
