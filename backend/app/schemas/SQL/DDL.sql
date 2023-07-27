@@ -98,7 +98,7 @@ CREATE TABLE Review(
     media_id INTEGER,
     publish_date DATE NOT NULL,
     content VARCHAR(9999) NOT NULL,
-    starts INTEGER NOT NULL,
+    stars INTEGER NOT NULL,
     PRIMARY KEY(review_id, user_id, media_id),
     FOREIGN KEY(user_id) REFERENCES User(user_id),
     FOREIGN KEY(media_id) REFERENCES Media(media_id)
