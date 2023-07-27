@@ -16,24 +16,24 @@ CREATE TABLE Address(
     state VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
     PRIMARY KEY(user_id, street, city),
-    FOREIGN KEY(user_id) REFERENCES User(user_id),
-    ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE Email(
     user_id INTEGER NOT NULL,
-    email VARCHAR(1023) PRIMARY KEY,
-    FOREIGN KEY(user_id) REFERENCES User(user_id),
-    ON DELETE CASCADE,
+    email VARCHAR(690) PRIMARY KEY,
+    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE Phone_Number(
     user_id INTEGER NOT NULL,
     phone_number INTEGER PRIMARY KEY,
-    FOREIGN KEY(user_id) REFERENCES User(user_id),
-    ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -43,8 +43,8 @@ CREATE TABLE Employee(
     salary INTEGER NOT NULL,
     start_date date NOT NULL,
     employee_type ENUM('Manager', 'Admin') NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES User(user_id),
-    ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -63,7 +63,7 @@ CREATE TABLE Employee(
 -- );
 
 CREATE TABLE Media(
-    media_id INTEGER PRIMARY KEY AUTO INCREMENT,
+    media_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
     genre VARCHAR(255) NOT NULL,
     rent_price INTEGER NOT NULL,
@@ -77,8 +77,8 @@ CREATE TABLE Video_Game(
     media_id INTEGER PRIMARY KEY,
     publisher VARCHAR(255) NOT NULL,
     developer VARCHAR(255) NOT NULL,
-    FOREIGN KEY(media_id) REFERENCES Media(media_id),
-    ON DELETE CASCADE,
+    FOREIGN KEY(media_id) REFERENCES Media(media_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -87,13 +87,13 @@ CREATE TABLE Film(
     runtime INTEGER,
     director VARCHAR(255),
     PRIMARY KEY(media_id, runtime),
-    FOREIGN KEY(media_id) REFERENCES Media(media_id),
-    ON DELETE CASCADE,
+    FOREIGN KEY(media_id) REFERENCES Media(media_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE Review(
-    review_id INTEGER AUTO INCREMENT,
+    review_id INTEGER AUTO_INCREMENT,
     user_id INTEGER,
     media_id INTEGER,
     publish_date DATE NOT NULL,
@@ -101,58 +101,56 @@ CREATE TABLE Review(
     starts INTEGER NOT NULL,
     PRIMARY KEY(review_id, user_id, media_id),
     FOREIGN KEY(user_id) REFERENCES User(user_id),
-    FOREIGN KEY(media_id) REFERENCES Media(media_id),
-    ON DELETE CASCADE,
+    FOREIGN KEY(media_id) REFERENCES Media(media_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE Inventory(
-    rental_id INTEGER AUTO INCREMENT,
+    rental_id INTEGER AUTO_INCREMENT,
     media_id INTEGER,
     rent_availability_status BOOLEAN NOT NULL,
     PRIMARY KEY(rental_id, media_id),
-    FOREIGN KEY(media_id) REFERENCES Media(media_id),
-    ON DELETE CASCADE,
+    FOREIGN KEY(media_id) REFERENCES Media(media_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE Transaction(
-    transaction_id INTEGER AUTO INCREMENT,
+    transaction_id INTEGER AUTO_INCREMENT,
     user_id INTEGER,
     rental_id INTEGER NOT NULL,
     total_cost INTEGER NOT NULL,
     rent_duration INTEGER NOT NULL,
     PRIMARY KEY(transaction_id, user_id),
-    FOREIGN KEY(user_id) REFERENCES User(user_id),
-    ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
---Who owns the cart
 CREATE TABLE Cart(
-    cart_id INTEGER AUTO INCREMENT,
+    cart_id INTEGER AUTO_INCREMENT,
     user_id INTEGER,
     PRIMARY KEY(cart_id, user_id),
-    FOREIGN KEY(user_id) REFERENCES User(user_id),
-    ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
---Whats in the cart
 CREATE TABLE In_Cart(
     cart_id INTEGER,
     rental_id INTEGER,
     PRIMARY KEY(cart_id, rental_id),
     FOREIGN KEY(rental_id) REFERENCES Inventory(rental_id),
-    FOREIGN KEY(cart_id) REFERENCES Cart(cart_id),
-    ON DELETE CASCADE,
+    FOREIGN KEY(cart_id) REFERENCES Cart(cart_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE Customer(
     user_id INTEGER,
     PRIMARY KEY(user_id),
-    FOREIGN KEY(user_id) REFERENCES User(user_id),
-    ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
