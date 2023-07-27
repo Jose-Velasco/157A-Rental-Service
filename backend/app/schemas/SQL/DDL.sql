@@ -1,9 +1,9 @@
 CREATE TABLE User(
-    user_id INTEGER PRIMARY KEY AUTO INCREMENT,
+    user_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     password VARCHAR(255) NOT NULL,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
-    birthday date NOT NULL,
+    birthday DATE NOT NULL,
     profile_pic_URL VARCHAR(1023) NOT NULL,
     age INTEGER NOT NULL
 );
