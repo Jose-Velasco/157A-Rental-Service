@@ -16,7 +16,7 @@ CREATE TABLE Address(
     state VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
     PRIMARY KEY(user_id, street, city),
-    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    FOREIGN KEY(user_id) REFERENCES User(user_id),
     ON DELETE CASCADE,
     ON UPDATE CASCADE
 );
@@ -24,7 +24,7 @@ CREATE TABLE Address(
 CREATE TABLE Email(
     user_id INTEGER NOT NULL,
     email VARCHAR(1023) PRIMARY KEY,
-    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    FOREIGN KEY(user_id) REFERENCES User(user_id),
     ON DELETE CASCADE,
     ON UPDATE CASCADE
 );
@@ -32,7 +32,7 @@ CREATE TABLE Email(
 CREATE TABLE Phone_Number(
     user_id INTEGER NOT NULL,
     phone_number INTEGER PRIMARY KEY,
-    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    FOREIGN KEY(user_id) REFERENCES User(user_id),
     ON DELETE CASCADE,
     ON UPDATE CASCADE
 );
@@ -40,6 +40,8 @@ CREATE TABLE Phone_Number(
 CREATE TABLE Employee(
     user_id INTEGER NOT NULL,
     ssn INTEGER PRIMARY KEY,
+    salary INTEGER NOT NULL,
+    start_date date NOT NULL,
     employee_type ENUM('Manager', 'Admin') NOT NULL,
     FOREIGN KEY(user_id) REFERENCES User(user_id),
     ON DELETE CASCADE,
