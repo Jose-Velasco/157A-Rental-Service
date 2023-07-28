@@ -130,6 +130,16 @@ CREATE TABLE Transaction(
     ON UPDATE CASCADE
 );
 
+CREATE TABLE Rented(
+    transaction_id INTEGER,
+    media_id INTEGER,
+    PRIMARY KEY(transaction_id, media_id),
+    FOREIGN KEY(transaction_id) REFERENCES Transaction(transaction_id),
+    FOREIGN KEY(media_id) REFERENCES Media(media_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
 CREATE TABLE Cart(
     cart_id INTEGER AUTO_INCREMENT,
     user_id INTEGER,
