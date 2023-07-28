@@ -1,43 +1,44 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import date
+from app.schemas.pydantic.address import Address, AddressCreate, AddressUpdate, AddressBase
+from app.schemas.pydantic.email import Email, EmailCreate, EmailUpdate, EmailBase
+from typing import List
 
 # Shared properties
 class UserBase(BaseModel):
     first_name: str
     last_name: str
-    birth_date: datetime.date
-    profile_picture_url: str
+    birthday: date
+    profile_pic_URL: str
     age: int
+    address: List[AddressBase]
+    email: List[EmailBase]
 
 class Customer(UserBase):
     user_id: int
 
 class CustomerCreate(UserBase):
-    pass
+    password: str
 
-class CustomerUpdate(UserBase):
+class CustomerUpdate(Customer):
     pass
 
 class EmployeeBase(UserBase):
     ssn: int
+    salary: int
+    start_date: date
+    employee_type: str
 
-class Admin(EmployeeBase):
+class Employee(EmployeeBase):
     user_id: int
 
-class AdminCreate(EmployeeBase):
+class EmployeeCreate(EmployeeBase):
+    password: str
+
+class EmployeeUpdate(Employee):
     pass
 
-class AdminUpdate(EmployeeBase):
-    pass
 
-class Manager(EmployeeBase):
-    user_id: int
-
-class ManagerCreate(EmployeeBase):
-    pass
-
-class ManagerUpdate(EmployeeBase):
-    pass
 
 
 

@@ -1,5 +1,10 @@
-from schemas.pydantic.users import Customer, CustomerCreate, CustomerUpdate
-from models.database_manager import DatabaseManager
+from app.schemas.pydantic.user import Customer, CustomerCreate, CustomerUpdate
+from app.schemas.pydantic.address import Address, AddressCreate, AddressUpdate
+from app.schemas.pydantic.email import Email, EmailCreate, EmailUpdate
+from app.models.database_manager import DatabaseManager
+from app.dao.address_dao import AddressDao
+from app.dao.email_dao import EmailDao
+from typing import List
 
 class CustomerDAO:
 
@@ -9,72 +14,99 @@ class CustomerDAO:
     def create_customer(self, customer: CustomerCreate) -> int:
         first_name = customer.first_name
         last_name = customer.last_name
-        birth_date = customer.birth_date
-        profile_picture_url = customer.profile_picture_url
+        birth_date = customer.birthday
+        profile_pic_URL = customer.profile_pic_URL
         age = customer.age
+        address_list = customer.address
+        email_list = customer.email
+        password = customer.password
+
         try:
             with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `Customer` (`first_name`, `last_name`, `birth_date`, `profile_picture_url`, `age`) VALUES (%s, %s, %s, %s, %s)"
+                sql = "INSERT INTO `User` (`password`, `first_name`, `last_name`, `birthday`, `profile_pic_URL`, `age`) VALUES (%s, %s, %s, %s, %s, %s)"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (first_name, last_name, birth_date, profile_picture_url, age))
+                cursor.execute(sql, (password, first_name, last_name, birth_date, profile_pic_URL, age))
                 self.connection.commit()
-                return cursor.lastrowid
+                user_id = cursor.lastrowid
+
+                for address in address_list:
+                    address = AddressCreate(user_id=user_id, street=address.street, city=address.city, zip_code=address.zip_code, state=address.state, country=address.country)
+                    print(address)
+                    AddressDao().create_address(address)
+
+                for email in email_list:
+                    email = EmailCreate(user_id=user_id, email=email.email)
+                    print(email)
+                    EmailDao().create_email(email)
+
+                return cursor.rowcount
         except Exception as e:
-            print(e)
-            return None
-            raise Exception("Error creating customer")
+            print(e.message)
+            
+
+        
     
-    def get_customer_by_id(self, customer_id: int) -> Customer:
+    def get_customer_by_id(self, user_id: int) -> Customer:
         try:
             with self.connection.cursor() as cursor:
-                sql = "SELECT * FROM `Customer` WHERE `customer_id`=%s"
+                sql = "SELECT * FROM `User` WHERE `user_id`=%s"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (customer_id))
+                cursor.execute(sql, (user_id))
                 result = cursor.fetchone()
-                return Customer(**result)
+
+                address_list = AddressDao.get_address_by_id(user_id)
+
+                email_list = EmailDao.get_email_by_id(user_id)
+
+                return Customer(**result, address=address_list, email=email_list)
+                
         except Exception as e:
-            print(e)
-            return None
-            raise Exception("Error getting customer by id")
+            print(e.message)
+            
 
     def get_all_customers(self) -> List[Customer]:
         try:
             with self.connection.cursor() as cursor:
-                sql = "SELECT * FROM `Customer`"
+                sql = "SELECT * FROM `User` WHERE `user_id` NOT IN (SELECT `user_id` FROM `Employee`)"
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql)
                 result = cursor.fetchall()
-                return [Customer(**row) for row in result]
+                
+                customer_list = []
+                for row in result:
+                    address_list = AddressDao.get_address_by_id(row['user_id'])
+                    email_list = EmailDao.get_email_by_id(row['user_id'])
+                    customer_list.append(Customer(**row, address=address_list, email=email_list))
+
+                return customer_list
         except Exception as e:
             print(e)
             return None
             raise Exception("Error getting all customers")
 
-    def update_customer(self, customer_id: int, customer: CustomerUpdate) -> int:
+    def update_customer(self, user_id: int, customer: CustomerUpdate) -> int:
         try:
             with self.connection.cursor() as cursor:
-                sql = "UPDATE `Customer` SET `first_name`=%s, `last_name`=%s, `birth_date`=%s, `profile_picture_url`=%s, `age`=%s WHERE `customer_id`=%s"
+                sql = "UPDATE `User` SET `first_name`=%s, `last_name`=%s, `birthday`=%s, `profile_pic_URL`=%s, `age`=%s WHERE `user_id`=%s"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (customer.first_name, customer.last_name, customer.birth_date, customer.profile_picture_url, customer.age, customer_id))
+                cursor.execute(sql, (customer.first_name, customer.last_name, customer.birthday, customer.profile_pic_URL, customer.age, user_id))
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e)
-            return None
-            raise Exception("Error updating customer")
+            print(e.message)
+            
 
-    def delete_customer(self, customer_id: int) -> int:
+    def delete_customer(self, user_id: int) -> int:
         try:
             with self.connection.cursor() as cursor:
-                sql = "DELETE FROM `Customer` WHERE `customer_id`=%s"
+                sql = "DELETE FROM `User` WHERE `user_id`=%s"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (customer_id))
+                cursor.execute(sql, (user_id))
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e)
-            return None
-            raise Exception("Error deleting customer")
+            print(e.message)
+            
     
     
 
