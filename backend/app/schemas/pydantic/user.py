@@ -13,6 +13,7 @@ class UserBase(BaseModel):
     age: int
     address: List[AddressBase]
     email: List[EmailBase]
+    phone_number: int
 
 class Customer(UserBase):
     user_id: int
@@ -20,7 +21,7 @@ class Customer(UserBase):
 class CustomerCreate(UserBase):
     password: str
 
-class CustomerUpdate(Customer):
+class CustomerUpdate(CustomerCreate):
     pass
 
 class EmployeeBase(UserBase):
