@@ -5,7 +5,8 @@ CREATE TABLE User(
     last_name VARCHAR(255) NOT NULL,
     birthday DATE NOT NULL,
     profile_pic_URL VARCHAR(1023) NOT NULL,
-    age INTEGER NOT NULL
+    age INTEGER NOT NULL,
+    phone_number INTEGER NOT NULL
 );
 
 CREATE TABLE Address(
@@ -29,13 +30,6 @@ CREATE TABLE Email(
     ON UPDATE CASCADE
 );
 
-CREATE TABLE Phone_Number(
-    user_id INTEGER NOT NULL,
-    phone_number INTEGER PRIMARY KEY,
-    FOREIGN KEY(user_id) REFERENCES User(user_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
 
 CREATE TABLE Employee(
     user_id INTEGER NOT NULL,
@@ -47,20 +41,6 @@ CREATE TABLE Employee(
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
-
--- CREATE TABLE Manager(
---     ssn INTEGER PRIMARY KEY,
---     FOREIGN KEY(ssn) REFERENCES Employee(ssn),
---     ON DELETE CASCADE,
---     ON UPDATE CASCADE
--- );
-
--- CREATE TABLE Admin(
---     ssn INTEGER PRIMARY KEY,
---     FOREIGN KEY(ssn) REFERENCES Employee(ssn),
---     ON DELETE CASCADE,
---     ON UPDATE CASCADE
--- );
 
 CREATE TABLE Media(
     media_id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -104,7 +84,7 @@ CREATE TABLE ReviewContent(
     review_id INTEGER PRIMARY KEY,
     media_id INTEGER,
     publish_date DATE NOT NULL,
-    content VARCHAR(9999) NOT NULL,
+    content VARCHAR(500) NOT NULL,
     stars INTEGER NOT NULL,
     FOREIGN KEY(media_id) REFERENCES Media(media_id)
     ON DELETE CASCADE
