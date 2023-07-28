@@ -45,6 +45,18 @@ class InventoryDAO:
                 return result
         except Exception as e:
             print(e.message)
+    
+    #get all items
+    def get_all_inventory(self) -> List[Inventory]:
+        try:
+            with self.connection.cursor() as cursor:
+                sql = "SELECT * FROM `Inventory`"
+                self.connection.ping(reconnect=True)
+                cursor.execute(sql)
+                result = cursor.fetchall()
+                return result
+        except Exception as e:
+            print(e.message)
 
     #check if inventory item is available
     def check_availability(self, media_id: int) -> bool:
