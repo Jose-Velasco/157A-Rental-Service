@@ -78,7 +78,7 @@ CREATE TABLE Reviews(
     FOREIGN KEY(user_id) REFERENCES User(user_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
-)
+);
 
 CREATE TABLE ReviewContent(
     review_id INTEGER PRIMARY KEY,
