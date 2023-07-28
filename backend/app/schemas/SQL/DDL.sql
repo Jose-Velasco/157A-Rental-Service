@@ -92,25 +92,28 @@ CREATE TABLE Film(
     ON UPDATE CASCADE
 );
 
-CREATE TABLE Review(
-    review_id INTEGER AUTO_INCREMENT,
+CREATE TABLE Reviews(
+    review_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     user_id INTEGER,
+    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+)
+
+CREATE TABLE ReviewContent(
+    review_id INTEGER PRIMARY KEY,
     media_id INTEGER,
     publish_date DATE NOT NULL,
     content VARCHAR(9999) NOT NULL,
     stars INTEGER NOT NULL,
-    PRIMARY KEY(review_id, user_id, media_id),
-    FOREIGN KEY(user_id) REFERENCES User(user_id),
     FOREIGN KEY(media_id) REFERENCES Media(media_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
 CREATE TABLE Inventory(
-    rental_id INTEGER AUTO_INCREMENT,
-    media_id INTEGER,
+    media_id INTEGER PRIMARY KEY,
     rent_availability_status BOOLEAN NOT NULL,
-    PRIMARY KEY(rental_id, media_id),
     FOREIGN KEY(media_id) REFERENCES Media(media_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
@@ -119,7 +122,6 @@ CREATE TABLE Inventory(
 CREATE TABLE Transaction(
     transaction_id INTEGER AUTO_INCREMENT,
     user_id INTEGER,
-    rental_id INTEGER NOT NULL,
     total_cost INTEGER NOT NULL,
     rent_duration INTEGER NOT NULL,
     PRIMARY KEY(transaction_id, user_id),
@@ -139,18 +141,11 @@ CREATE TABLE Cart(
 
 CREATE TABLE In_Cart(
     cart_id INTEGER,
-    rental_id INTEGER,
-    PRIMARY KEY(cart_id, rental_id),
-    FOREIGN KEY(rental_id) REFERENCES Inventory(rental_id),
+    media_id INTEGER,
+    PRIMARY KEY(cart_id, media_id),
+    FOREIGN KEY(media_id) REFERENCES Media(media_id),
     FOREIGN KEY(cart_id) REFERENCES Cart(cart_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
-CREATE TABLE Customer(
-    user_id INTEGER,
-    PRIMARY KEY(user_id),
-    FOREIGN KEY(user_id) REFERENCES User(user_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
