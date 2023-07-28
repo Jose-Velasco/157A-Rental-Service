@@ -33,15 +33,14 @@ class EmailDao:
             except Exception as e:
                 print(e.message)
         
-        def update_email(self, email: EmailUpdate) -> int:
-            user_id = email.user_id
+        def update_email(self, user_id: int, email: EmailUpdate) -> int:
             email_address = email.email
     
             try:
                 with self.connection.cursor() as cursor:
                     sql = "UPDATE `Email` SET `email`=%s WHERE `user_id`=%s"
                     self.connection.ping(reconnect=True)
-                    cursor.execute(sql, (user_id, email_address))
+                    cursor.execute(sql, (email_address, user_id))
                     self.connection.commit()
     
                     return cursor.rowcount

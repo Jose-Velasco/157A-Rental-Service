@@ -20,7 +20,7 @@ class Customer(UserBase):
 class CustomerCreate(UserBase):
     password: str
 
-class CustomerUpdate(Customer):
+class CustomerUpdate(CustomerCreate):
     pass
 
 class EmployeeBase(UserBase):

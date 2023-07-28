@@ -54,11 +54,11 @@ class CustomerDAO:
                 cursor.execute(sql, (user_id))
                 result = cursor.fetchone()
 
-                address_list = AddressDao.get_address_by_id(user_id)
+                address_list = AddressDao().get_address_by_id(user_id)
 
-                email_list = EmailDao.get_email_by_id(user_id)
+                email_list = EmailDao().get_email_by_id(user_id)
 
-                return Customer(**result, address=address_list, email=email_list)
+                return Customer(user_id=result['user_id'], first_name=result['first_name'], last_name=result['last_name'], birthday=result['birthday'], profile_pic_URL=result['profile_pic_URL'], age=result['age'], address=address_list, email=email_list)
                 
         except Exception as e:
             print(e.message)
@@ -74,9 +74,9 @@ class CustomerDAO:
                 
                 customer_list = []
                 for row in result:
-                    address_list = AddressDao.get_address_by_id(row['user_id'])
-                    email_list = EmailDao.get_email_by_id(row['user_id'])
-                    customer_list.append(Customer(**row, address=address_list, email=email_list))
+                    address_list = AddressDao().get_address_by_id(row['user_id'])
+                    email_list = EmailDao().get_email_by_id(row['user_id'])
+                    customer_list.append(Customer(user_id=row['user_id'], first_name=row['first_name'], last_name=row['last_name'], birthday=row['birthday'], profile_pic_URL=row['profile_pic_URL'], age=row['age'], address=address_list, email=email_list))
 
                 return customer_list
         except Exception as e:
@@ -91,6 +91,13 @@ class CustomerDAO:
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (customer.first_name, customer.last_name, customer.birthday, customer.profile_pic_URL, customer.age, user_id))
                 self.connection.commit()
+
+                for address in customer.address:
+                    AddressDao().update_address(user_id=user_id, address=address)
+                
+                for email in customer.email:
+                    EmailDao().update_email(user_id=user_id, email=email)
+
                 return cursor.rowcount
         except Exception as e:
             print(e.message)
