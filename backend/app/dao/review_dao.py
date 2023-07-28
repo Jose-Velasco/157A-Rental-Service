@@ -1,5 +1,7 @@
-from schemas.pydantic.review import Review, ReviewCreate, ReviewEdit
-from models.database_manager import DatabaseManager
+from app.schemas.pydantic.review import Review, ReviewCreate, ReviewEdit
+from app.schemas.pydantic.user import Customer
+from app.models.database_manager import DatabaseManager
+
 
 class ReviewDAO:
 
@@ -7,7 +9,6 @@ class ReviewDAO:
         self.connection = DatabaseManager().get_connection()
     
     def create_review(self, review: ReviewCreate) -> int:
-        review_id = review.review_id
         user_id = review.user_id
         media_id = review.media_id
         publish_date = review.publish_date
@@ -15,10 +16,17 @@ class ReviewDAO:
         stars = review.stars
         try:
             with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `Review` (`review_id`, `user_id`, `media_id`, `publish_date`, `content`, `stars`) VALUES (%s, %s, %s, %s, %s, %s)"
+                sql = "INSERT INTO `ReviewContent` (`review_id`, `media_id`, `publish_date`, `content`, `stars`) VALUES (%s, %s, %s, %s, %s, %s)"
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (review_id, user_id, media_id, publish_date, content, stars))
                 self.connection.commit()
+                review_id = cursor.lastrowid
+
+                sql = "INSERT INTO `Reviews` (`review_id`, `user_id`) VALUES (%s, %s)"
+                self.connection.ping(reconnect=True)
+                cursor.execute(sql, (review_id, user_id, media_id, publish_date, content, stars))
+                self.connection.commit()
+
                 return cursor.lastrowid
         except Exception as e:
             print(e)
