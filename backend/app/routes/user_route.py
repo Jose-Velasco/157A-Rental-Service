@@ -42,6 +42,21 @@ def update_customer(user_id: int, customer: CustomerCreate):
     CustomerDAO().update_customer(user_id, customer)
     return {"message": "Customer updated successfully"}
 
+@user_router.put("/employee/{user_id}")
+def update_employee(user_id: int, employee: EmployeeCreate):
+    EmployeeDAO().update_employee(user_id, employee)
+    return {"message": "Employee updated successfully"}
+
+@user_router.delete("/customer/{user_id}")
+def delete_customer(user_id: int):
+    CustomerDAO().delete_customer(user_id)
+    return {"message": "Customer deleted successfully"}
+
+@user_router.delete("/employee/{user_id}")
+def delete_employee(user_id: int):
+    EmployeeDAO().delete_employee(user_id)
+    return {"message": "Employee deleted successfully"}
+
 #create test customer object for me on multiple lines
 {
     "password": "password",
@@ -50,6 +65,7 @@ def update_customer(user_id: int, customer: CustomerCreate):
     "birthday": "1990-01-01",
     "profile_pic_URL": "https://www.google.com",
     "age": 30,
+    "phone_number": 1234567890,
     "address": [
         {
             "street": "123 Main St",
@@ -74,6 +90,7 @@ def update_customer(user_id: int, customer: CustomerCreate):
     "birthday": "1990-01-01",
     "profile_pic_URL": "https://www.google.com",
     "age": 30,
+    "phone_number": 1234567890,
     "address": [
         {
             "street": "123 Main St",

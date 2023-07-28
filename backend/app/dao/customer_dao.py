@@ -20,17 +20,18 @@ class CustomerDAO:
         address_list = customer.address
         email_list = customer.email
         password = customer.password
+        phone_number = customer.phone_number
 
         try:
             with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `User` (`password`, `first_name`, `last_name`, `birthday`, `profile_pic_URL`, `age`) VALUES (%s, %s, %s, %s, %s, %s)"
+                sql = "INSERT INTO `User` (`password`, `first_name`, `last_name`, `birthday`, `profile_pic_URL`, `age`, `phone_number`) VALUES (%s, %s, %s, %s, %s, %s, %s)"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (password, first_name, last_name, birth_date, profile_pic_URL, age))
+                cursor.execute(sql, (password, first_name, last_name, birth_date, profile_pic_URL, age, phone_number))
                 self.connection.commit()
                 user_id = cursor.lastrowid
 
                 for address in address_list:
-                    address = AddressCreate(user_id=user_id, street=address.street, city=address.city, zip_code=address.zip_code, state=address.state, country=address.country)
+                    address = AddressCreate(user_id=user_id, street=address.street, city=address.city, zip_code=address.zip_code, state=address.state, country=address.country, phone_number=phone_number)
                     print(address)
                     AddressDao().create_address(address)
 
@@ -58,7 +59,7 @@ class CustomerDAO:
 
                 email_list = EmailDao().get_email_by_id(user_id)
 
-                return Customer(user_id=result['user_id'], first_name=result['first_name'], last_name=result['last_name'], birthday=result['birthday'], profile_pic_URL=result['profile_pic_URL'], age=result['age'], address=address_list, email=email_list)
+                return Customer(user_id=result['user_id'], first_name=result['first_name'], last_name=result['last_name'], birthday=result['birthday'], profile_pic_URL=result['profile_pic_URL'], age=result['age'], phone_number=result['phone_number'], address=address_list, email=email_list)
                 
         except Exception as e:
             print(e.message)
@@ -76,7 +77,8 @@ class CustomerDAO:
                 for row in result:
                     address_list = AddressDao().get_address_by_id(row['user_id'])
                     email_list = EmailDao().get_email_by_id(row['user_id'])
-                    customer_list.append(Customer(user_id=row['user_id'], first_name=row['first_name'], last_name=row['last_name'], birthday=row['birthday'], profile_pic_URL=row['profile_pic_URL'], age=row['age'], address=address_list, email=email_list))
+                    customer_list.append(Customer(user_id=row['user_id'], first_name=row['first_name'], last_name=row['last_name'], birthday=row['birthday'], profile_pic_URL=row['profile_pic_URL'], age=row['age'], phone_number=row['phone_number'], address=address_list, email=email_list))
+                    
 
                 return customer_list
         except Exception as e:
@@ -87,9 +89,10 @@ class CustomerDAO:
     def update_customer(self, user_id: int, customer: CustomerUpdate) -> int:
         try:
             with self.connection.cursor() as cursor:
-                sql = "UPDATE `User` SET `first_name`=%s, `last_name`=%s, `birthday`=%s, `profile_pic_URL`=%s, `age`=%s WHERE `user_id`=%s"
+                print(customer)
+                sql = "UPDATE `User` SET `first_name`=%s, `last_name`=%s, `birthday`=%s, `profile_pic_URL`=%s, `age`=%s, `phone_number`=%s WHERE `user_id`=%s"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (customer.first_name, customer.last_name, customer.birthday, customer.profile_pic_URL, customer.age, user_id))
+                cursor.execute(sql, (customer.first_name, customer.last_name, customer.birthday, customer.profile_pic_URL, customer.age, customer.phone_number, user_id))
                 self.connection.commit()
 
                 for address in customer.address:
