@@ -1,5 +1,7 @@
-from schemas.pydantic.review import Review, ReviewCreate, ReviewEdit
-from models.database_manager import DatabaseManager
+from app.schemas.pydantic.review import Review, ReviewCreate, ReviewEdit, ReviewSearchID, ReviewSearchMedia
+from app.schemas.pydantic.user import Customer
+from app.models.database_manager import DatabaseManager
+
 
 class ReviewDAO:
 
@@ -7,7 +9,6 @@ class ReviewDAO:
         self.connection = DatabaseManager().get_connection()
     
     def create_review(self, review: ReviewCreate) -> int:
-        review_id = review.review_id
         user_id = review.user_id
         media_id = review.media_id
         publish_date = review.publish_date
@@ -15,35 +16,60 @@ class ReviewDAO:
         stars = review.stars
         try:
             with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `Review` (`review_id`, `user_id`, `media_id`, `publish_date`, `content`, `stars`) VALUES (%s, %s, %s, %s, %s, %s)"
+                sql = "INSERT INTO `ReviewContent` (`media_id`, `publish_date`, `content`, `stars`) VALUES (%s, %s, %s, %s)"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (review_id, user_id, media_id, publish_date, content, stars))
+                cursor.execute(sql, (media_id, publish_date, content, stars))
                 self.connection.commit()
-                return cursor.lastrowid
+                review_id = cursor.lastrowid
+
+                sql = "INSERT INTO `Reviews` (`review_id`, `user_id`) VALUES (%s, %s)"
+                self.connection.ping(reconnect=True)
+                cursor.execute(sql, (review_id, user_id))
+                self.connection.commit()
+
+                return cursor.rowcount
         except Exception as e:
             print(e)
             return None
             raise Exception("Error generating review")
-    
-    def search_review_by_id(self, user_id: int) -> Review:
+        
+    #review_id | user_id
+    def search_review_by_id(self, user_id: int) -> list[ReviewSearchID]:
         try:
             with self.connection.cursor() as cursor:
-                sql = "SELECT * FROM `Review` WHERE `review_id`=%s"
+                sql = "SELECT * FROM `Reviews` WHERE `user_id`=%s"
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (user_id))
-                result = cursor.fetchone()
-                return [Review(**result) for row in result]
+                result = cursor.fetchall()
+                return [ReviewSearchID(**row) for row in result]
         except Exception as e:
             print(e)
             return None
             raise Exception("Error getting review by review id")
         
+
+    #review id | media_id
+    def search_review_by_media(self, media_id: int) -> list[ReviewSearchMedia]:
+        try:
+            with self.connection.cursor() as cursor:
+                sql = "SELECT * FROM `ReviewContent` WHERE `media_id`=%s"
+                self.connection.ping(reconnect=True)
+                cursor.execute(sql, (media_id))
+                result = cursor.fetchall()
+                return [ReviewSearchMedia(**row) for row in result]
+        except Exception as e:
+            print(e)
+            return None
+            raise Exception("Error getting review by media id")
+        
+        
+
     def edit_review(self, review_id: int, review: ReviewEdit) -> int:
         try:
             with self.connection.cursor() as cursor:
-                sql = "UPDATE `Review` SET `user_id`=%s, `media_id`=%s, `publish_date`=%s, `content`=%s, `stars`=%s WHERE `review_id`=%s"
+                sql = "UPDATE `ReviewContent` SET `media_id`=%s, `publish_date`=%s, `content`=%s, `stars`=%s WHERE `review_id`=%s"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (review.user_id, review.media_id, review.publish_date, review.content, review.stars, review_id))
+                cursor.execute(sql, (review.media_id, review.publish_date, review.content, review.stars, review_id))
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
@@ -54,7 +80,7 @@ class ReviewDAO:
     def delete_review(self, review_id: int) -> int:
         try:
             with self.connection.cursor() as cursor:
-                sql = "DELETE FROM `Review` WHERE `review_id`=%s"
+                sql = "DELETE FROM `ReviewContent` WHERE `review_id`=%s"
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (review_id))
                 self.connection.commit()
