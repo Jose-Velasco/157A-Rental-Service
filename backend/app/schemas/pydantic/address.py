@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 # Shared properties
 class AddressBase(BaseModel):
-    
+    # user_id: int
     street: str
     city: str
     state: str
@@ -19,5 +19,5 @@ class AddressCreate(AddressBase):
 
 # Properties needed in order to update an address (same as base)
 class AddressUpdate(AddressBase):
-    pass
+    user_id: int
 
