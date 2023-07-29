@@ -1,4 +1,4 @@
-from app.schemas.pydantic.transaction import TransactionCreate, TransactionUpdate, Transaction
+from app.schemas.pydantic.transaction import CreateTransaction, UpdateTransaction, Transaction
 from app.models.database_manager import DatabaseManager
 from typing import List
 
@@ -8,7 +8,7 @@ class TransactionDao:
         self.connection = DatabaseManager().get_connection()
     
     #create new transaction
-    def create_transaction(self, transaction: TransactionCreate) -> int:
+    def create_transaction(self, transaction: CreateTransaction) -> int:
         user_id = transaction.user_id
         total_cost = transaction.total_cost
         rent_duration = transaction.rent_duration
@@ -60,7 +60,7 @@ class TransactionDao:
             print(e.message)
 
     #update transaction
-    def update_transaction(self, transaction: TransactionUpdate) -> int:
+    def update_transaction(self, transaction: UpdateTransaction) -> int:
         transaction_id = transaction.transaction_id
         total_cost = transaction.total_cost
         rent_duration = transaction.rent_duration

@@ -35,13 +35,13 @@ def update_transaction(transaction: UpdateTransaction):
 
 #get transaction by user id
 @transaction_router.get("/transaction/user/{user_id}")
-def get_transaction_by_user_id(user_id: int) -> Transaction:
-    return TransactionDao().get_transaction_by_user_id(user_id)
+def get_transactions_by_user_id(user_id: int) -> List[Transaction]:
+    return TransactionDao().get_transactions_by_user_id(user_id)
 
 
 #create test transaction object
 {
-    "user_id": 1,
+    "user_id": 4,
     "total_cost": 100,
     "rent_duration": 10
 }
