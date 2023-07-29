@@ -73,15 +73,16 @@ CREATE TABLE Film(
 );
 
 CREATE TABLE Reviews(
-    review_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    review_id INTEGER,
     user_id INTEGER,
-    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    PRIMARY KEY(review_id, user_id),
+    FOREIGN KEY(user_id) REFERENCES User(user_id),
+    FOREIGN KEY(review_id) REFERENCES ReviewContent(review_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
-
 CREATE TABLE ReviewContent(
-    review_id INTEGER PRIMARY KEY,
+    review_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     media_id INTEGER,
     publish_date DATE NOT NULL,
     content VARCHAR(500) NOT NULL,
