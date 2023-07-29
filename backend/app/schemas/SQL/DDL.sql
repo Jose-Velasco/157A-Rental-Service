@@ -62,6 +62,7 @@ CREATE TABLE Video_Game(
     ON UPDATE CASCADE
 );
 
+
 CREATE TABLE Film(
     media_id INTEGER,
     runtime INTEGER,

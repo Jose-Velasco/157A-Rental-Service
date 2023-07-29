@@ -38,8 +38,7 @@ class AddressDao:
         except Exception as e:
             print(e.message)
     
-    def update_address(self, address: AddressUpdate) -> int:
-        user_id = address.user_id
+    def update_address(self, user_id: int, address: AddressUpdate) -> int:
         street = address.street
         city = address.city
         state = address.state

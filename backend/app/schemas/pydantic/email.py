@@ -14,5 +14,5 @@ class EmailCreate(EmailBase):
 
 # Properties needed in order to update an email (same as base)
 class EmailUpdate(EmailBase):
-    pass
+    user_id: int
 
