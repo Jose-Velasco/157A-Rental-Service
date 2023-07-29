@@ -8,8 +8,7 @@ CREATE TABLE User(
     age INTEGER NOT NULL,
     phone_number INTEGER NOT NULL
 );
---create me an instance of a insert statement into the user table with any values
---insert into User values (1, 'password', 'first_name', 'last_name', '2020-01-22', 'profile_pic_URL', 1, 1);
+
 CREATE TABLE Address(
     user_id INTEGER NOT NULL,
     street VARCHAR(255) NOT NULL,
@@ -74,15 +73,6 @@ CREATE TABLE Film(
     ON UPDATE CASCADE
 );
 
-CREATE TABLE Reviews(
-    review_id INTEGER,
-    user_id INTEGER,
-    PRIMARY KEY(review_id, user_id),
-    FOREIGN KEY(user_id) REFERENCES User(user_id),
-    FOREIGN KEY(review_id) REFERENCES ReviewContent(review_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
 CREATE TABLE ReviewContent(
     review_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     media_id INTEGER,
@@ -90,6 +80,16 @@ CREATE TABLE ReviewContent(
     content VARCHAR(500) NOT NULL,
     stars INTEGER NOT NULL,
     FOREIGN KEY(media_id) REFERENCES Media(media_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE Reviews(
+    review_id INTEGER,
+    user_id INTEGER,
+    PRIMARY KEY(review_id, user_id),
+    FOREIGN KEY(user_id) REFERENCES User(user_id),
+    FOREIGN KEY(review_id) REFERENCES ReviewContent(review_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );

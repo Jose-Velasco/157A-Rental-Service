@@ -54,3 +54,7 @@ class FilmCreate(FilmBase):
 
 class FilmUpdate(FilmBase):
     pass
+
+class MediaMixedOut(BaseModel):
+    films: list[Film]
+    video_games: list[VideoGame]
