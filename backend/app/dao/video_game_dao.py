@@ -29,13 +29,14 @@ class VideoGameDAO(MediaDAO):
             raise Exception(f"Error on get video game of id {media_id}")
     
     def get_all(self) -> list[VideoGame]:
-        media_list = super().get_all()
         try:
             with self.connection.cursor() as cursor:
-                sql = "SELECT publisher, developer FROM Video_Game"
+                sql = """SELECT M.media_id, M.title, M.genre, M.rent_price, M.image_url, M.media_description, M.release_date, M.rating, V.publisher, V.developer
+                    FROM Media M , Video_Game V
+                    WHERE M.media_id = V.media_id"""
                 cursor.execute(sql)
                 result = cursor.fetchall()
-                return [VideoGame(**media.model_dump(), **video_game) for media, video_game in zip(media_list, result)]
+                return [VideoGame(**video_game) for video_game in result]
         except Exception as e:
             print(e)
             raise Exception("Error on get all video games")

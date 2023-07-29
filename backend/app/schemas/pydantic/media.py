@@ -43,7 +43,7 @@ class VideoGameUpdate(VideoGameBase):
     pass
 
 class FilmBase(MediaBase):
-    runtime: str
+    runtime: int
     director: str
 
 class Film(FilmBase):
