@@ -8,7 +8,8 @@ CREATE TABLE User(
     age INTEGER NOT NULL,
     phone_number INTEGER NOT NULL
 );
-
+--create me an instance of a insert statement into the user table with any values
+--insert into User values (1, 'password', 'first_name', 'last_name', '2020-01-22', 'profile_pic_URL', 1, 1);
 CREATE TABLE Address(
     user_id INTEGER NOT NULL,
     street VARCHAR(255) NOT NULL,

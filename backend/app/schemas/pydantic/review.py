@@ -18,5 +18,13 @@ class ReviewCreate(ReviewBase):
 
 #Properties needed in order to edit an existing review (same as base)
 class ReviewEdit(ReviewBase):
+    review_id:int
+
+class ReviewSearchID(BaseModel):
+    review_id: int
     user_id: int
+
+class ReviewSearchMedia(BaseModel):
+    review_id: int
+    media_id: int
 
