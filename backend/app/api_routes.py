@@ -7,6 +7,7 @@ from app.routes.review_route import review_router
 from app.routes.media_route import media_router
 from app.routes.inventory_route import inventory_router
 from app.routes.rented_route import rented_router
+from app.routes.cart_route import cart_router
 
 
 # registration of all system routes
@@ -25,3 +26,5 @@ api_router.include_router(inventory_router, prefix="/inv", tags=["inventory"])
 api_router.include_router(transaction_router, prefix="/tran", tags=["transaction"])
 
 api_router.include_router(rented_router, prefix="/rent", tags=["rented"])
+
+api_router.include_router(cart_router, prefix="/cart", tags=["cart"])   
