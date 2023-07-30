@@ -46,7 +46,7 @@ const Home:React.FC = () => {
             {media?.map ((item) => (
             <ReusableCard title = {item.title}
             description = {item.media_description}
-            image = "https://s.yimg.com/uu/api/res/1.2/dEzGhndCHaLCnUMD_zBcxw--~B/aD0xMTU4O3c9MTgwMDthcHBpZD15dGFjaHlvbg--/https://media-mbst-pub-ue1.s3.amazonaws.com/creatr-uploaded-images/2021-01/cdcf03a0-4e92-11eb-afdf-ffae59fc8055.cf.jpg"
+            image = {item.image_url}
             />
                  ))}   
         </form>
