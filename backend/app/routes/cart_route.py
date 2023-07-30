@@ -68,50 +68,65 @@ def delete_cart(id: int):
 @cart_router.post("/in", tags=["cart"], summary="Add a media to cart")
 def create_in_cart(in_cart: InCart):
     """Add a media to cart"""
+    in_cart_dao = InCartDAO()
     try:
-        InCartDAO().create(in_cart)
+        in_cart_record = in_cart_dao.get_record(in_cart)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error on get in cart record to create")
+    if in_cart_record is not None:
+        raise HTTPException(status_code=409, detail=f"Media of id {in_cart.media_id} already in cart of id {in_cart.cart_id}")
+    try:
+        in_cart_dao.create(in_cart)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on create in cart")
 
-@cart_router.get("/in/{id}", tags=["cart"], summary="Get all In_Cart media and details by cart_id", response_model=MediaMixedOut)
-def get_in_cart_media_details_by_cart_id(id: int) -> MediaMixedOut:
+@cart_router.get("/in/{cart_id}", tags=["cart"], summary="Get all In_Cart media and details by cart_id", response_model=MediaMixedOut)
+def get_in_cart_media_details_by_cart_id(cart_id: int) -> MediaMixedOut:
     """Get all In_Cart record by cart_id"""
     try:
-        films = InCartDAO().get_films_in_cart(id)
-        video_games = InCartDAO().get_video_games_in_cart(id)
+        films = InCartDAO().get_films_in_cart(cart_id)
+        video_games = InCartDAO().get_video_games_in_cart(cart_id)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail=f"Error on get all media details in cart of cart id {id}")
+        raise HTTPException(status_code=500, detail=f"Error on get all media details in cart of cart id {cart_id}")
     return MediaMixedOut(films=films, video_games=video_games)
 
-@cart_router.get("in/media/{id}", tags=["cart"], summary="Get cart_id that holds media of media_id", response_model=CartBase)
-def get_cart_id_by_media_id(id: int) -> list[CartBase]:
+@cart_router.get("/in/media/{media_id}", tags=["cart"], summary="Get cart_id that holds media of media_id", response_model=list[CartBase])
+def get_cart_id_by_media_id(media_id: int) -> list[CartBase]:
     """Get cart_id that holds media of media_id"""
     try:
-        cart_id = InCartDAO().get_cart_id_by_media_id(id)
+        cart_ids = InCartDAO().get_carts_id_by_media_id(media_id)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail=f"Error on get cart of media id {id}")
-    return cart_id
+        raise HTTPException(status_code=500, detail=f"Error on get cart of media id {media_id}")
+    return cart_ids
 
-@cart_router.delete("/in", tags=["cart"], summary="Delete In_Cart record by id")
+@cart_router.delete("/in/remove", tags=["cart"], summary="Delete In_Cart record by media_id and cart_id")
 def delete_in_cart_by_id(data: InCart):
-    """Delete In_Cart record by id"""
+    """Delete In_Cart record by media_id and cart_id (equivalent to removing media from cart)"""
+    try:
+        in_cart_media = InCartDAO().get_record(data)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error on get in_cart record to delete")
+    if in_cart_media is None:
+        raise HTTPException(status_code=404, detail=f"Media of id {data.media_id} not found in cart of id {data.cart_id}")
     try:
         InCartDAO().delete_record(data)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on delete in cart")
 
-@cart_router.delete("/in/{id}", tags=["cart"], summary="Delete all media in cart by cart_id")
-def delete_all_in_cart_by_cart_id(id: int):
+@cart_router.delete("/in/remove/all/{cart_id}", tags=["cart"], summary="Delete all media in cart by cart_id")
+def delete_all_in_cart_by_cart_id(cart_id: int):
     """Delete all media in cart by cart_id"""
     try:
-        InCartDAO().delete_all_by_cart_id(id)
+        InCartDAO().delete_all_by_cart_id(cart_id)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail=f"Error on delete in cart of cart id {id}")
+        raise HTTPException(status_code=500, detail=f"Error on delete in cart of cart id {cart_id}")
 
 @cart_router.get("/in/{id}/film", tags=["cart"], summary="Get all media in In_Cart of cart_id that are Films", response_model=list[Film])
 def get_all_films_in_cart_by_cart_id(id: int) -> list[Film]:
@@ -132,3 +147,4 @@ def get_all_video_games_in_cart_by_cart_id(id: int) -> list[VideoGame]:
         print(e)
         raise HTTPException(status_code=500, detail=f"Error on get video games in cart of cart id {id}")
     return video_game_list
+

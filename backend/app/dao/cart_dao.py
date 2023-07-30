@@ -83,6 +83,19 @@ class InCartDAO:
         except Exception as e:
             print(e)
             raise Exception(f"DAO Error: on add media {in_cart.media_id} to cart {in_cart.cart_id}")
+        
+    def get_record(self, in_cart: InCart) -> InCart | None:
+        try:
+            with self.connection.cursor() as cursor:
+                sql = "SELECT * FROM In_Cart WHERE media_id = %s AND cart_id = %s"
+                cursor.execute(sql, (in_cart.media_id, in_cart.cart_id))
+                result = cursor.fetchone()
+                if result:
+                    return InCart(**result)
+                return None
+        except Exception as e:
+            print(e)
+            raise Exception(f"DAO Error: on get media {in_cart.media_id} from cart {in_cart.cart_id}")
     
     def get_all_media_ids_by_cart_id(self, cart_id: int) -> list[InCart]:
         """Get all the In_Cart records of a Cart by its cart_id. these media_id records are the medias in the cart of cart_id"""
@@ -96,17 +109,18 @@ class InCartDAO:
             print(e)
             raise Exception(f"DAO Error: on get all medias from cart {cart_id}")
     
-    def get_cart_id_by_media_id(self, media_id: int) -> CartBase | None:
-        """Get the cart id of a media by its media_id"""
+    def get_carts_id_by_media_id(self, media_id: int) -> list[CartBase] | None:
+        """Get all the cart_ids that has a media of media_id in it. user_id is -1 if the user_id is not found"""
         try:
             with self.connection.cursor() as cursor:
                 sql = "SELECT cart_id FROM In_Cart WHERE media_id = %s"
                 cursor.execute(sql, (media_id))
-                result = cursor.fetchone()
-                return CartBase(**result) if result else None
+                result = cursor.fetchall()
+                if result:
+                    return [CartBase(user_id=row["cart_id"]) if "cart_id" in row else CartBase(user_id=-1) for row in result]
         except Exception as e:
             print(e)
-            raise Exception(f"DAO Error: on get cart id from media {media_id}")
+            raise Exception(f"DAO Error: on get cart ids from media {media_id}")
         
     def delete_record(self, in_cart: InCart) -> None:
         """'Removes' a media from a cart"""
