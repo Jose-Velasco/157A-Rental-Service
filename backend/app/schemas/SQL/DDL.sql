@@ -1,6 +1,5 @@
 CREATE TABLE User(
     user_id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    password VARCHAR(255) NOT NULL,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     birthday DATE NOT NULL,
@@ -8,8 +7,17 @@ CREATE TABLE User(
     age INTEGER NOT NULL,
     phone_number INTEGER NOT NULL
 );
---create me an instance of a insert statement into the user table with any values
---insert into User values (1, 'password', 'first_name', 'last_name', '2020-01-22', 'profile_pic_URL', 1, 1);
+
+CREATE TABLE Auth(
+    user_id INTEGER PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    hashed_password VARCHAR(255) NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+
 CREATE TABLE Address(
     user_id INTEGER NOT NULL,
     street VARCHAR(255) NOT NULL,
@@ -74,15 +82,6 @@ CREATE TABLE Film(
     ON UPDATE CASCADE
 );
 
-CREATE TABLE Reviews(
-    review_id INTEGER,
-    user_id INTEGER,
-    PRIMARY KEY(review_id, user_id),
-    FOREIGN KEY(user_id) REFERENCES User(user_id),
-    FOREIGN KEY(review_id) REFERENCES ReviewContent(review_id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
 CREATE TABLE ReviewContent(
     review_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     media_id INTEGER,
@@ -93,6 +92,17 @@ CREATE TABLE ReviewContent(
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+
+CREATE TABLE Reviews(
+    review_id INTEGER,
+    user_id INTEGER,
+    PRIMARY KEY(review_id, user_id),
+    FOREIGN KEY(user_id) REFERENCES User(user_id),
+    FOREIGN KEY(review_id) REFERENCES ReviewContent(review_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
 
 CREATE TABLE Inventory(
     media_id INTEGER PRIMARY KEY,

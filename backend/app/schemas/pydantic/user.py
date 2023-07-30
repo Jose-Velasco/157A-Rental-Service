@@ -19,6 +19,7 @@ class Customer(UserBase):
     user_id: int
 
 class CustomerCreate(UserBase):
+    username: str
     password: str
 
 class CustomerUpdate(CustomerCreate):
@@ -34,6 +35,7 @@ class Employee(EmployeeBase):
     user_id: int
 
 class EmployeeCreate(EmployeeBase):
+    username: str
     password: str
 
 class EmployeeUpdate(Employee):

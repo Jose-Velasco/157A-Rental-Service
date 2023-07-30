@@ -59,7 +59,6 @@ def delete_employee(user_id: int):
 
 #create test customer object for me on multiple lines
 {
-    "password": "password",
     "first_name": "John",
     "last_name": "Doe",
     "birthday": "1990-01-01",
@@ -79,12 +78,13 @@ def delete_employee(user_id: int):
         {
             "email": "john.doe@gmail"
         }
-    ]
+    ],
+    "username": "johndoe",
+    "password": "password"
 }
 
 #create test employee object for me on multiple lines
 {
-    "password": "password",
     "first_name": "John",
     "last_name": "Doe",
     "birthday": "1990-01-01",
@@ -108,7 +108,9 @@ def delete_employee(user_id: int):
     "ssn": 123456789,
     "salary": 100000,
     "start_date": "2020-01-01",
-    "employee_type": "Manager"
+    "employee_type": "Manager",
+    "username": "johndoe",
+    "password": "password"
 }
 
 
