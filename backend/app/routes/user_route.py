@@ -28,6 +28,7 @@ def get_employee_by_id(user_id: int):
     employee = EmployeeDAO().get_employee_by_id(user_id)
     return {"Employee": employee}
 
+
 @user_router.get("/customer/")
 async def get_all_customers(current_user: Annotated[User, Depends(get_current_user)]):
     customers = CustomerDAO().get_all_customers()
@@ -60,6 +61,32 @@ def delete_employee(user_id: int):
 
 #create test customer object for me on multiple lines
 {
+    "first_name": "Kristina",
+    "last_name": "Niederer",
+    "birthday": "1990-01-01",
+    "profile_pic_URL": "https://www.google.com",
+    "age": 30,
+    "phone_number": 1234567890,
+    "address": [
+        {
+            "street": "123 Main St",
+            "city": "New York",
+            "zip_code": "12345",
+            "state": "NY",
+            "country": "USA"
+        }
+    ],
+    "email": [
+        {
+            "email": "kniederer.@gmail.com"
+        }
+    ],
+    "username": "kniederer",
+    "password": "daisy"
+}
+
+#create test employee object for me on multiple lines
+{
     "first_name": "John",
     "last_name": "Cena",
     "birthday": "1990-01-01",
@@ -77,41 +104,15 @@ def delete_employee(user_id: int):
     ],
     "email": [
         {
-            "email": "john.cena@gmail.com"
-        }
-    ],
-    "username": "johncena",
-    "password": "Cena123"
-}
-
-#create test employee object for me on multiple lines
-{
-    "first_name": "John",
-    "last_name": "Doe",
-    "birthday": "1990-01-01",
-    "profile_pic_URL": "https://www.google.com",
-    "age": 30,
-    "phone_number": 1234567890,
-    "address": [
-        {
-            "street": "123 Main St",
-            "city": "New York",
-            "zip_code": "12345",
-            "state": "NY",
-            "country": "USA"
-        }
-    ],
-    "email": [
-        {
-            "email": "john.doe@yahoo.com"
+            "email": "john.cena@yahoo.com"
         }
     ],
     "ssn": 123456789,
     "salary": 100000,
     "start_date": "2020-01-01",
     "employee_type": "Manager",
-    "username": "johndoe",
-    "password": "password"
+    "username": "johncena",
+    "password": "cena123"
 }
 
 
