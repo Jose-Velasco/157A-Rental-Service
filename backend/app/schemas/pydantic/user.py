@@ -15,8 +15,11 @@ class UserBase(BaseModel):
     email: List[EmailBase]
     phone_number: int
 
-class Customer(UserBase):
+class User(UserBase):
     user_id: int
+
+class Customer(User):
+    pass
 
 class CustomerCreate(UserBase):
     username: str
@@ -31,8 +34,8 @@ class EmployeeBase(UserBase):
     start_date: date
     employee_type: str
 
-class Employee(EmployeeBase):
-    user_id: int
+class Employee(User):
+    pass
 
 class EmployeeCreate(EmployeeBase):
     username: str

@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from .api_routes import api_router
 from app.configs.api_config import settings
 from starlette.middleware.cors import CORSMiddleware
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 
 app = FastAPI(title=settings.PROJECT_NAME)
 

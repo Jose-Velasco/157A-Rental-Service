@@ -3,6 +3,7 @@ from app.dao.customer_dao import CustomerDAO
 from app.dao.employee_dao import EmployeeDAO
 from app.schemas.pydantic.user import CustomerCreate
 from app.schemas.pydantic.user import EmployeeCreate
+from app.auth.auth import *
 
 
 user_router = APIRouter()
@@ -28,7 +29,7 @@ def get_employee_by_id(user_id: int):
     return {"Employee": employee}
 
 @user_router.get("/customer/")
-def get_all_customers():
+async def get_all_customers(current_user: Annotated[User, Depends(get_current_user)]):
     customers = CustomerDAO().get_all_customers()
     return {"Customers": customers}
 
@@ -60,7 +61,7 @@ def delete_employee(user_id: int):
 #create test customer object for me on multiple lines
 {
     "first_name": "John",
-    "last_name": "Doe",
+    "last_name": "Cena",
     "birthday": "1990-01-01",
     "profile_pic_URL": "https://www.google.com",
     "age": 30,
@@ -76,11 +77,11 @@ def delete_employee(user_id: int):
     ],
     "email": [
         {
-            "email": "john.doe@gmail"
+            "email": "john.cena@gmail.com"
         }
     ],
-    "username": "johndoe",
-    "password": "password"
+    "username": "johncena",
+    "password": "Cena123"
 }
 
 #create test employee object for me on multiple lines
