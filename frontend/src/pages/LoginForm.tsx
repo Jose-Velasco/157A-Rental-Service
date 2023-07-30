@@ -45,7 +45,9 @@ const LoginForm:React.FC = () => {
     <Typography align="center" gutterBottom fontSize={35}> Sign In</Typography>
             <TextField label = "Email" type = "email" fullWidth/>
             <TextField label = "Password*" type = "password" fullWidth/>
+            <Link to = "/Home" style = {{textDecoration: 'none'}}>
             <Button type = "submit" fullWidth variant = "contained" color = "primary" sx={{mt:3,mb:2}}>Sign In</Button>
+            </Link>
             <Link to = "/SignUp" style = {{textDecoration: 'none'}}>
             <Button type = 'submit' fullWidth variant = "contained" color = "secondary" sx={{mt:3,mb:2}}>Sign Up</Button>
             </Link>
