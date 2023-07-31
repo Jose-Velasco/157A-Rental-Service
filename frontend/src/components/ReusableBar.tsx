@@ -7,6 +7,7 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import ManageAccounts from '@mui/icons-material/ManageAccounts';
 import { IconButton } from '@mui/material';
 
 
@@ -34,7 +35,9 @@ export default function ReusableBar(props: ReusableBarProps) {
         <IconButton size="large" aria-label="Search" color="inherit">
             <SearchIcon />
         </IconButton>
-        
+        <IconButton size = "large" aria-label="Manage Accounts" color="inherit">
+          <ManageAccounts />    
+        </IconButton>
         
       </Toolbar>
     </AppBar>
