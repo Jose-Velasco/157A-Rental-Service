@@ -6,10 +6,7 @@ import {Link} from "react-router-dom";
 import axios from "../axios";
 
 
-
-
-
-const LoginForm:React.FC = () => {
+const EmployeeSignIn:React.FC = () => {
 
     const [users, setUsers] = useState();
     
@@ -31,7 +28,6 @@ const LoginForm:React.FC = () => {
             }
         }
         getUsers();
-
         //Cleanup
         return() => {
             isMounted = false;
@@ -42,21 +38,18 @@ const LoginForm:React.FC = () => {
 
     return(
         <form>
-    <Typography align="center" gutterBottom fontSize={35}> Sign In</Typography>
+    <Typography align="center" gutterBottom fontSize={35}> Employee Sign In</Typography>
             <TextField label = "Email" type = "email" fullWidth/>
             <TextField label = "Password*" type = "password" fullWidth/>
-            <Link to = "/home" style = {{textDecoration: 'none'}}>
+            <Link to = "/employeehome" style = {{textDecoration: 'none'}}>
             <Button type = "submit" fullWidth variant = "contained" color = "primary" sx={{mt:3,mb:2}}>Sign In</Button>
             </Link>
-            <Link to = "/employeelogin" style = {{textDecoration: 'none'}}>
-            <Button type = "submit" fullWidth variant = "contained" color = "success" sx={{mt:3,mb:2}}>Employee Sign In</Button>
-            </Link>
-            <Link to = "/signup" style = {{textDecoration: 'none'}}>
-            <Button type = 'submit' fullWidth variant = "contained" color = "secondary" sx={{mt:3,mb:2}}>Sign Up</Button>
+            <Link to = "/" style = {{textDecoration: 'none'}}>
+            <Button type = "submit" fullWidth variant = "contained" color = "success" sx={{mt:3,mb:2}}>Return to Customer Sign In</Button>
             </Link>
         </form>
     );
 };
 
 
-export default LoginForm;
+export default EmployeeSignIn;

@@ -1,33 +1,42 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import { Toolbar } from '@mui/material';
-import IconButton from '@mui/material';
+import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material';
-import InventoryIcon from '@mui/material';
-import ShoppingCart from '@mui/material';
-import MenuItem from '@mui/material';
-import Menu from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import { IconButton } from '@mui/material';
+
+
 
 interface ReusableBarProps {
-    title : string;
-    showInventoryIcon?: boolean;
- 
+  title: string;
+  showInventoryIcon?: boolean;
 }
- 
 
 export default function ReusableBar(props: ReusableBarProps) {
-
-
-    return (
-        <AppBar position="static" sx={{ backgroundColor: "#757DE8" }}>
-            <Toolbar sx={{ justifyContent: "space-between" }}>
-            
-                
-                </Toolbar>
-
-            </AppBar>
-
-    );
+  return (
+    <AppBar position="fixed"sx={{ backgroundColor: "#757DE8", width: "100%"}}>
+      <Toolbar sx={{ justifyContent: "center" }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
+          Welcome,&nbsp;{props.title}&nbsp;
+        </Typography>
+        {/* Render icons conditionally if showInventoryIcon is true */}
+        {props.showInventoryIcon &&
+        <IconButton size="large" aria-label="Inventory" color="inherit">
+        <InventoryIcon />
+        </IconButton>}
+        <IconButton size="large" aria-label="Shopping Cart" color="inherit">
+            <ShoppingCartIcon />
+        </IconButton>
+        <IconButton size="large" aria-label="Search" color="inherit">
+            <SearchIcon />
+        </IconButton>
+        
+        
+      </Toolbar>
+    </AppBar>
+  );
 }
