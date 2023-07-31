@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
-import LoginForm from './components/LoginForm'
 import './App.css'
+import LoginForm from './pages/LoginForm';
+import SignUp from './pages/SignUp';
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -30,10 +32,14 @@ function App() {
 
 
   return (
-    <div className="App">
-      <LoginForm/>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginForm />} />
+        <Route path = "/signup" element={<SignUp/>}/>
+      </Routes>
+    </Router>
   )
 }
 
 export default App
+
