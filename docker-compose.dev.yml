@@ -44,7 +44,7 @@ services:
     environment:
       PROJECT_NAME: ${PROJECT_NAME:-rentalServiceAPI}
       SECRET_KEY: ${SECRET_KEY:-SecretDevKey}
-      BACKEND_CORS_ORIGINS: ${BACKEND_CORS_ORIGINS:-["http://localhost", "http://localhost:4200", "http://localhost:3306"]}
+      BACKEND_CORS_ORIGINS: ${BACKEND_CORS_ORIGINS:-["http://localhost","http://localhost:4200","http://localhost:3306"]}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
       MYSQL_HOST: ${MYSQL_SERVER:-db}
       MYSQL_PORT: ${MYSQL_SERVER:-3306}
