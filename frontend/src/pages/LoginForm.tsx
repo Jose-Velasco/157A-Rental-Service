@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { TextField, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
 import { useState } from "react";
@@ -12,6 +12,18 @@ import axios from "../axios";
 const LoginForm:React.FC = () => {
 
     const [users, setUsers] = useState();
+    const [formData, setFormData] = useState({
+        username: "",
+        password: "",
+    });
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    }
     
     useEffect(() => {
         let isMounted = true;
@@ -39,6 +51,22 @@ const LoginForm:React.FC = () => {
         }
 
     },[]);
+    
+    const handleSubmit = useCallback(
+        async (event: React.FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            const { username, password } = formData;
+            try{
+                const response = await axios.post("/auth/login",{
+                    email: username,
+                    password: password,
+                });
+            }catch(error){
+                console.log(error);
+            }
+        },
+        []
+    );
 
     return(
         <form>
