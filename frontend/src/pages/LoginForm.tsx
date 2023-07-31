@@ -4,18 +4,20 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import {Link} from "react-router-dom";
 import axios from "../axios";
+import useAuth from "../hooks/useAuth";
+import { Token } from "../interfaces/token";
 
 
-
-
+const LOGIN_URL = "/auth/token/";
 
 const LoginForm:React.FC = () => {
-
     const [users, setUsers] = useState();
     const [formData, setFormData] = useState({
         username: "",
         password: "",
     });
+    const authContextValue = useAuth();
+    const setAuth = authContextValue?.setAuth;
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -24,58 +26,61 @@ const LoginForm:React.FC = () => {
             [name]: value,
         }));
     }
-    
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
 
-        const getUsers = async () => {
-            try{
-                const response = await axios.get("/users",{
-                    signal: controller.signal,
-                });
-                console.log(response.data)
-                if(isMounted){
-                    setUsers(response.data);
-                }
-            }catch(error){
-                console.log(error);
-            }
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const { username, password } = formData;
+        try{
+            const response = await axios.post(LOGIN_URL,{
+                username: username,
+                password: password,
+            }).then((response) => {
+                let token: Token = response.data; 
+                setAuth?.(token);
+            });
+            formData.username = "";
+            formData.password = "";
+        } catch(error){
+            console.log(error);
         }
-        getUsers();
+        };
 
-        //Cleanup
-        return() => {
-            isMounted = false;
-            controller.abort();
-        }
+        // useEffect(() => {
+    //     let isMounted = true;
+    //     const controller = new AbortController();
 
-    },[]);
+    //     const getUsers = async () => {
+    //         try{
+    //             const response = await axios.get("/users",{
+    //                 signal: controller.signal,
+    //             });
+    //             console.log(response.data)
+    //             if(isMounted){
+    //                 setUsers(response.data);
+    //             }
+    //         }catch(error){
+    //             console.log(error);
+    //         }
+    //     }
+    //     getUsers();
+
+    //     //Cleanup
+    //     return() => {
+    //         isMounted = false;
+    //         controller.abort();
+    //     }
+
+    // },[]);
     
-    const handleSubmit = useCallback(
-        async (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            const { username, password } = formData;
-            try{
-                const response = await axios.post("/auth/login",{
-                    email: username,
-                    password: password,
-                });
-            }catch(error){
-                console.log(error);
-            }
-        },
-        []
-    );
 
     return(
-        <form>
+        <form onSubmit={handleSubmit}>
     <Typography align="center" gutterBottom fontSize={35}> Sign In</Typography>
-            <TextField label = "Email" type = "email" fullWidth/>
-            <TextField label = "Password*" type = "password" fullWidth/>
-            <Link to = "/home" style = {{textDecoration: 'none'}}>
+            <TextField  onChange={handleChange} value={formData.username} label = "username" name="username" type = "text" fullWidth/>
+            <TextField onChange={handleChange} value={formData.password} label = "Password" name="password" type = "password" fullWidth/>
+            {/* <Link to = "/home" style = {{textDecoration: 'none'}}> */}
             <Button type = "submit" fullWidth variant = "contained" color = "primary" sx={{mt:3,mb:2}}>Sign In</Button>
-            </Link>
+            {/* </Link> */}
             <Link to = "/employeelogin" style = {{textDecoration: 'none'}}>
             <Button type = "submit" fullWidth variant = "contained" color = "success" sx={{mt:3,mb:2}}>Employee Sign In</Button>
             </Link>
