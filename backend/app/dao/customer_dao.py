@@ -5,6 +5,7 @@ from app.models.database_manager import DatabaseManager
 from app.dao.address_dao import AddressDao
 from app.dao.email_dao import EmailDao
 from typing import List
+from app.auth.auth import get_pass_hash
 
 class CustomerDAO:
 
@@ -19,16 +20,22 @@ class CustomerDAO:
         age = customer.age
         address_list = customer.address
         email_list = customer.email
-        password = customer.password
         phone_number = customer.phone_number
+        username = customer.username
+        hashed_password = get_pass_hash(customer.password)
 
         try:
             with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `User` (`password`, `first_name`, `last_name`, `birthday`, `profile_pic_URL`, `age`, `phone_number`) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                sql = "INSERT INTO `User` (`first_name`, `last_name`, `birthday`, `profile_pic_URL`, `age`, `phone_number`) VALUES (%s, %s, %s, %s, %s, %s)"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (password, first_name, last_name, birth_date, profile_pic_URL, age, phone_number))
+                cursor.execute(sql, (first_name, last_name, birth_date, profile_pic_URL, age, phone_number))
                 self.connection.commit()
                 user_id = cursor.lastrowid
+
+                sql = "INSERT INTO `Auth` (`user_id`, `username`, `hashed_password`) VALUES (%s, %s, %s)"
+                self.connection.ping(reconnect=True)
+                cursor.execute(sql, (user_id, username, hashed_password))
+                self.connection.commit()
 
                 for address in address_list:
                     address = AddressCreate(user_id=user_id, street=address.street, city=address.city, zip_code=address.zip_code, state=address.state, country=address.country, phone_number=phone_number)

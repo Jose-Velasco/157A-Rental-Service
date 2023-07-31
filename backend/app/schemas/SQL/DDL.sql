@@ -1,6 +1,5 @@
 CREATE TABLE User(
     user_id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    password VARCHAR(255) NOT NULL,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     birthday DATE NOT NULL,
@@ -9,6 +8,14 @@ CREATE TABLE User(
     phone_number INTEGER NOT NULL
 );
 
+CREATE TABLE Auth(
+    user_id INTEGER PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    hashed_password VARCHAR(255) NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES User(user_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
 CREATE TABLE Address(
     user_id INTEGER NOT NULL,
     street VARCHAR(255) NOT NULL,

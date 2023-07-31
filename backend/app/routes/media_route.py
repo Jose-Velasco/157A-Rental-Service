@@ -2,11 +2,12 @@ from fastapi import APIRouter, HTTPException
 from app.schemas.pydantic.media import VideoGame, VideoGameCreate, Film, FilmCreate
 from app.dao.video_game_dao import VideoGameDAO
 from app.dao.film_dao import FilmDAO
+from app.auth.auth import *
 
 media_router = APIRouter()
 
 @media_router.post("/video-game", tags=["media"], summary="Create a new video-game", response_model=VideoGame)
-def create_video_game(data: VideoGameCreate):
+def create_video_game(data: VideoGameCreate, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         new_media_id = VideoGameDAO().create(data)
     except Exception as e:
@@ -16,7 +17,7 @@ def create_video_game(data: VideoGameCreate):
     return new_video_game
 
 @media_router.get("/video-game/{id}", tags=["media"], summary="Get video game by id", response_model=VideoGame)
-def get_video_game_by_id(id: int):
+def get_video_game_by_id(id: int, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         video_game = VideoGameDAO().get_by_id(id)
     except Exception as e:
@@ -27,7 +28,7 @@ def get_video_game_by_id(id: int):
     return video_game
 
 @media_router.get("/video-game", tags=["media"], summary="Get all video games", response_model=list[VideoGame])
-def get_all_video_games():
+def get_all_video_games(current_user: Annotated[User, Depends(get_current_user)]):
     try:
         video_game_list = VideoGameDAO().get_all()
     except Exception as e:
@@ -36,7 +37,7 @@ def get_all_video_games():
     return video_game_list
 
 @media_router.put("/video-game/{id}", tags=["media"], summary="Update video game by id")
-def update_video_game(id: int, data: VideoGameCreate):
+def update_video_game(id: int, data: VideoGameCreate, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         video_game = VideoGameDAO().get_by_id(id)
     except Exception as e:
@@ -58,7 +59,7 @@ def update_video_game(id: int, data: VideoGameCreate):
         raise HTTPException(status_code=500, detail="Error on update video game")
 
 @media_router.delete("/video-game/{id}", tags=["media"], summary="Delete video game by id")
-def delete_video_game(id: int):
+def delete_video_game(id: int, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         video_game = VideoGameDAO().get_by_id(id)
     except Exception as e:
@@ -74,7 +75,7 @@ def delete_video_game(id: int):
 
 
 @media_router.post("/film", tags=["media"], summary="Create a new film", response_model=Film)
-def create_film(data: FilmCreate):
+def create_film(data: FilmCreate, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         new_media_id = FilmDAO().create(data)
     except Exception as e:
@@ -84,7 +85,7 @@ def create_film(data: FilmCreate):
     return new_film
 
 @media_router.get("/film/{id}", tags=["media"], summary="Get film by id", response_model=Film)
-def get_film_by_id(id: int):
+def get_film_by_id(id: int, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         film = FilmDAO().get_by_id(id)
     except Exception as e:
@@ -95,7 +96,7 @@ def get_film_by_id(id: int):
     return film
 
 @media_router.get("/film", tags=["media"], summary="Get all films", response_model=list[Film])
-def get_all_films():
+def get_all_films(current_user: Annotated[User, Depends(get_current_user)]):
     try:
         film_list = FilmDAO().get_all()
     except Exception as e:
@@ -104,7 +105,7 @@ def get_all_films():
     return film_list
 
 @media_router.put("/film/{id}", tags=["media"], summary="Update film by id")
-def update_film(id: int, data: FilmCreate):
+def update_film(id: int, data: FilmCreate, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         film = FilmDAO().get_by_id(id)
     except Exception as e:
@@ -126,7 +127,7 @@ def update_film(id: int, data: FilmCreate):
         raise HTTPException(status_code=500, detail="Error on update film")
 
 @media_router.delete("/film/{id}", tags=["media"], summary="Delete film by id")
-def delete_film(id: int):
+def delete_film(id: int, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         film = FilmDAO().get_by_id(id)
     except Exception as e:
