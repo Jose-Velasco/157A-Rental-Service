@@ -11,11 +11,10 @@ import Grid from '@mui/material/Grid';
 
 const Home:React.FC = () => {
     const [media, setCard] = useState<VideoGames[]>();
-
+    const [movie, setMovie] = useState<Movies[]>();
 
      useEffect(() =>{
-
-        let isMounted = true;
+     let isMounted = true;
         const controller = new AbortController();
     
         const getCard = async () => {
@@ -27,32 +26,62 @@ const Home:React.FC = () => {
                 if(isMounted){
                     setCard(response.data);
                     const mediaTitles = media?.map((item) => item.title); // Creates an array of titles from the media array
-
                 }
             }catch(error){
                 console.log(error);
             }
         }
+
+        const getMovie = async () => {
+            try{
+                const response = await axios.get("/media/film",{
+                    signal: controller.signal,
+                });
+                console.log(response.data)
+                if(isMounted){
+                    setMovie(response.data);
+                    const mediaTitles = movie?.map((item) => item.title); // Creates an array of titles from the media array
+                }
+            }catch(error){
+                console.log(error);
+            }
+        }
+
         getCard();
+        getMovie();
     
         return() => {
             isMounted = false;
             controller.abort();
         }
     }
-    
     ,[]);
+
     return(
         <form>
             <ReusableBar title = "Jeffrey"  showInventoryIcon = {false}/>
-            <Typography align="left"  fontSize={45} color="#808080"> Recommended Games </Typography>
-            {media?.map ((item) => (
-                <Grid container spacing={3}>
+            <Typography marginTop= {15}align="left"  fontSize={35} color="#808080"> Recommended Games </Typography>
+            <Grid container spacing={6}>
+            {media?.slice(0,3).map ((item) => (
+                  <Grid item xs={4} sm={4} md={4}>
             <ReusableCard title = {item.title}
             description = {item.media_description}
             image = {item.image_url}/>
-            </Grid>
-                 ))}   
+           </Grid>      
+               ))}  
+        </Grid>
+
+        <Typography align="left" marginTop={6}  fontSize={35} color="#808080"> Recommended Movies </Typography>
+            <Grid container spacing={6}>
+            {movie?.slice(0,3).map ((item) => (
+                  <Grid item xs={4} sm={4} md={4}>
+            <ReusableCard title = {item.title}
+            description = {item.media_description}
+            image = {item.image_url}/>
+           </Grid>      
+               ))}  
+        </Grid>
+
         </form>
     );
 };

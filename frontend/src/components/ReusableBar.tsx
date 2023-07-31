@@ -18,7 +18,7 @@ interface ReusableBarProps {
 
 export default function ReusableBar(props: ReusableBarProps) {
   return (
-    <AppBar position="fixed"sx={{ backgroundColor: "#757DE8", width: "100%"}}>
+    <AppBar position="absolute"sx={{ backgroundColor: "#757DE8", width: "100%"}}>
       <Toolbar sx={{ justifyContent: "center" }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 0 }}>
           Welcome,&nbsp;{props.title}&nbsp;
