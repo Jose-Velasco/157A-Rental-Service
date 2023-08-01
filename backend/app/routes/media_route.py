@@ -1,10 +1,22 @@
 from fastapi import APIRouter, HTTPException
-from app.schemas.pydantic.media import VideoGame, VideoGameCreate, Film, FilmCreate
+from app.schemas.pydantic.media import VideoGame, VideoGameCreate, Film, FilmCreate, Media
 from app.dao.video_game_dao import VideoGameDAO
 from app.dao.film_dao import FilmDAO
+from app.dao.media_dao import MediaDAO
 from app.auth.auth import *
 
 media_router = APIRouter()
+
+@media_router.get("/", tags=["media"], summary="Get all media", response_model=list[Media])
+def get_all_media_contains_title(searchTitle: str , current_user: Annotated[User, Depends(get_current_user)]):
+    try:
+        media = MediaDAO().get_by_all_title_like(searchTitle)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error on get all media")
+    if media is None:
+        raise HTTPException(status_code=404, detail="Media not found")
+    return media
 
 @media_router.post("/video-game", tags=["media"], summary="Create a new video-game", response_model=VideoGame)
 def create_video_game(data: VideoGameCreate, current_user: Annotated[User, Depends(get_current_user)]):
