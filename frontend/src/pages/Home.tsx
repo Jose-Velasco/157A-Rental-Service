@@ -4,12 +4,13 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import {Link} from "react-router-dom";
 import ReusableCard from "../components/ReusableCard";
-import axios from "../axios";
 import ReusableBar from "../components/ReusableBar";
 import {MediaBase, VideoGames, Movies} from "../interfaces/MediaInterfaces";
 import Grid from '@mui/material/Grid';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const Home:React.FC = () => {
+    const axiosPrivate = useAxiosPrivate();
     const [media, setCard] = useState<VideoGames[]>();
     const [movie, setMovie] = useState<Movies[]>();
 
@@ -19,7 +20,7 @@ const Home:React.FC = () => {
     
         const getCard = async () => {
             try{
-                const response = await axios.get("/media/video-game",{
+                const response = await axiosPrivate.get("/media/video-game",{
                     signal: controller.signal,
                 });
                 console.log(response.data)
@@ -34,7 +35,7 @@ const Home:React.FC = () => {
 
         const getMovie = async () => {
             try{
-                const response = await axios.get("/media/film",{
+                const response = await axiosPrivate.get("/media/film",{
                     signal: controller.signal,
                 });
                 console.log(response.data)
