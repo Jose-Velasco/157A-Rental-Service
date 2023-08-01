@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import ManageAccounts from '@mui/icons-material/ManageAccounts';
 import { IconButton } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 
 
@@ -32,9 +33,11 @@ export default function ReusableBar(props: ReusableBarProps) {
         <IconButton size="large" aria-label="Shopping Cart" color="inherit">
             <ShoppingCartIcon />
         </IconButton>
-        <IconButton size="large" aria-label="Search" color="inherit">
+        <Link to="/search">
+        <IconButton size="large" aria-label="Search" >
             <SearchIcon />
         </IconButton>
+        </Link>
         <IconButton size = "large" aria-label="Manage Accounts" color="inherit">
           <ManageAccounts />    
         </IconButton>

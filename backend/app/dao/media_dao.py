@@ -28,6 +28,19 @@ class MediaDAO:
         except Exception as e:
             print(e)
             raise Exception(f"Error on get media of id {id}")
+        
+    def get_by_all_title_like(self, title: str) -> Media | None:
+        try:
+            with self.connection.cursor() as cursor:
+                sql = "SELECT * FROM Media WHERE title LIKE %s"
+                cursor.execute(sql, (f"%{title}%"))
+                result = cursor.fetchall()
+                if result:
+                    return [Media(**media) for media in result]
+                return None
+        except Exception as e:
+            print(e)
+            raise Exception(f"DAO error: Error on get media of title {title}")
 
     def get_all(self) -> list[Media]:
         try:

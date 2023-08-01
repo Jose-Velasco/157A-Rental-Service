@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import EmployeeSignIn from './pages/EmployeeSignIn';
 import EmployeeHome from './pages/EmployeeHome';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import SearchMedia from './pages/SearchMedia';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path = "/home" element={<Home/>}/>
         <Route path = "/employeelogin" element={<EmployeeSignIn/>}/>
         <Route path = "/employeehome" element={<EmployeeHome/>}/>
+        <Route path = "/search" element={<SearchMedia/>}/>
       </Routes>
     </Router>
   )
