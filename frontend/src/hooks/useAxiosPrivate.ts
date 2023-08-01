@@ -1,6 +1,11 @@
 import { axiosPrivate } from "../axios";
 import { useEffect } from "react";
 import useAuth from "./useAuth";
+import axios from "axios";
+
+const isErrorResponse = (error: any, serverCode: number) => {
+    return error.response && error.response.status === serverCode;
+};
 
 const useAxiosPrivate = () => {
     const contextValue = useAuth();
@@ -15,6 +20,20 @@ const useAxiosPrivate = () => {
                 return config;
             }, (error) => Promise.reject(error)
         )
+        const responseIntercept = axiosPrivate.interceptors.response.use(
+            (response) => response,
+            (error) => {
+                if (axios.isAxiosError(error)) {
+                    // if the error is a 401 and the user is logged in, log them out
+                    if ((isErrorResponse(error, 401) || isErrorResponse(error, 403))) {
+                        contextValue?.setAuth(null);
+                    }
+                }
+                return Promise.reject(error);
+            }
+
+        );
+
         // remove/clean-up the interceptor when the component unmounts so they don't pile up
         return () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);
