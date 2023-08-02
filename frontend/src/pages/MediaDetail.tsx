@@ -19,11 +19,14 @@ import Avatar from '@mui/material/Avatar';
 import Rating from '@mui/material/Rating';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { ReviewWithUser } from "../interfaces/review";
+import {environment} from "../axios";
 
 const MediaDetail:React.FC = () => {
     const axiosPrivate = useAxiosPrivate();
     const { media_id } = useParams<{ media_id: string }>();
     const [media, setMedia ] = useState<VideoGames | Movies | null>(null);
+    const [ reviews, setReviews ] = useState<ReviewWithUser[] | null>(null);
 
     useEffect(() =>{
         let isMounted = true;
@@ -45,7 +48,24 @@ const MediaDetail:React.FC = () => {
             }
         }
 
+        const getReviews = async () => {
+            try {
+                const response = await axiosPrivate.get(`/review/search_review_by_media_id/${media_id}`,{
+                    signal: controller.signal,
+                }).then((response) => {
+                    let reviews = response.data;
+                    if(isMounted && reviews){
+                        setReviews(reviews);
+                    }
+                });
+
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
         getMedia();
+        getReviews();
     
         return() => {
             isMounted = false;
@@ -68,16 +88,40 @@ const MediaDetail:React.FC = () => {
                         <Typography variant = "body2" color ="text.secondary">
                             {media.media_description}
                         </Typography>
-                        <Typography variant = "body2" color ="text.secondary">
+                        <Typography variant = "body2" color ="text.secondary" style={{fontWeight: "bold"}}>
                             {media.genre}
                         </Typography>
-                        <Typography variant = "body2" color ="text.secondary">
+                        <Typography variant = "body2" color ="text.secondary" style={{fontWeight: "bold"}}>
                             {media.rating}
                         </Typography>
-                        <Typography variant = "body2" color ="text.secondary">
+                        <Typography variant = "body2" color ="text.secondary" style={{fontWeight: "bold"}}>
                             {media.rent_price}
                         </Typography>
-                        
+                        { "publisher" in media && "developer" in media &&
+                            (
+                                <>
+                            <Typography variant = "body2" color ="text.secondary" style={{fontWeight: "bold"}}>
+                                {media.publisher}
+                            </Typography>
+                            <Typography variant = "body2" color ="text.secondary" style={{fontWeight: "bold"}}>
+                                {media.developer}
+                            </Typography>
+                                </>
+                            )
+                        }
+                        { "runTime" in media && "director" in media &&
+                            (
+                                <>
+                            <Typography variant = "body2" style={{fontWeight: "bold"}}>
+                                {media.runTime}
+                            </Typography>
+                            <Typography variant = "body2" style={{fontWeight: "bold"}}>
+                                {media.director}
+                            </Typography>
+                                </>
+                            )
+
+                        }
                     </CardContent>
                     <CardActions style={{justifyContent: "center"}}>
                         <Button size="large">
@@ -88,14 +132,19 @@ const MediaDetail:React.FC = () => {
                 }
                 <List style={{overflowY: "auto", paddingLeft: 30, paddingRight: 30, paddingTop: 20}}>
 
-                <ListItem alignItems="flex-start">
+                    {
+                        reviews?.map((review) => (
+
+                            <>
+                            
+                    <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src="../assets/react.svg" />
+                    <Avatar alt={`${review.first_name} ${review.last_name}`} src={`${environment.baseAPIURL}${review.profile_pic_URL}`} />
                     </ListItemAvatar>
                     <ListItemText style={{wordBreak: "break-all"}}
                     primary={
                         <React.Fragment>
-                        <Rating name="read-only" value={4} readOnly />
+                        <Rating name="read-only" value={review.stars} readOnly />
                         </React.Fragment>
                     }
                     secondary={
@@ -106,18 +155,26 @@ const MediaDetail:React.FC = () => {
                             variant="body2"
                             color="text.primary"
                         >
-                            Ali Connors <CalendarTodayIcon fontSize="small"/> 10/10/2021000000541####
+                            {`${review.first_name} ${review.last_name}`} <CalendarTodayIcon fontSize="small"/> {`${review.publish_date}`}
                             <br/>
                         </Typography>
-                        <Typography>
+                        <Typography component={'span'}>
 
-                        {" — I'll be in your neighborhood doing errands this… dwdadawdawdddddddddddddsssssssssssssssssssssssssssssssssssssssdddddddddddddddddddddddwaaaaaaaaaaaaaaaaaaaaaaaaaaawdddddddd"}
+                        {review.content}
                         </Typography>
                         </React.Fragment>
                     }
                     />
                 </ListItem>
                 <Divider variant="inset" component="li" style={{marginBottom: 15, marginTop: 15}} />
+                            
+                            </>
+
+                        ))
+                            
+                    }
+
+
 
                 
                 </List>

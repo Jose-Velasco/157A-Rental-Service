@@ -14,7 +14,7 @@ from app.dao.email_dao import EmailDao
 
 SECRET_KEY = "bcb5d7ffc84c89f5c53302849a03bc6835063b874b21e660b0b74c34c6607e6a"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 120
 
 class Token(BaseModel):
     access_token: str

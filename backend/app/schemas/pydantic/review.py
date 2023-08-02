@@ -12,6 +12,7 @@ class ReviewBase(BaseModel):
 #Properties of a review stored in DB (same as base)
 class Review(ReviewBase):
     review_id: int
+
 #Properties needed in order to make a new review (same as base)
 class ReviewCreate(ReviewBase):
     user_id: int
@@ -28,3 +29,7 @@ class ReviewSearchMedia(BaseModel):
     review_id: int
     media_id: int
 
+class ReviewUserInfo(Review):
+    first_name: str
+    last_name: str
+    profile_pic_URL: str
