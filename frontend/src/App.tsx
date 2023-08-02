@@ -8,6 +8,7 @@ import EmployeeSignIn from './pages/EmployeeSignIn';
 import EmployeeHome from './pages/EmployeeHome';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import SearchMedia from './pages/SearchMedia';
+import MediaDetail from './pages/MediaDetail';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
         <Route path = "/employeelogin" element={<EmployeeSignIn/>}/>
         <Route path = "/employeehome" element={<EmployeeHome/>}/>
         <Route path = "/search" element={<SearchMedia/>}/>
+        <Route path = "/media-detail/:media_id" element={<MediaDetail/>}/>
       </Routes>
     </Router>
   )

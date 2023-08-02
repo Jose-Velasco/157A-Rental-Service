@@ -7,7 +7,7 @@ from app.auth.auth import *
 
 media_router = APIRouter()
 
-@media_router.get("/", tags=["media"], summary="Get all media", response_model=list[Media])
+@media_router.get("/search", tags=["media"], summary="Get all media with title like searchTitle", response_model=list[Media])
 def get_all_media_contains_title(searchTitle: str , current_user: Annotated[User, Depends(get_current_user)]):
     try:
         media = MediaDAO().get_by_all_title_like(searchTitle)
@@ -17,6 +17,20 @@ def get_all_media_contains_title(searchTitle: str , current_user: Annotated[User
     if media is None:
         raise HTTPException(status_code=404, detail="Media not found")
     return media
+
+@media_router.get("/details/{media_id}", tags=["media"], summary="Get all media details by media_id", response_model=VideoGame | Film)
+def get_all_media_details_by_id(media_id: int, current_user: Annotated[User, Depends(get_current_user)]):
+    try:
+        detailed_results: VideoGame = VideoGameDAO().get_by_id(media_id)
+        if detailed_results is None:
+            detailed_results: Film = FilmDAO().get_by_id(media_id)
+        if detailed_results is None:
+            raise HTTPException(status_code=404, detail="Media not found")
+        return detailed_results
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error on get media")
+
 
 @media_router.post("/video-game", tags=["media"], summary="Create a new video-game", response_model=VideoGame)
 def create_video_game(data: VideoGameCreate, current_user: Annotated[User, Depends(get_current_user)]):

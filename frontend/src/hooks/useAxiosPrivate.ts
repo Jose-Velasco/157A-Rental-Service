@@ -1,7 +1,7 @@
 import { axiosPrivate } from "../axios";
 import { useEffect } from "react";
 import useAuth from "./useAuth";
-import axios from "axios";
+import axios, { Axios } from "axios";
 
 const isErrorResponse = (error: any, serverCode: number) => {
     return error.response && error.response.status === serverCode;
@@ -37,6 +37,7 @@ const useAxiosPrivate = () => {
         // remove/clean-up the interceptor when the component unmounts so they don't pile up
         return () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);
+            axiosPrivate.interceptors.response.eject(responseIntercept);
         }
     }, [auth]);
     return axiosPrivate;

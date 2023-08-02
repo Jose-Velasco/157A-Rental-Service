@@ -78,7 +78,7 @@ const SignUp:React.FC = () => {
 
 
     return(
-        <form>
+        <form style={{padding: "2rem"}}>
     <Typography align="center" gutterBottom fontSize={35}> Create Account</Typography>
             <TextField label = "First Name" type = "text" value ={firstName} onChange={(e) => setFirstName(e.target.value)}fullWidth/>
             <TextField label = "Last Name*" type = "text"value={lastName} onChange={(e) => setLastName(e.target.value)} fullWidth/>
