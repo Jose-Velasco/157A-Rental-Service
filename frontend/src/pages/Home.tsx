@@ -8,11 +8,14 @@ import ReusableBar from "../components/ReusableBar";
 import {MediaBase, VideoGames, Movies} from "../interfaces/MediaInterfaces";
 import Grid from '@mui/material/Grid';
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useUser  from "../hooks/useUser";
 
 const Home:React.FC = () => {
     const axiosPrivate = useAxiosPrivate();
     const [media, setCard] = useState<VideoGames[]>();
     const [movie, setMovie] = useState<Movies[]>();
+    const userContextValue = useUser();
+    const getUser = userContextValue?.user;
 
      useEffect(() =>{
      let isMounted = true;
@@ -60,7 +63,7 @@ const Home:React.FC = () => {
 
     return(
         <form style={{padding: "2rem"}}>
-            <ReusableBar title = "Jeffrey"  showInventoryIcon = {false}/>
+            <ReusableBar title = {`${getUser?.first_name}`}  showInventoryIcon = {true} showCreateIcon = {true}/>
             <Typography marginTop= {15}align="left"  fontSize={35} color="#808080"> Recommended Games </Typography>
             <Grid container spacing={6}>
             {media?.slice(0,3).map ((item) => (
