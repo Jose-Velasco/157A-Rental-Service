@@ -30,7 +30,6 @@ class ReviewDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
-            return None
             raise Exception("Error generating review")
         
     #review_id | user_id
@@ -62,6 +61,29 @@ class ReviewDAO:
             return None
             raise Exception("Error getting review by media id")
         
+    def get_reviews_details_by_media(self, media_id: int) -> list[Review]:
+        try:
+            with self.connection.cursor() as cursor:
+                sql = "SELECT * FROM `ReviewContent` WHERE `media_id`=%s"
+                self.connection.ping(reconnect=True)
+                cursor.execute(sql, (media_id))
+                result = cursor.fetchall()
+                return [Review(**row) for row in result]
+        except Exception as e:
+            print(e)
+            raise Exception("DAO error: Error getting review by media id")
+    
+    def get_review_relationship_record_by_id(self, review_id: int) -> ReviewSearchID:
+        try:
+            with self.connection.cursor() as cursor:
+                sql = "SELECT * FROM `Reviews` WHERE `review_id`=%s"
+                self.connection.ping(reconnect=True)
+                cursor.execute(sql, (review_id))
+                result = cursor.fetchone()
+                return ReviewSearchID(**result)
+        except Exception as e:
+            print(e)
+            raise Exception("DAO Error: Error getting review by review id")
         
 
     def edit_review(self, review_id: int, review: ReviewEdit) -> int:

@@ -15,7 +15,7 @@ const SearchMediaCards:React.FC<SearchMediaCardsProps> = ({ medias }) => {
         <Grid container spacing={2}>
         {medias.map ((media, index) => (
               <Grid item xs={2} sm={2} md={4}>
-        <ReusableCard key={index} title = {media.title}
+        <ReusableCard key={index} title = {media.title} media_id={media.media_id ? media.media_id : -1}
         description = {media.media_description}
         image = {media.image_url}/>
        </Grid>      
@@ -32,7 +32,7 @@ const SearchMedia:React.FC = () => {
 
     const onSearch = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         try{
-            const response = await axiosPrivate.get("/media/",{
+            const response = await axiosPrivate.get("/media/search",{
                 signal: controller.signal,
                 params: {
                     searchTitle: search

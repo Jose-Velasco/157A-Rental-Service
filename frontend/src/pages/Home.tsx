@@ -59,13 +59,13 @@ const Home:React.FC = () => {
     ,[]);
 
     return(
-        <form>
+        <form style={{padding: "2rem"}}>
             <ReusableBar title = "Jeffrey"  showInventoryIcon = {false}/>
             <Typography marginTop= {15}align="left"  fontSize={35} color="#808080"> Recommended Games </Typography>
             <Grid container spacing={6}>
             {media?.slice(0,3).map ((item) => (
                   <Grid item xs={4} sm={4} md={4}>
-            <ReusableCard title = {item.title}
+            <ReusableCard title = {item.title} media_id={item.media_id ? item.media_id : -1}
             description = {item.media_description}
             image = {item.image_url}/>
            </Grid>      
@@ -76,7 +76,7 @@ const Home:React.FC = () => {
             <Grid container spacing={6}>
             {movie?.slice(0,3).map ((item) => (
                   <Grid item xs={4} sm={4} md={4}>
-            <ReusableCard title = {item.title}
+            <ReusableCard title = {item.title} media_id={item.media_id ? item.media_id : -1}
             description = {item.media_description}
             image = {item.image_url}/>
            </Grid>      
