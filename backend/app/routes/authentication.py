@@ -2,6 +2,8 @@ from fastapi import APIRouter
 from app.auth.auth import *
 from typing import Annotated
 from app.dao.employee_dao import EmployeeDAO
+from app.schemas.pydantic.user import User, Employee
+from app.dao.customer_dao import CustomerDAO
 
 
 auth_router = APIRouter()
@@ -20,12 +22,13 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@auth_router.get("/users/me/", response_model=User)
+@auth_router.get("/users/me/")
 async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):
     #If they're an employee
-    if EmployeeDAO().get_employee_by_id(current_user["user_id"]):
-        return EmployeeDAO().get_employee_by_id(current_user["user_id"])
+    if EmployeeDAO().get_employee_by_id(current_user.user_id) is not None:
+        return EmployeeDAO().get_employee_by_id(current_user.user_id)
     return current_user
+    
 
 
 
