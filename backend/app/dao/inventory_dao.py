@@ -21,6 +21,7 @@ class InventoryDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on create inventory")
     
     #delete inventory item
     def delete_inventory(self, media_id: int) -> int:
@@ -33,6 +34,7 @@ class InventoryDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on delete inventory")
     
     #get all available inventory items
     def get_available_inventory(self) -> List[Inventory]:
@@ -45,6 +47,7 @@ class InventoryDAO:
                 return result
         except Exception as e:
             print(e)
+            raise Exception("Error on get available inventory")
     
     #get all items
     def get_all_inventory(self) -> List[Inventory]:
@@ -57,6 +60,7 @@ class InventoryDAO:
                 return result
         except Exception as e:
             print(e)
+            raise Exception("Error on get all inventory")
 
     #check if inventory item is available
     def check_availability(self, media_id: int) -> bool:
@@ -69,6 +73,7 @@ class InventoryDAO:
                 return result['rent_availability_status']
         except Exception as e:
             print(e)
+            raise Exception("Error on check availability")
     
     #update inventory item
     def update_inventory(self, inventory: InventoryUpdate) -> int:
@@ -84,5 +89,6 @@ class InventoryDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on update inventory")
     
     

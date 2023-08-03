@@ -25,6 +25,7 @@ class AddressDao:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on create address")
     
     def get_address_by_id(self, user_id: int) -> Address:
         try:
@@ -37,6 +38,7 @@ class AddressDao:
                 return [Address(**row) for row in result]
         except Exception as e:
             print(e)
+            raise Exception("Error on get address by id")
     
     def update_address(self, user_id: int, address: AddressUpdate) -> int:
         street = address.street
@@ -55,6 +57,7 @@ class AddressDao:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on update address")
     
     def delete_address(self, user_id: int) -> int:
         try:
@@ -67,6 +70,7 @@ class AddressDao:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on delete address")
     
     def get_all_addresses(self) -> List[Address]:
         try:
@@ -79,5 +83,6 @@ class AddressDao:
                 return [Address(**row) for row in result]
         except Exception as e:
             print(e)
+            raise Exception("Error on get all addresses")
     
     

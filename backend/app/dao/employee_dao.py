@@ -61,6 +61,7 @@ class EmployeeDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on create employee")
 
     def get_employee_by_id(self, user_id: int) -> Employee:
         try:
@@ -85,6 +86,7 @@ class EmployeeDAO:
                 return employee
         except Exception as e:
             print(e)
+            raise Exception("Error on get employee by id")
     
     def get_all_employees(self) -> List[Employee]:
         try:
@@ -112,6 +114,7 @@ class EmployeeDAO:
                 return employee_list
         except Exception as e:
             print(e)
+            raise Exception("Error on get all employees")
         
     def update_employee(self, user_id: int, employee: EmployeeUpdate):
         try:
@@ -135,6 +138,7 @@ class EmployeeDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on update employee")
         
     def delete_employee(self, user_id: int) -> int:
         try:
@@ -152,4 +156,5 @@ class EmployeeDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on delete employee")
 

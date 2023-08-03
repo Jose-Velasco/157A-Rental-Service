@@ -42,6 +42,7 @@ class TransactionDao:
 
         except Exception as e:
             print(e)
+            raise Exception("Error on create transaction")
 
     #delete transaction
     def delete_transaction(self, transaction_id: int) -> int:
@@ -54,6 +55,7 @@ class TransactionDao:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on delete transaction")
 
     #get all transactions
     def get_all_transactions(self) -> List[Transaction]:
@@ -66,6 +68,7 @@ class TransactionDao:
                 return result
         except Exception as e:
             print(e)
+            raise Exception("Error on get all transactions")
     
     #get transaction by id
     def get_transaction_by_id(self, transaction_id: int) -> Transaction:
@@ -78,6 +81,7 @@ class TransactionDao:
                 return result
         except Exception as e:
             print(e)
+            raise Exception("Error on get transaction by id")
 
     #update transaction
     def update_transaction(self, transaction: UpdateTransaction) -> int:
@@ -94,6 +98,7 @@ class TransactionDao:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on update transaction")
     
     #get all transactions for a specific user
     def get_transactions_by_user_id(self, user_id: int) -> List[Transaction]:
@@ -106,5 +111,6 @@ class TransactionDao:
                 return result
         except Exception as e:
             print(e)
+            raise Exception("Error on get transactions by user id")
     
     

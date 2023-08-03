@@ -43,7 +43,6 @@ class ReviewDAO:
                 return [ReviewSearchID(**row) for row in result]
         except Exception as e:
             print(e)
-            return None
             raise Exception("Error getting review by review id")
         
 
@@ -58,7 +57,6 @@ class ReviewDAO:
                 return [ReviewSearchMedia(**row) for row in result]
         except Exception as e:
             print(e)
-            return None
             raise Exception("Error getting review by media id")
         
     def get_reviews_details_by_media(self, media_id: int) -> list[Review]:
@@ -96,7 +94,6 @@ class ReviewDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
-            return None
             raise Exception("Error updating review")
         
     def delete_review(self, review_id: int) -> int:
@@ -108,6 +105,7 @@ class ReviewDAO:
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
+            raise Exception("Error deleting review")
             
     
