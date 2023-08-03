@@ -61,7 +61,7 @@ class EmployeeDAO:
             print(e)
             raise Exception("Error on create employee")
 
-    def get_employee_by_id(self, user_id: int) -> Employee:
+    def get_employee_by_id(self, user_id: int) -> Employee | None:
         try:
             with self.connection.cursor() as cursor:
                 sql = "SELECT * FROM `User` WHERE `user_id`=%s"
@@ -77,10 +77,11 @@ class EmployeeDAO:
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (user_id))
                 result_employee = cursor.fetchone()
+                if result_employee is None:
+                    return None
                 user_id, first_name, last_name, birthday, profile_pic_URL, age, phone_number = result['user_id'], result['first_name'], result['last_name'], result['birthday'], result['profile_pic_URL'], result['age'], result['phone_number']
                 ssn, salary, start_date, employee_type = result_employee['ssn'], result_employee['salary'], result_employee['start_date'], result_employee['employee_type']
                 employee = Employee(user_id=user_id, first_name=first_name, last_name=last_name, birthday=birthday, profile_pic_URL=profile_pic_URL, age=age, phone_number=phone_number, address=address_list, email=email_list, ssn=ssn, salary=salary, start_date=start_date, employee_type=employee_type)
-                print(employee)
                 return employee
         except Exception as e:
             print(e)
