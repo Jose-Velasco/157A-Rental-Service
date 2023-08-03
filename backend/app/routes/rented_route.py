@@ -49,7 +49,7 @@ def get_rented_by_transaction_id(transaction_id: int, current_user: Annotated[Us
 def update_rented(rented: UpdateRented, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         RentedDao().update_rented(rented)
-        raise HTTPException(status_code=200, detail="Rented updated successfully")
+        return {"message": "Rented updated successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on update rented")

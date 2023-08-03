@@ -5,12 +5,12 @@ CREATE TABLE User(
     birthday DATE NOT NULL,
     profile_pic_URL VARCHAR(1023) NOT NULL,
     age INTEGER NOT NULL,
-    phone_number INTEGER NOT NULL
+    phone_number VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE Auth(
     user_id INTEGER PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
     hashed_password VARCHAR(255) NOT NULL,
     FOREIGN KEY(user_id) REFERENCES User(user_id)
     ON DELETE CASCADE
@@ -51,13 +51,19 @@ CREATE TABLE Employee(
 
 CREATE TABLE Media(
     media_id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE Media_Content(
+    title VARCHAR(255) PRIMARY KEY,
     genre VARCHAR(255) NOT NULL,
-    rent_price INTEGER NOT NULL,
     image_url VARCHAR(1023) NOT NULL,
     media_description VARCHAR(9999) NOT NULL,
     release_date DATE NOT NULL,
-    rating VARCHAR(255)
+    rating VARCHAR(255),
+    FOREIGN KEY (title) REFERENCES Media(title)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE Video_Game(
@@ -112,7 +118,6 @@ CREATE TABLE Inventory(
 CREATE TABLE Transaction(
     transaction_id INTEGER AUTO_INCREMENT,
     user_id INTEGER,
-    total_cost INTEGER NOT NULL,
     rent_duration INTEGER NOT NULL,
     PRIMARY KEY(transaction_id, user_id),
     FOREIGN KEY(user_id) REFERENCES User(user_id)

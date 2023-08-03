@@ -21,7 +21,7 @@ class FilmDAO(MediaDAO):
                 cursor.execute(sql, (media_id))
                 result = cursor.fetchone()
                 if result:
-                    return Film(**media.model_dump(), **result)
+                    return Film(media_id=media_id, **media.model_dump(), **result)
                 return None
         except Exception as e:
             print(e)
@@ -30,9 +30,9 @@ class FilmDAO(MediaDAO):
     def get_all(self) -> list[Film]:
         try:
             with self.connection.cursor() as cursor:
-                sql = """SELECT M.media_id, M.title, M.genre, M.rent_price, M.image_url, M.media_description, M.release_date, M.rating, F.runtime, F.director
-                    FROM Media M , Film F
-                    WHERE M.media_id = F.media_id"""
+                sql = """SELECT M.media_id, M.title, MC.genre, MC.image_url, MC.media_description, MC.release_date, MC.rating, F.runtime, F.director
+                    FROM Media M , Film F, Media_Content MC
+                    WHERE M.media_id = F.media_id AND MC.title = M.title"""
                 cursor.execute(sql)
                 result = cursor.fetchall()
                 return [Film(**film) for film in result]
@@ -55,7 +55,7 @@ class FilmDAO(MediaDAO):
         super().delete(id)
         try:
             with self.connection.cursor() as cursor:
-                sql = "DELETE FROM Film WHERE media_id = %s"
+                sql = "DELETE FROM Media WHERE media_id = %s"
                 cursor.execute(sql, (id))
                 self.connection.commit()
         except Exception as e:

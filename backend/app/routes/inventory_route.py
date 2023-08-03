@@ -12,7 +12,7 @@ inventory_router = APIRouter()
 def create_inventory(inventory: InventoryCreate, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         InventoryDAO().create_inventory(inventory)
-        raise HTTPException(status_code=200, detail="Inventory created successfully")
+        return {"message": "Inventory created successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on create inventory")
@@ -22,7 +22,7 @@ def create_inventory(inventory: InventoryCreate, current_user: Annotated[User, D
 def delete_inventory(media_id: int, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         InventoryDAO().delete_inventory(media_id)
-        raise HTTPException(status_code=200, detail="Inventory deleted successfully")
+        return {"message": "Inventory deleted successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on delete inventory")
@@ -60,7 +60,7 @@ def get_all_inventory(current_user: Annotated[User, Depends(get_current_user)]) 
 def update_inventory(inventory: InventoryUpdate, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         InventoryDAO().update_inventory(inventory)
-        raise HTTPException(status_code=200, detail="Inventory updated successfully")
+        return {"message": "Inventory updated successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on update inventory")

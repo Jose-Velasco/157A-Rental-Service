@@ -13,7 +13,7 @@ class UserBase(BaseModel):
     age: int
     address: List[AddressBase]
     email: List[EmailBase]
-    phone_number: int
+    phone_number: str
 
 class User(UserBase):
     user_id: int

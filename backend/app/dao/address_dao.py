@@ -24,7 +24,7 @@ class AddressDao:
 
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
     
     def get_address_by_id(self, user_id: int) -> Address:
         try:
@@ -36,7 +36,7 @@ class AddressDao:
 
                 return [Address(**row) for row in result]
         except Exception as e:
-            print(e.message)
+            print(e)
     
     def update_address(self, user_id: int, address: AddressUpdate) -> int:
         street = address.street
@@ -54,7 +54,7 @@ class AddressDao:
 
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
     
     def delete_address(self, user_id: int) -> int:
         try:
@@ -66,7 +66,7 @@ class AddressDao:
 
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
     
     def get_all_addresses(self) -> List[Address]:
         try:
@@ -78,6 +78,6 @@ class AddressDao:
 
                 return [Address(**row) for row in result]
         except Exception as e:
-            print(e.message)
+            print(e)
     
     

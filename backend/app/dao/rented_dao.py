@@ -20,7 +20,7 @@ class RentedDao:
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
     
 
     #delete rented item
@@ -33,7 +33,7 @@ class RentedDao:
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
     
     #get all rented items
     def get_all_rented(self) -> List[Rented]:
@@ -45,7 +45,7 @@ class RentedDao:
                 result = cursor.fetchall()
                 return result
         except Exception as e:
-            print(e.message)
+            print(e)
     
     #get rented item by transaction id
     def get_rented_by_transaction_id(self, transaction_id: int) -> Rented:
@@ -57,7 +57,7 @@ class RentedDao:
                 result = cursor.fetchone()
                 return result
         except Exception as e:
-            print(e.message)
+            print(e)
     
     #get rented item by media id
     def get_rented_by_media_id(self, media_id: int) -> Rented:
@@ -69,7 +69,7 @@ class RentedDao:
                 result = cursor.fetchone()
                 return result
         except Exception as e:
-            print(e.message)
+            print(e)
     
     #update rented item
     def update_rented(self, rented: UpdateRented) -> int:
@@ -84,6 +84,6 @@ class RentedDao:
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
     
     

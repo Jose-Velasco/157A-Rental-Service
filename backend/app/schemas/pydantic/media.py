@@ -1,16 +1,10 @@
-from datetime import date
 from pydantic import BaseModel
+from app.schemas.pydantic.media_content import MediaContentBase
 
 # Shared properties
 # before creating an item, we don't know what will be the ID assigned to it
 class MediaBase(BaseModel):
     title: str
-    genre: str
-    rent_price: int
-    image_url: str
-    media_description: str
-    release_date: date
-    rating: str
 
 # Properties shared by Media stored in DB
 # when reading it (when returning it from the API) we will already know its ID
@@ -23,10 +17,10 @@ class MediaCreate(MediaBase):
 
 # Properties to receive on Media update (currenly the same as base)
 class MediaUpdate(MediaBase):
-    pass
+    media_id: int
 
 # Shared video game properties
-class VideoGameBase(MediaBase):
+class VideoGameBase(MediaContentBase):
     publisher: str
     developer: str
 
@@ -42,7 +36,7 @@ class VideoGameCreate(VideoGameBase):
 class VideoGameUpdate(VideoGameBase):
     pass
 
-class FilmBase(MediaBase):
+class FilmBase(MediaContentBase):
     runtime: int
     director: str
 

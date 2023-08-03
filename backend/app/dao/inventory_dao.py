@@ -20,7 +20,7 @@ class InventoryDAO:
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
     
     #delete inventory item
     def delete_inventory(self, media_id: int) -> int:
@@ -32,7 +32,7 @@ class InventoryDAO:
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
     
     #get all available inventory items
     def get_available_inventory(self) -> List[Inventory]:
@@ -44,7 +44,7 @@ class InventoryDAO:
                 result = cursor.fetchall()
                 return result
         except Exception as e:
-            print(e.message)
+            print(e)
     
     #get all items
     def get_all_inventory(self) -> List[Inventory]:
@@ -56,7 +56,7 @@ class InventoryDAO:
                 result = cursor.fetchall()
                 return result
         except Exception as e:
-            print(e.message)
+            print(e)
 
     #check if inventory item is available
     def check_availability(self, media_id: int) -> bool:
@@ -68,7 +68,7 @@ class InventoryDAO:
                 result = cursor.fetchone()
                 return result['rent_availability_status']
         except Exception as e:
-            print(e.message)
+            print(e)
     
     #update inventory item
     def update_inventory(self, inventory: InventoryUpdate) -> int:
@@ -83,6 +83,6 @@ class InventoryDAO:
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
     
     

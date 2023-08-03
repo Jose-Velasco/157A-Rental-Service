@@ -49,7 +49,7 @@ class CustomerDAO:
 
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
             
 
         
@@ -69,7 +69,7 @@ class CustomerDAO:
                 return Customer(user_id=result['user_id'], first_name=result['first_name'], last_name=result['last_name'], birthday=result['birthday'], profile_pic_URL=result['profile_pic_URL'], age=result['age'], phone_number=result['phone_number'], address=address_list, email=email_list)
                 
         except Exception as e:
-            print(e.message)
+            print(e)
             
 
     def get_all_customers(self) -> List[Customer]:
@@ -91,7 +91,7 @@ class CustomerDAO:
         except Exception as e:
             print(e)
             return None
-            raise Exception("Error getting all customers")
+            
 
     def update_customer(self, user_id: int, customer: CustomerUpdate) -> int:
         try:
@@ -110,7 +110,7 @@ class CustomerDAO:
 
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
             
 
     def delete_customer(self, user_id: int) -> int:
@@ -122,7 +122,7 @@ class CustomerDAO:
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
             
     
     
