@@ -9,6 +9,7 @@ import EmployeeHome from './pages/EmployeeHome';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import SearchMedia from './pages/SearchMedia';
 import MediaDetail from './pages/MediaDetail';
+import Inventory from './pages/Inventory';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         <Route path = "/employeehome" element={<EmployeeHome/>}/>
         <Route path = "/search" element={<SearchMedia/>}/>
         <Route path = "/media-detail/:media_id" element={<MediaDetail/>}/>
+        <Route path = "/inventory" element = {<Inventory/>}/>
       </Routes>
     </Router>
   )

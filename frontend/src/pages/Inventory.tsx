@@ -9,8 +9,12 @@ import {MediaBase, VideoGames, Movies} from "../interfaces/MediaInterfaces";
 import Grid from '@mui/material/Grid';
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useUser  from "../hooks/useUser";
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 
-const Home:React.FC = () => {
+
+
+const Inventory:React.FC = () => {
     const axiosPrivate = useAxiosPrivate();
     const [media, setCard] = useState<VideoGames[]>();
     const [movie, setMovie] = useState<Movies[]>();
@@ -20,7 +24,6 @@ const Home:React.FC = () => {
      useEffect(() =>{
      let isMounted = true;
         const controller = new AbortController();
-    
         const getCard = async () => {
             try{
                 const response = await axiosPrivate.get("/media/video-game",{
@@ -35,7 +38,6 @@ const Home:React.FC = () => {
                 console.log(error);
             }
         }
-
         const getMovie = async () => {
             try{
                 const response = await axiosPrivate.get("/media/film",{
@@ -50,7 +52,6 @@ const Home:React.FC = () => {
                 console.log(error);
             }
         }
-
         getCard();
         getMovie();
     
@@ -61,12 +62,16 @@ const Home:React.FC = () => {
     }
     ,[]);
 
+
     return(
+
+
         <form style={{padding: "2rem"}}>
-            <ReusableBar title = {`${getUser?.first_name}`}  showInventoryIcon = {true} showCreateIcon = {true}/>
-            <Typography marginTop= {15}align="left"  fontSize={35} color="#808080"> Recommended Games </Typography>
+            <Typography> Create Media</Typography>
+            <ReusableBar title = "Inventory"  showInventoryIcon = {true} showCreateIcon = {true}/>
+            <Typography marginTop= {15}align="left"  fontSize={35} color="#808080"> All Games </Typography>
             <Grid container spacing={6}>
-            {media?.slice(0,3).map ((item) => (
+            {media?.map ((item) => (
                   <Grid item xs={4} sm={4} md={4}>
             <ReusableCard title = {item.title} media_id={item.media_id ? item.media_id : -1}
             description = {item.media_description}
@@ -75,9 +80,9 @@ const Home:React.FC = () => {
                ))}  
         </Grid>
 
-        <Typography align="left" marginTop={6}  fontSize={35} color="#808080"> Recommended Movies </Typography>
+        <Typography align="left" marginTop={6}  fontSize={35} color="#808080"> All Movies </Typography>
             <Grid container spacing={6}>
-            {movie?.slice(0,3).map ((item) => (
+            {movie?.map ((item) => (
                   <Grid item xs={4} sm={4} md={4}>
             <ReusableCard title = {item.title} media_id={item.media_id ? item.media_id : -1}
             description = {item.media_description}
@@ -86,9 +91,11 @@ const Home:React.FC = () => {
                ))}  
         </Grid>
 
-        </form>
-    );
-};
+
+            </form>
+    )
 
 
-export default Home;
+}
+
+export default Inventory;
