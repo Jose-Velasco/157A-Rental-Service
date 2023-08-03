@@ -21,6 +21,7 @@ class RentedDao:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on create rented")
     
 
     #delete rented item
@@ -46,6 +47,7 @@ class RentedDao:
                 return result
         except Exception as e:
             print(e)
+            raise Exception("Error on get all rented")
     
     #get rented item by transaction id
     def get_rented_by_transaction_id(self, transaction_id: int) -> Rented:
@@ -58,6 +60,7 @@ class RentedDao:
                 return result
         except Exception as e:
             print(e)
+            raise Exception("Error on get rented by transaction id")
     
     #get rented item by media id
     def get_rented_by_media_id(self, media_id: int) -> Rented:
@@ -70,6 +73,7 @@ class RentedDao:
                 return result
         except Exception as e:
             print(e)
+            raise Exception("Error on get rented by media id")
     
     #update rented item
     def update_rented(self, rented: UpdateRented) -> int:
@@ -85,5 +89,6 @@ class RentedDao:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on update rented")
     
     
