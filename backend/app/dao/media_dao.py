@@ -1,6 +1,8 @@
 from app.schemas.pydantic.media import Media, MediaCreate, MediaUpdate
 from app.schemas.pydantic.media_content import MediaContentCreate, MediaContent, UpdateMediaContent, MediaContentWithMediaId
 from app.models.database_manager import DatabaseManager
+from app.dao.inventory_dao import InventoryDAO
+from app.schemas.pydantic.inventory import InventoryCreate
 
 class MediaDAO:
     def __init__(self):
@@ -16,6 +18,9 @@ class MediaDAO:
                 sql = "INSERT INTO Media_Content (title, genre, image_url, media_description, release_date, rating) VALUES (%s, %s, %s, %s, %s, %s)"
                 cursor.execute(sql, (media.title, media.genre, media.image_url, media.media_description, media.release_date, media.rating))
                 self.connection.commit()
+
+                InventoryDAO().create_inventory(InventoryCreate(media_id=media_id, rent_availability_status=1))
+
                 return media_id
         except Exception as e:
             print(e)
