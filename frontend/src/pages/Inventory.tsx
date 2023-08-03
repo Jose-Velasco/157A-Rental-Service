@@ -73,6 +73,7 @@ const Inventory:React.FC = () => {
         }catch(error){
             console.log(error);
         }
+        getMovie();
     };
     
 
@@ -94,6 +95,7 @@ const Inventory:React.FC = () => {
         }catch(error){
             console.log(error);
         }
+        getCard();
 
     };
 
@@ -142,20 +144,55 @@ const Inventory:React.FC = () => {
     ,[]);
 
 
-    const removeMedia = async (media_id: number) => {
+    const getCard = async () => {
+        let isMounted = true;
+        const controller = new AbortController();
+        try{
+            const response = await axiosPrivate.get("/media/video-game",{
+                signal: controller.signal,
+            });
+            console.log(response.data)
+            if(isMounted){
+                setCard(response.data);
+                const mediaTitles = media?.map((item) => item.title); // Creates an array of titles from the media array
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+    const getMovie = async () => {
+        let isMounted = true;
+        const controller = new AbortController();
+        try{
+            const response = await axiosPrivate.get("/media/film",{
+                signal: controller.signal,
+            });
+            console.log(response.data)
+            if(isMounted){
+                setMovie(response.data);
+                const mediaTitles = movie?.map((item) => item.title); // Creates an array of titles from the media array
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+
+    const removeMovie = async (media_id: number) => {
         let isMounted = true;
         const controller = new AbortController();
         try {
             const deleteBody = { 
                 media_id: media_id,
             };
-            const response = await axiosPrivate.delete(`/media/film`, { data: deleteBody });
+            const response = await axiosPrivate.delete(`/media/film/${deleteBody.media_id}`);
             if (isMounted) {    
 
             }
         } catch (error) {
             console.log(error);
         }
+        getMovie();
+
     };
 
 
@@ -167,13 +204,14 @@ const Inventory:React.FC = () => {
             const deleteBody = { 
                 media_id: media_id,
             };
-            const response = await axiosPrivate.delete(`/media/video-game`, { data: deleteBody });
+            const response = await axiosPrivate.delete(`/media/video-game/${deleteBody.media_id}`);
             if (isMounted) {    
 
             }
         } catch (error) {
             console.log(error);
         }
+        getCard();
     };
 
 
@@ -207,7 +245,7 @@ const Inventory:React.FC = () => {
             <ReusableCard title = {item.title} media_id={item.media_id ? item.media_id : -1}
             description = {item.media_description}
             image = {item.image_url}/>
-            <Button size="large" onClick={() => removeMedia(item.media_id ? item.media_id : -1)}>
+            <Button size="large" onClick={() => removeMovie(item.media_id ? item.media_id : -1)}>
             <DeleteIcon fontSize="large" color="error" />
             </Button>
            </Grid>      
