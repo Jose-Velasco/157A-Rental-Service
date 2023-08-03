@@ -1,4 +1,5 @@
 export interface Review {
+    user_id?: number;
     review_id?: number;
     media_id: number;
     publish_date: Date;
