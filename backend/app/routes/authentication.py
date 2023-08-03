@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from app.auth.auth import *
 from typing import Annotated
-
+from app.dao.employee_dao import EmployeeDAO
 
 
 auth_router = APIRouter()
@@ -22,6 +22,9 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
 
 @auth_router.get("/users/me/", response_model=User)
 async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):
+    #If they're an employee
+    if EmployeeDAO().get_employee_by_id(current_user["user_id"]):
+        return EmployeeDAO().get_employee_by_id(current_user["user_id"])
     return current_user
 
 

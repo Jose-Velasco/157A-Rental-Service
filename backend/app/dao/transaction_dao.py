@@ -1,6 +1,7 @@
 from app.schemas.pydantic.transaction import CreateTransaction, UpdateTransaction, Transaction
 from app.models.database_manager import DatabaseManager
 from app.schemas.pydantic.cart import CartSubmit
+from app.dao.rented_dao import RentedDao
 from typing import List
 
 class TransactionDao:
@@ -32,6 +33,11 @@ class TransactionDao:
                 cursor.execute(sql, (user_id, rent_duration))
                 self.connection.commit()
                 transaction_id = cursor.lastrowid
+                try:
+                    for media_id in media_ids:
+                        RentedDao().create_rented(transaction_id, media_id)
+                except Exception as e:
+                    print(e)
                 return {'transaction_id': transaction_id, "checked out media": media_ids, "rent duration": rent_duration}
 
         except Exception as e:
@@ -59,7 +65,7 @@ class TransactionDao:
                 result = cursor.fetchall()
                 return result
         except Exception as e:
-            print(e.message)
+            print(e)
     
     #get transaction by id
     def get_transaction_by_id(self, transaction_id: int) -> Transaction:
@@ -87,7 +93,7 @@ class TransactionDao:
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
     
     #get all transactions for a specific user
     def get_transactions_by_user_id(self, user_id: int) -> List[Transaction]:

@@ -19,7 +19,7 @@ class EmailDao:
     
                     return cursor.rowcount
             except Exception as e:
-                print(e.message)
+                print(e)
 
         def get_email_by_id(self, user_id: int) -> Email:
             try:
@@ -31,7 +31,7 @@ class EmailDao:
     
                     return [Email(**row) for row in result]
             except Exception as e:
-                print(e.message)
+                print(e)
         
         def update_email(self, user_id: int, email: EmailUpdate) -> int:
             email_address = email.email
@@ -45,7 +45,7 @@ class EmailDao:
     
                     return cursor.rowcount
             except Exception as e:
-                print(e.message)
+                print(e)
         
         def delete_email(self, user_id: int) -> int:
             try:
@@ -57,5 +57,5 @@ class EmailDao:
     
                     return cursor.rowcount
             except Exception as e:
-                print(e.message)
+                print(e)
         

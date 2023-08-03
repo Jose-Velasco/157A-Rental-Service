@@ -91,7 +91,7 @@ class CustomerDAO:
         except Exception as e:
             print(e)
             return None
-            raise Exception("Error getting all customers")
+            
 
     def update_customer(self, user_id: int, customer: CustomerUpdate) -> int:
         try:
