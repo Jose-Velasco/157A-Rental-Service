@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
+from fastapi.exceptions import HTTPException
 from app.dao.customer_dao import CustomerDAO, Customer
 from app.dao.employee_dao import EmployeeDAO, Employee
 from app.schemas.pydantic.user import CustomerCreate
@@ -7,13 +8,14 @@ from app.auth.auth import *
 from typing import List
 
 
+
 user_router = APIRouter()
 
 @user_router.post("/customer/", tags=["user"], summary="Create a new customer")
 def create_user(customer: CustomerCreate):
     try:
-        new_customer = CustomerDAO().create_customer(customer)
-        raise HTTPException(status_code=200, detail="Customer created successfully")
+        CustomerDAO().create_customer(customer)
+        return {"message": "Customer created successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on create customer")
@@ -23,7 +25,7 @@ def create_user(customer: CustomerCreate):
 def create_employee(employee: EmployeeCreate):
     try:
         EmployeeDAO().create_employee(employee)
-        raise HTTPException(status_code=200, detail="Employee created successfully")
+        return {"message": "Employee created successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on create employee")
@@ -68,7 +70,7 @@ def get_all_employees(current_user: Annotated[User, Depends(get_current_user)]):
 def update_customer(user_id: int, customer: CustomerCreate, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         CustomerDAO().update_customer(user_id, customer)
-        raise HTTPException(status_code=200, detail="Customer updated successfully")
+        return {"message": "Customer updated successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on update customer")
@@ -77,7 +79,7 @@ def update_customer(user_id: int, customer: CustomerCreate, current_user: Annota
 def update_employee(user_id: int, employee: EmployeeCreate, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         EmployeeDAO().update_employee(user_id, employee)
-        raise HTTPException(status_code=200, detail="Employee updated successfully")
+        return {"message": "Employee updated successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on update employee")
@@ -86,7 +88,7 @@ def update_employee(user_id: int, employee: EmployeeCreate, current_user: Annota
 def delete_customer(user_id: int, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         CustomerDAO().delete_customer(user_id)
-        raise HTTPException(status_code=200, detail="Customer deleted successfully")
+        return {"message": "Customer deleted successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on delete customer")
@@ -96,7 +98,7 @@ def delete_customer(user_id: int, current_user: Annotated[User, Depends(get_curr
 def delete_employee(user_id: int, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         EmployeeDAO().delete_employee(user_id)
-        raise HTTPException(status_code=200, detail="Employee deleted successfully")
+        return {"message": "Employee deleted successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on delete employee")
@@ -109,7 +111,7 @@ def delete_employee(user_id: int, current_user: Annotated[User, Depends(get_curr
     "birthday": "1990-01-01",
     "profile_pic_URL": "https://www.google.com",
     "age": 30,
-    "phone_number": 1234567890,
+    "phone_number": "1234567890",
     "address": [
         {
             "street": "123 Main St",

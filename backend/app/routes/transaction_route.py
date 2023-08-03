@@ -11,7 +11,7 @@ transaction_router = APIRouter()
 def create_transaction(transaction: CreateTransaction, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         TransactionDao().create_transaction(transaction)
-        return HTTPException(status_code=200, detail="Transaction created successfully")
+        return {"message": "Transaction created successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on create transaction")
@@ -21,7 +21,7 @@ def create_transaction(transaction: CreateTransaction, current_user: Annotated[U
 def delete_transaction(transaction_id: int, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         TransactionDao().delete_transaction(transaction_id)
-        return HTTPException(status_code=200, detail="Transaction deleted successfully")
+        return {"message": "Transaction deleted successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on delete transaction")
@@ -49,7 +49,7 @@ def get_transaction_by_id(transaction_id: int, current_user: Annotated[User, Dep
 def update_transaction(transaction: UpdateTransaction, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         TransactionDao().update_transaction(transaction)
-        return HTTPException(status_code=200, detail="Transaction updated successfully")
+        return {"message": "Transaction updated successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on update transaction")
@@ -67,6 +67,5 @@ def get_transactions_by_user_id(user_id: int, current_user: Annotated[User, Depe
 #create test transaction object
 {
     "user_id": 4,
-    "total_cost": 100,
     "rent_duration": 10
 }

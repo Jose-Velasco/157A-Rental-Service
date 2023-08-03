@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from app.schemas.pydantic.media import VideoGame, VideoGameCreate, Film, FilmCreate, Media
+from app.schemas.pydantic.media import VideoGame, VideoGameCreate, Film, FilmCreate, MediaUpdate
+from app.schemas.pydantic.media_content import MediaContent
 from app.dao.video_game_dao import VideoGameDAO
 from app.dao.film_dao import FilmDAO
 from app.dao.media_dao import MediaDAO
@@ -7,16 +8,16 @@ from app.auth.auth import *
 
 media_router = APIRouter()
 
-@media_router.get("/search", tags=["media"], summary="Get all media with title like searchTitle", response_model=list[Media])
+@media_router.get("/search", tags=["media"], summary="Get all media with title like searchTitle", response_model=list[MediaContent])
 def get_all_media_contains_title(searchTitle: str , current_user: Annotated[User, Depends(get_current_user)]):
     try:
-        media = MediaDAO().get_by_all_title_like(searchTitle)
+        media_content = MediaDAO().get_by_all_title_like(searchTitle)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on get all media")
-    if media is None:
+    if media_content is None:
         raise HTTPException(status_code=404, detail="Media not found")
-    return media
+    return media_content
 
 @media_router.get("/details/{media_id}", tags=["media"], summary="Get all media details by media_id", response_model=VideoGame | Film)
 def get_all_media_details_by_id(media_id: int, current_user: Annotated[User, Depends(get_current_user)]):
@@ -73,11 +74,12 @@ def update_video_game(id: int, data: VideoGameCreate, current_user: Annotated[Us
         raise HTTPException(status_code=404, detail=f"Video game of id {id} not found")
     video_game.title = data.title
     video_game.genre = data.genre
-    video_game.rent_price = data.rent_price
     video_game.image_url = data.image_url
     video_game.media_description = data.media_description
     video_game.release_date = data.release_date
     video_game.rating = data.rating
+    video_game.publisher = data.publisher
+    video_game.developer = data.developer
     try:
         VideoGameDAO().update(video_game)
     except Exception as e:
@@ -141,11 +143,12 @@ def update_film(id: int, data: FilmCreate, current_user: Annotated[User, Depends
         raise HTTPException(status_code=404, detail=f"Film of id {id} not found")
     film.title = data.title
     film.genre = data.genre
-    film.rent_price = data.rent_price
     film.image_url = data.image_url
     film.media_description = data.media_description
     film.release_date = data.release_date
     film.rating = data.rating
+    film.runtime = data.runtime
+    film.director = data.director
     try:
         FilmDAO().update(film)
     except Exception as e:
@@ -166,3 +169,39 @@ def delete_film(id: int, current_user: Annotated[User, Depends(get_current_user)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on delete film")
+    
+@media_router.put("/update_title", tags=["media"], summary="Update media's title")
+def update_media_title(data: MediaUpdate, current_user: Annotated[User, Depends(get_current_user)]):
+    try:
+        MediaDAO().update_title(data)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error on update media title")
+
+#create  real video game below in json
+{
+    "title": "The Legend of Zelda: Breath of the Wild",
+    "genre": "Action-adventure",
+    "image_url": "https://upload.wikimedia.org/wikipedia/en/1/19/The_Legend_of_Zelda_Breath_of_the_Wild.jpg",
+    "media_description": "The Legend of Zelda: Breath of the Wild[a] is a 2017 action-adventure game developed and published by Nintendo for the Nintendo Switch and Wii U consoles. Breath of the Wild is part of the Legend of Zelda franchise and is set at the end of the series' timeline; the player controls Link, who awakens from a hundred-year slumber to defeat Calamity Ganon before it can destroy the kingdom of Hyrule.",
+    "release_date": "2017-03-03",
+    "rating": 10,
+    "publisher": "Nintendo",
+    "developer": "Nintendo Entertainment Planning & Development"
+}
+
+#create  real film below in json
+{
+    "title": "The Shawshank Redemption",
+    "genre": "Drama",
+    "image_url": "https://upload.wikimedia.org/wikipedia/en/8/81/ShawshankRedemptionMoviePoster.jpg",
+    "media_description": "The Shawshank Redemption is a 1994 American drama film written and directed by Frank Darabont, based on the 1982 Stephen King novella Rita Hayworth and Shawshank Redemption. It tells the story of banker Andy Dufresne (Tim Robbins), who is sentenced to life in Shawshank State Penitentiary for the murders of his wife and her lover, despite his claims of innocence. Over the following two decades, he befriends a fellow prisoner, contraband smuggler Ellis \"Red\" Redding (Morgan Freeman), and becomes instrumental in a money-laundering operation led by the prison warden Samuel Norton (Bob Gunton). William Sadler, Clancy Brown, Gil Bellows, and James Whitmore appear in supporting roles.",
+    "release_date": "1994-09-23",
+    "rating": "R",
+    "runtime": 142,
+    "director": "Frank Darabont"
+}
+
+
+
+

@@ -10,18 +10,17 @@ class TransactionDao:
     #create new transaction
     def create_transaction(self, transaction: CreateTransaction) -> int:
         user_id = transaction.user_id
-        total_cost = transaction.total_cost
         rent_duration = transaction.rent_duration
 
         try:
             with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `Transaction` (`user_id`, `total_cost`, `rent_duration`) VALUES (%s, %s, %s)"
+                sql = "INSERT INTO `Transaction` (`user_id`, `rent_duration`) VALUES (%s, %s)"
                 self.connection.ping(reconnect=True)
-                cursor.execute(sql, (user_id, total_cost, rent_duration))
+                cursor.execute(sql, (user_id, rent_duration))
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
 
     #delete transaction
     def delete_transaction(self, transaction_id: int) -> int:
@@ -33,7 +32,7 @@ class TransactionDao:
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
 
     #get all transactions
     def get_all_transactions(self) -> List[Transaction]:
@@ -57,7 +56,7 @@ class TransactionDao:
                 result = cursor.fetchone()
                 return result
         except Exception as e:
-            print(e.message)
+            print(e)
 
     #update transaction
     def update_transaction(self, transaction: UpdateTransaction) -> int:
@@ -85,6 +84,6 @@ class TransactionDao:
                 result = cursor.fetchall()
                 return result
         except Exception as e:
-            print(e.message)
+            print(e)
     
     

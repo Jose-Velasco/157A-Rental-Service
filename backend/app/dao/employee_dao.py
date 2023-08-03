@@ -60,7 +60,7 @@ class EmployeeDAO:
 
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
 
     def get_employee_by_id(self, user_id: int) -> Employee:
         try:
@@ -84,7 +84,7 @@ class EmployeeDAO:
 
                 return employee
         except Exception as e:
-            print(e.message)
+            print(e)
     
     def get_all_employees(self) -> List[Employee]:
         try:
@@ -111,7 +111,7 @@ class EmployeeDAO:
                     employee_list.append(employee)
                 return employee_list
         except Exception as e:
-            print(e.message)
+            print(e)
         
     def update_employee(self, user_id: int, employee: EmployeeUpdate):
         try:
@@ -134,7 +134,7 @@ class EmployeeDAO:
                 
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
         
     def delete_employee(self, user_id: int) -> int:
         try:
@@ -151,5 +151,5 @@ class EmployeeDAO:
 
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
 

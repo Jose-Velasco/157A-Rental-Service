@@ -51,7 +51,7 @@ def get_reviews_by_media_id(media_id):
 def update_review(review_id: int, review: ReviewCreate, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         ReviewDAO().edit_review(review_id, review)
-        raise HTTPException(status_code=200, detail="Review updated successfully")
+        return {"message": "Review updated successfully"}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on update review")
