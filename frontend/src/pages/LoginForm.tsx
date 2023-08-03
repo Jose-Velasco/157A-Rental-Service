@@ -45,14 +45,16 @@ const LoginForm:React.FC = () => {
                 },
             })
             let user: User = response.data;
-            const cart_response = await axios.get(`/cart/${user.user_id}`, 
-            {
-                headers: {
-                    Authorization: `Bearer ${token.access_token}`,
-                },
-            });
-            let cart: Cart = cart_response.data;
-            user.cart_id = cart.cart_id;
+            if (!("employee_type" in user)) {
+                const cart_response = await axios.get(`/cart/${user.user_id}`, 
+                {
+                    headers: {
+                        Authorization: `Bearer ${token.access_token}`,
+                    },
+                });
+                let cart: Cart = cart_response.data;
+                user.cart_id = cart.cart_id;
+            }
             setUser?.(user);
             navigate("/home");
         } catch (error) {
