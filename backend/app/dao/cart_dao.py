@@ -169,7 +169,7 @@ class InCartDAO:
                         )
                     ) as med,
                     Film F
-                    WHERE X.media_id = F.media_id;
+                    WHERE med.media_id = F.media_id;
                     """
                 cursor.execute(sql, (cart_id))
                 result = cursor.fetchall()
@@ -203,7 +203,7 @@ class InCartDAO:
                         )
                     ) as med,
                     Video_Game VG
-                    WHERE X.media_id = F.media_id;
+                    WHERE med.media_id = VG.media_id;
                     """
                 cursor.execute(sql, (cart_id))
                 result = cursor.fetchall()

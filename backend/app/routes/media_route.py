@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from app.schemas.pydantic.media import VideoGame, VideoGameCreate, Film, FilmCreate, MediaUpdate
-from app.schemas.pydantic.media_content import MediaContent
+from app.schemas.pydantic.media_content import MediaContent, MediaContentWithMediaId
 from app.dao.video_game_dao import VideoGameDAO
 from app.dao.film_dao import FilmDAO
 from app.dao.media_dao import MediaDAO
@@ -8,7 +8,7 @@ from app.auth.auth import *
 
 media_router = APIRouter()
 
-@media_router.get("/search", tags=["media"], summary="Get all media with title like searchTitle", response_model=list[MediaContent])
+@media_router.get("/search", tags=["media"], summary="Get all media with title like searchTitle", response_model=list[MediaContentWithMediaId])
 def get_all_media_contains_title(searchTitle: str , current_user: Annotated[User, Depends(get_current_user)]):
     try:
         media_content = MediaDAO().get_by_all_title_like(searchTitle)

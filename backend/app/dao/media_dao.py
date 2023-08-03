@@ -1,5 +1,5 @@
 from app.schemas.pydantic.media import Media, MediaCreate, MediaUpdate
-from app.schemas.pydantic.media_content import MediaContentCreate, MediaContent, UpdateMediaContent
+from app.schemas.pydantic.media_content import MediaContentCreate, MediaContent, UpdateMediaContent, MediaContentWithMediaId
 from app.models.database_manager import DatabaseManager
 
 class MediaDAO:
@@ -34,7 +34,7 @@ class MediaDAO:
             print(e)
             raise Exception(f"Error on get media of id {id}")
         
-    def get_by_all_title_like(self, title: str) -> list | None:
+    def get_by_all_title_like(self, title: str) -> list[MediaContentWithMediaId] | None:
         try:
             with self.connection.cursor() as cursor:
                 sql = """SELECT * 
@@ -43,7 +43,7 @@ class MediaDAO:
                 cursor.execute(sql, (f"%{title}%"))
                 result = cursor.fetchall()
                 if result:
-                    return result
+                    return [MediaContentWithMediaId(**media_content) for media_content in result]
                 return None
         except Exception as e:
             print(e)

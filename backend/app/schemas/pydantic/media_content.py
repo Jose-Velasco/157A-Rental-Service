@@ -12,6 +12,8 @@ class MediaContentBase(BaseModel):
 class MediaContentCreate(MediaContentBase):
     pass
 
+class MediaContentWithMediaId(MediaContentBase):
+    media_id: int
 class MediaContent(MediaContentBase):
     pass
 
