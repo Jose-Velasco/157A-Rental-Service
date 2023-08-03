@@ -50,6 +50,7 @@ class CustomerDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on create customer")
             
 
         
@@ -70,6 +71,7 @@ class CustomerDAO:
                 
         except Exception as e:
             print(e)
+            raise Exception("Error on get customer by id")
             
 
     def get_all_customers(self) -> List[Customer]:
@@ -90,7 +92,7 @@ class CustomerDAO:
                 return customer_list
         except Exception as e:
             print(e)
-            return None
+            raise Exception("Error on get all customers")
             
 
     def update_customer(self, user_id: int, customer: CustomerUpdate) -> int:
@@ -111,6 +113,7 @@ class CustomerDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on update customer")
             
 
     def delete_customer(self, user_id: int) -> int:
@@ -123,6 +126,7 @@ class CustomerDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on delete customer")
             
     
     
