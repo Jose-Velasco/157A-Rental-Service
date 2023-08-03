@@ -39,6 +39,7 @@ class EmployeeDAO:
                 sql = "INSERT INTO `Auth` (`user_id`, `username`, `hashed_password`) VALUES (%s, %s, %s)"
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (user_id, username, password))
+                self.connection.commit()
 
 
                 for address in address_list:

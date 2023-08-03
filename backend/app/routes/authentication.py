@@ -25,9 +25,8 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
 @auth_router.get("/users/me/")
 async def read_users_me(current_user: Annotated[User, Depends(get_current_user)]):
     #If they're an employee
-    if found_employee := EmployeeDAO().get_employee_by_id(current_user.user_id) is not None:
-        return found_employee
-    return current_user
+    found_employee = EmployeeDAO().get_employee_by_id(current_user.user_id)
+    return found_employee if found_employee is not None else current_user
     
 
 
