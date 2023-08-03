@@ -84,7 +84,7 @@ const Inventory:React.FC = () => {
                 media_description: media_description,
                 release_date: release_date,
                 rating: rating,
-                runTime: runTime,
+                runtime: runTime,
                 director: director,
             }
             const response = await axiosPrivate.post(`/media/film`, body);
@@ -181,8 +181,9 @@ const Inventory:React.FC = () => {
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      style = {{overflow :"scroll"}}
     >
-      <Box sx={{ width: 450, bgcolor: 'background.paper', p: 2 }}>
+      <Box sx={{overflow: 'scroll', width: 450, bgcolor: 'background.paper', p: 2 }}>
         <Typography variant="h6" component="h2" gutterBottom>
           Create Media
         </Typography>
@@ -193,7 +194,6 @@ const Inventory:React.FC = () => {
           margin="normal"
           value={title}
           onChange={(e) => setTitle(e.target.value)}/>
-
           <TextField label = "Genre" 
             variant = "outlined"
             fullWidth
