@@ -149,27 +149,27 @@ class InCartDAO:
             with self.connection.cursor() as cursor:
                 sql = """
                     SELECT
-                    MIC.media_id,
-                    MIC.title,
-                    MIC.genre,
-                    MIC.rent_price,
-                    MIC.image_url,
-                    MIC.media_description,
-                    MIC.release_date,
-                    MIC.rating,
+                    med.media_id,
+                    med.title,
+                    med.genre,
+                    med.image_url,
+                    med.media_description,
+                    med.release_date,
+                    med.rating,
                     F.runtime,
                     F.director
                     FROM (
                         SELECT *
                         FROM Media M
+                        JOIN Media_Content MC USING (title)
                         WHERE M.media_id IN (
                             SELECT INC.media_id
                             FROM In_Cart INC
                             WHERE INC.cart_id = %s
                         )
-                    ) as MIC,
+                    ) as med,
                     Film F
-                    WHERE MIC.media_id = F.media_id;
+                    WHERE X.media_id = F.media_id;
                     """
                 cursor.execute(sql, (cart_id))
                 result = cursor.fetchall()
@@ -183,27 +183,27 @@ class InCartDAO:
             with self.connection.cursor() as cursor:
                 sql = """
                     SELECT
-                    MIC.media_id,
-                    MIC.title,
-                    MIC.genre,
-                    MIC.rent_price,
-                    MIC.image_url,
-                    MIC.media_description,
-                    MIC.release_date,
-                    MIC.rating,
+                    med.media_id,
+                    med.title,
+                    med.genre,
+                    med.image_url,
+                    med.media_description,
+                    med.release_date,
+                    med.rating,
                     VG.publisher,
                     VG.developer
                     FROM (
                         SELECT *
                         FROM Media M
+                        JOIN Media_Content MC USING (title)
                         WHERE M.media_id IN (
                             SELECT INC.media_id
                             FROM In_Cart INC
                             WHERE INC.cart_id = %s
                         )
-                    ) as MIC,
+                    ) as med,
                     Video_Game VG
-                    WHERE MIC.media_id = VG.media_id;
+                    WHERE X.media_id = F.media_id;
                     """
                 cursor.execute(sql, (cart_id))
                 result = cursor.fetchall()

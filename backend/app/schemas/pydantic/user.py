@@ -34,7 +34,7 @@ class EmployeeBase(UserBase):
     start_date: date
     employee_type: str
 
-class Employee(User):
+class Employee(EmployeeBase):
     pass
 
 class EmployeeCreate(EmployeeBase):
