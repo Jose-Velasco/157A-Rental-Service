@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import SearchMedia from './pages/SearchMedia';
 import MediaDetail from './pages/MediaDetail';
 import Inventory from './pages/Inventory';
+import CartCheckout from './pages/CartCheckout';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path = "/search" element={<SearchMedia/>}/>
         <Route path = "/media-detail/:media_id" element={<MediaDetail/>}/>
         <Route path = "/inventory" element = {<Inventory/>}/>
+        <Route path = "/cart-checkout" element = {<CartCheckout/>}/>
       </Routes>
     </Router>
   )

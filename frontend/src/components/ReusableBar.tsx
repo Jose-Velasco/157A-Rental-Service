@@ -42,9 +42,11 @@ export default function ReusableBar(props: ReusableBarProps) {
         <InventoryIcon />
         </IconButton>
         </Link>}
+        <Link to="/cart-checkout">
         <IconButton size="large" aria-label="Shopping Cart" color="success">
             <ShoppingCartIcon />
         </IconButton>
+        </Link>
         <Link to="/search">
         <IconButton size="large" aria-label="Search" >
             <SearchIcon />

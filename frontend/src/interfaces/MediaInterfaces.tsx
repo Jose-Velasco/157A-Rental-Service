@@ -18,3 +18,8 @@ export interface Movies extends MediaBase{
     runTime: number;
     director: string;
 }
+
+export interface MediaMixed {
+    films: Movies[];
+    video_games: VideoGames[];
+}
