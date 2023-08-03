@@ -38,6 +38,14 @@ class TransactionDao:
                         RentedDao().create_rented(CreateRented(transaction_id=transaction_id, media_id=media_id))
                 except Exception as e:
                     print(e)
+                try:
+                    for media_id in media_ids:
+                        sql = "DELETE FROM In_Cart WHERE media_id = %s"
+                        self.connection.ping(reconnect=True)
+                        cursor.execute(sql, (media_id))
+                        self.connection.commit()
+                except Exception as e:
+                    print(e)
                 return {'transaction_id': transaction_id, "checked out media": media_ids, "rent duration": rent_duration}
 
         except Exception as e:

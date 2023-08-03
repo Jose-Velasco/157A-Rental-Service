@@ -34,13 +34,11 @@ class EmployeeDAO:
                 sql = "INSERT INTO `User` (`first_name`, `last_name`, `birthday`, `profile_pic_URL`, `age`, `phone_number`) VALUES (%s, %s, %s, %s, %s, %s)"
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (first_name, last_name, birthday, profile_pic_URL, age, phone_number))
-                self.connection.commit()
                 user_id = cursor.lastrowid
 
                 sql = "INSERT INTO `Auth` (`user_id`, `username`, `hashed_password`) VALUES (%s, %s, %s)"
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (user_id, username, password))
-                self.connection.commit()
 
 
                 for address in address_list:
