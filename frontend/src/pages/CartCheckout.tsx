@@ -14,7 +14,7 @@ import ReusableBar from "../components/ReusableBar";
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { Button } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { InCart } from "../interfaces/cart";
+import { InCart, CartSubmit } from "../interfaces/cart";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -85,6 +85,19 @@ const CartCheckout:React.FC = () => {
         }
     };
 
+    const onCartCheckout = async () => {
+        try {
+            const body: CartSubmit = {
+                rent_duration: 17,
+                user_id: user?.user_id ? user.user_id : -1,
+                cart_id: user?.cart_id ? user.cart_id : -1,
+            };
+            const response = await axiosPrivate.post(`/tran/transaction`, body);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
     return (
         <div>
@@ -144,7 +157,7 @@ const CartCheckout:React.FC = () => {
             </Table>
             </TableContainer>
             <br />
-            <Button size="large">
+            <Button onClick={onCartCheckout} size="large">
                 <ShoppingCartCheckoutIcon fontSize="large" color="success" />
             </Button>
             </div>

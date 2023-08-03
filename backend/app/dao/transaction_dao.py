@@ -3,6 +3,7 @@ from app.models.database_manager import DatabaseManager
 from app.schemas.pydantic.cart import CartSubmit
 from app.dao.rented_dao import RentedDao
 from typing import List
+from app.schemas.pydantic.rented import CreateRented
 
 class TransactionDao:
 
@@ -24,7 +25,6 @@ class TransactionDao:
                 cursor.execute(sql, (user_id))
                 result = cursor.fetchall()
                 media_ids = [id["media_id"] for id in result]
-                print(media_ids)
                 for id in media_ids:
                     sql = "UPDATE Inventory SET rent_availability_status = false WHERE media_id = %s"
                     cursor.execute(sql, (id))
@@ -35,7 +35,7 @@ class TransactionDao:
                 transaction_id = cursor.lastrowid
                 try:
                     for media_id in media_ids:
-                        RentedDao().create_rented(transaction_id, media_id)
+                        RentedDao().create_rented(CreateRented(transaction_id=transaction_id, media_id=media_id))
                 except Exception as e:
                     print(e)
                 return {'transaction_id': transaction_id, "checked out media": media_ids, "rent duration": rent_duration}
