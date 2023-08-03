@@ -1,5 +1,6 @@
 from app.schemas.pydantic.transaction import CreateTransaction, UpdateTransaction, Transaction
 from app.models.database_manager import DatabaseManager
+from app.schemas.pydantic.cart import CartSubmit
 from typing import List
 
 class TransactionDao:
@@ -8,17 +9,31 @@ class TransactionDao:
         self.connection = DatabaseManager().get_connection()
     
     #create new transaction
-    def create_transaction(self, transaction: CreateTransaction) -> int:
-        user_id = transaction.user_id
-        rent_duration = transaction.rent_duration
-
+    def create_transaction(self, cart: CartSubmit) -> dict:
+        user_id = cart.user_id
+        rent_duration = cart.rent_duration
         try:
             with self.connection.cursor() as cursor:
-                sql = "INSERT INTO `Transaction` (`user_id`, `rent_duration`) VALUES (%s, %s)"
+                sql = """
+                       SELECT I.media_id
+                       FROM Cart C, In_Cart I, Inventory IV
+                       WHERE C.cart_id = I.cart_id AND I.media_id = IV.media_id AND C.user_id = %s AND IV.rent_availability_status = 1
+                      """
+                self.connection.ping(reconnect=True)
+                cursor.execute(sql, (user_id))
+                result = cursor.fetchall()
+                media_ids = [id["media_id"] for id in result]
+                print(media_ids)
+                for id in media_ids:
+                    sql = "UPDATE Inventory SET rent_availability_status = false WHERE media_id = %s"
+                    cursor.execute(sql, (id))
+                sql = "INSERT INTO Transaction (user_id, rent_duration) VALUES (%s, %s)"
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (user_id, rent_duration))
                 self.connection.commit()
-                return cursor.rowcount
+                transaction_id = cursor.lastrowid
+                return {'transaction_id': transaction_id, "checked out media": media_ids, "rent duration": rent_duration}
+
         except Exception as e:
             print(e)
 

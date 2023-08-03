@@ -20,7 +20,7 @@ class InventoryDAO:
                 self.connection.commit()
                 return cursor.rowcount
         except Exception as e:
-            print(e.message)
+            print(e)
     
     #delete inventory item
     def delete_inventory(self, media_id: int) -> int:

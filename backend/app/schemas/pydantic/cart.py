@@ -13,3 +13,6 @@ class Cart(CartBase):
 class InCart(BaseModel):
     media_id: int
     cart_id: int
+
+class CartSubmit(Cart):
+    rent_duration: int

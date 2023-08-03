@@ -2,16 +2,17 @@ from fastapi import APIRouter, HTTPException
 from app.dao.transaction_dao import TransactionDao
 from app.schemas.pydantic.transaction import CreateTransaction, UpdateTransaction, Transaction
 from typing import List
+from app.schemas.pydantic.cart import Cart, CartSubmit
 from app.auth.auth import *
 
 transaction_router = APIRouter()
 
 #create new transaction
 @transaction_router.post("/transaction/", tags=["transaction"], summary="Create a new transaction")
-def create_transaction(transaction: CreateTransaction, current_user: Annotated[User, Depends(get_current_user)]):
+def create_transaction(cart: CartSubmit, current_user: Annotated[User, Depends(get_current_user)]):
     try:
-        TransactionDao().create_transaction(transaction)
-        return {"message": "Transaction created successfully"}
+        transaction = TransactionDao().create_transaction(cart=cart)
+        return transaction
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on create transaction")
