@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import MovieCreationIcon from '@mui/icons-material/MovieCreation';
 import { Gamepad, TextFields } from "@mui/icons-material";
 import PlumbingIcon from '@mui/icons-material/Plumbing';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const style = {
@@ -73,6 +74,7 @@ const Inventory:React.FC = () => {
             console.log(error);
         }
     };
+    
 
 
     const createMovie = async () => {
@@ -92,7 +94,11 @@ const Inventory:React.FC = () => {
         }catch(error){
             console.log(error);
         }
+
     };
+
+
+
 
      useEffect(() =>{
      let isMounted = true;
@@ -136,6 +142,41 @@ const Inventory:React.FC = () => {
     ,[]);
 
 
+    const removeMedia = async (media_id: number) => {
+        let isMounted = true;
+        const controller = new AbortController();
+        try {
+            const deleteBody = { 
+                media_id: media_id,
+            };
+            const response = await axiosPrivate.delete(`/media/film`, { data: deleteBody });
+            if (isMounted) {    
+
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+
+    const removeGame = async (media_id: number) => {
+        let isMounted = true;
+        const controller = new AbortController();
+        try {
+            const deleteBody = { 
+                media_id: media_id,
+            };
+            const response = await axiosPrivate.delete(`/media/video-game`, { data: deleteBody });
+            if (isMounted) {    
+
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
     return(
 
 
@@ -152,6 +193,9 @@ const Inventory:React.FC = () => {
             <ReusableCard title = {item.title} media_id={item.media_id ? item.media_id : -1}
             description = {item.media_description}
             image = {item.image_url}/>
+                      <Button size="large" onClick={() => removeGame(item.media_id ? item.media_id : -1)}>
+            <DeleteIcon fontSize="large" color="error"/>
+            </Button>
            </Grid>      
                ))}  
         </Grid>
@@ -163,6 +207,9 @@ const Inventory:React.FC = () => {
             <ReusableCard title = {item.title} media_id={item.media_id ? item.media_id : -1}
             description = {item.media_description}
             image = {item.image_url}/>
+            <Button size="large" onClick={() => removeMedia(item.media_id ? item.media_id : -1)}>
+            <DeleteIcon fontSize="large" color="error" />
+            </Button>
            </Grid>      
                ))}  
         </Grid>
