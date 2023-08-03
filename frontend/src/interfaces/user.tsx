@@ -20,12 +20,17 @@ export interface User {
     address: Address[];
     email: Email[];
     phone_number: number;
-    cart_id: number;
+    cart_id?: number;
+}
+
+export enum EmployeeTypes {
+    Manager = "Manager",
+    Admin = "Admin"
 }
 
 export interface Employee extends User {
     ssn?: number;
     salary?: number;
     start_date?: Date;
-    employee_type?: "Manager" | "Admin"
+    employee_type?: EmployeeTypes
 }

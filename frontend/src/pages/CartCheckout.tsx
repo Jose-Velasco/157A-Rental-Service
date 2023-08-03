@@ -14,7 +14,8 @@ import ReusableBar from "../components/ReusableBar";
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { Button } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { InCart } from "../interfaces/cart";
+import { InCart, CartSubmit } from "../interfaces/cart";
+import { useNavigate } from "react-router-dom";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -40,6 +41,7 @@ const CartCheckout:React.FC = () => {
     const userContextValue = useUser();
     const axiosPrivate = useAxiosPrivate();
     const user = userContextValue?.user;
+    const navigate = useNavigate();
     const [ videoGames, setVideoGames ] = useState<VideoGames[]>();
     const [ movies, setMovies ] = useState<Movies[]>();
 
@@ -80,6 +82,20 @@ const CartCheckout:React.FC = () => {
             if (isMounted) {
                 getMediaInCart();
             }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const onCartCheckout = async () => {
+        try {
+            const body: CartSubmit = {
+                rent_duration: 17,
+                user_id: user?.user_id ? user.user_id : -1,
+                cart_id: user?.cart_id ? user.cart_id : -1,
+            };
+            const response = await axiosPrivate.post(`/tran/transaction`, body);
+            navigate("/home");
         } catch (error) {
             console.log(error);
         }
@@ -144,7 +160,7 @@ const CartCheckout:React.FC = () => {
             </Table>
             </TableContainer>
             <br />
-            <Button size="large">
+            <Button onClick={onCartCheckout} size="large">
                 <ShoppingCartCheckoutIcon fontSize="large" color="success" />
             </Button>
             </div>

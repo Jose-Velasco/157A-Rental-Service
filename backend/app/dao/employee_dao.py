@@ -34,7 +34,6 @@ class EmployeeDAO:
                 sql = "INSERT INTO `User` (`first_name`, `last_name`, `birthday`, `profile_pic_URL`, `age`, `phone_number`) VALUES (%s, %s, %s, %s, %s, %s)"
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (first_name, last_name, birthday, profile_pic_URL, age, phone_number))
-                self.connection.commit()
                 user_id = cursor.lastrowid
 
                 sql = "INSERT INTO `Auth` (`user_id`, `username`, `hashed_password`) VALUES (%s, %s, %s)"
@@ -61,8 +60,9 @@ class EmployeeDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on create employee")
 
-    def get_employee_by_id(self, user_id: int) -> Employee:
+    def get_employee_by_id(self, user_id: int) -> Employee | None:
         try:
             with self.connection.cursor() as cursor:
                 sql = "SELECT * FROM `User` WHERE `user_id`=%s"
@@ -78,13 +78,15 @@ class EmployeeDAO:
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (user_id))
                 result_employee = cursor.fetchone()
+                if result_employee is None:
+                    return None
                 user_id, first_name, last_name, birthday, profile_pic_URL, age, phone_number = result['user_id'], result['first_name'], result['last_name'], result['birthday'], result['profile_pic_URL'], result['age'], result['phone_number']
                 ssn, salary, start_date, employee_type = result_employee['ssn'], result_employee['salary'], result_employee['start_date'], result_employee['employee_type']
                 employee = Employee(user_id=user_id, first_name=first_name, last_name=last_name, birthday=birthday, profile_pic_URL=profile_pic_URL, age=age, phone_number=phone_number, address=address_list, email=email_list, ssn=ssn, salary=salary, start_date=start_date, employee_type=employee_type)
-                print(employee)
                 return employee
         except Exception as e:
             print(e)
+            raise Exception("Error on get employee by id")
     
     def get_all_employees(self) -> List[Employee]:
         try:
@@ -112,6 +114,7 @@ class EmployeeDAO:
                 return employee_list
         except Exception as e:
             print(e)
+            raise Exception("Error on get all employees")
         
     def update_employee(self, user_id: int, employee: EmployeeUpdate):
         try:
@@ -135,6 +138,7 @@ class EmployeeDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on update employee")
         
     def delete_employee(self, user_id: int) -> int:
         try:
@@ -152,4 +156,5 @@ class EmployeeDAO:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on delete employee")
 

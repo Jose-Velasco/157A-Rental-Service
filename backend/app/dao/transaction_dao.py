@@ -3,6 +3,7 @@ from app.models.database_manager import DatabaseManager
 from app.schemas.pydantic.cart import CartSubmit
 from app.dao.rented_dao import RentedDao
 from typing import List
+from app.schemas.pydantic.rented import CreateRented
 
 class TransactionDao:
 
@@ -24,7 +25,6 @@ class TransactionDao:
                 cursor.execute(sql, (user_id))
                 result = cursor.fetchall()
                 media_ids = [id["media_id"] for id in result]
-                print(media_ids)
                 for id in media_ids:
                     sql = "UPDATE Inventory SET rent_availability_status = false WHERE media_id = %s"
                     cursor.execute(sql, (id))
@@ -35,13 +35,22 @@ class TransactionDao:
                 transaction_id = cursor.lastrowid
                 try:
                     for media_id in media_ids:
-                        RentedDao().create_rented(transaction_id, media_id)
+                        RentedDao().create_rented(CreateRented(transaction_id=transaction_id, media_id=media_id))
+                except Exception as e:
+                    print(e)
+                try:
+                    for media_id in media_ids:
+                        sql = "DELETE FROM In_Cart WHERE media_id = %s"
+                        self.connection.ping(reconnect=True)
+                        cursor.execute(sql, (media_id))
+                        self.connection.commit()
                 except Exception as e:
                     print(e)
                 return {'transaction_id': transaction_id, "checked out media": media_ids, "rent duration": rent_duration}
 
         except Exception as e:
             print(e)
+            raise Exception("Error on create transaction")
 
     #delete transaction
     def delete_transaction(self, transaction_id: int) -> int:
@@ -54,6 +63,7 @@ class TransactionDao:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on delete transaction")
 
     #get all transactions
     def get_all_transactions(self) -> List[Transaction]:
@@ -66,6 +76,7 @@ class TransactionDao:
                 return result
         except Exception as e:
             print(e)
+            raise Exception("Error on get all transactions")
     
     #get transaction by id
     def get_transaction_by_id(self, transaction_id: int) -> Transaction:
@@ -78,6 +89,7 @@ class TransactionDao:
                 return result
         except Exception as e:
             print(e)
+            raise Exception("Error on get transaction by id")
 
     #update transaction
     def update_transaction(self, transaction: UpdateTransaction) -> int:
@@ -94,6 +106,7 @@ class TransactionDao:
                 return cursor.rowcount
         except Exception as e:
             print(e)
+            raise Exception("Error on update transaction")
     
     #get all transactions for a specific user
     def get_transactions_by_user_id(self, user_id: int) -> List[Transaction]:
@@ -106,5 +119,6 @@ class TransactionDao:
                 return result
         except Exception as e:
             print(e)
+            raise Exception("Error on get transactions by user id")
     
     

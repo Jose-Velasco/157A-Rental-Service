@@ -188,6 +188,7 @@ const MediaDetail:React.FC = () => {
 
                         }
                     </CardContent>
+                    { user && user.cart_id &&
                     <CardActions style={{justifyContent: "center"}}>
                         <Button size="large" onClick={addToCart}>
                             <AddShoppingCartIcon fontSize="large" color="warning" />
@@ -196,6 +197,7 @@ const MediaDetail:React.FC = () => {
                             <RateReviewIcon fontSize="large" color="success" />
                         </Button>
                     </CardActions>
+                    }
                 </Card>   
                 }
                 <List style={{overflowY: "auto", paddingLeft: 30, paddingRight: 30, paddingTop: 20, width: "100vw"}}>
