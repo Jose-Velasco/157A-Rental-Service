@@ -154,3 +154,15 @@ CREATE TABLE In_Cart(
     ON UPDATE CASCADE
 );
 
+DELIMITER //
+
+CREATE TRIGGER after_customer_insert AFTER INSERT ON User 
+FOR EACH ROW
+BEGIN
+    INSERT INTO Cart (user_id) VALUES (NEW.user_id);
+END;
+
+//
+
+DELIMITER ;
+

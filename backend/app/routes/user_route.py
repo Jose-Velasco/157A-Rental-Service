@@ -123,14 +123,14 @@ def delete_employee(user_id: int, current_user: Annotated[User, Depends(get_curr
     ],
     "email": [
         {
-            "email": "john.cena@yahoo.com"
+            "email": "john@yahoo.com"
         }
     ],
-    "ssn": 123456789,
+    "ssn": 8885555,
     "salary": 100000,
     "start_date": "2020-01-01",
     "employee_type": "Manager",
-    "username": "johncena",
+    "username": "cenajohn",
     "password": "cena123"
 }
 
