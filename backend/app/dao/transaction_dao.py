@@ -31,6 +31,10 @@ class TransactionDao:
                 sql = "INSERT INTO Transaction (user_id, rent_duration) VALUES (%s, %s)"
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (user_id, rent_duration))
+                if len(media_ids) == 0:
+                    #no media in cart, do not create transaction, rollback and return
+                    self.connection.rollback()
+                    return
                 self.connection.commit()
                 transaction_id = cursor.lastrowid
                 try:

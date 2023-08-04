@@ -107,18 +107,24 @@ const Transactions: React.FC = () => {
                 const mediaResults = await Promise.all(mediaPromises);
                 setMedia(mediaResults);
                 console.log(media)
-                media.map((media) => {
-                    setMediaTitle((prevMediaTitle) => [...prevMediaTitle, media.title]);
-                });
-                console.log(mediaTitle)
             } catch (error) {
                 console.log(error);
             }
         };
         
         fetchTransactionsAndRelatedData();
-        console.log(media);
     }, [user, axiosPrivate]);
+
+    React.useEffect(() => {
+        // Check if media is not empty
+        if (media.length > 0) {
+            // Map the media to titles and update the mediaTitle state
+            const mediaTitles = media.map((mediaItem) => {
+                setMediaTitle((prevMedia) => [...prevMedia, mediaItem.title]);
+            }
+            );
+        }
+    }, [media]);
     
 
     
