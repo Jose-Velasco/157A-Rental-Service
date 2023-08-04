@@ -73,7 +73,7 @@ const Inventory:React.FC = () => {
         }catch(error){
             console.log(error);
         }
-        getMovie();
+        getCard();
     };
     
 
@@ -95,7 +95,7 @@ const Inventory:React.FC = () => {
         }catch(error){
             console.log(error);
         }
-        getCard();
+        getMovie();
 
     };
 
