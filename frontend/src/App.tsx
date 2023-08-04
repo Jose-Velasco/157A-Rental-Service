@@ -11,6 +11,7 @@ import SearchMedia from './pages/SearchMedia';
 import MediaDetail from './pages/MediaDetail';
 import Inventory from './pages/Inventory';
 import CartCheckout from './pages/CartCheckout';
+import Transactions from './pages/Transactions';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path = "/media-detail/:media_id" element={<MediaDetail/>}/>
         <Route path = "/inventory" element = {<Inventory/>}/>
         <Route path = "/cart-checkout" element = {<CartCheckout/>}/>
+        <Route path = "/transactions" element = {<Transactions/>}/>
       </Routes>
     </Router>
   )

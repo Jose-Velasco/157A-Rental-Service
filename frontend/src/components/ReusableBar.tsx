@@ -12,6 +12,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import CreateIcon from '@mui/icons-material/Create';
 import useUser from '../hooks/useUser';
 import { EmployeeTypes } from '../interfaces/user';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 
 
 
@@ -66,11 +67,18 @@ export default function ReusableBar(props: ReusableBarProps) {
         <IconButton size = "large" aria-label="Manage Accounts">
           <ManageAccounts />    
         </IconButton>
+        <Link to="/transactions">
+        <IconButton size = "large" aria-label="Transactions">
+          <ReceiptIcon />
+          </IconButton>
+          </Link>
         {props.showCreateIcon && (isEmployeeType(EmployeeTypes.Admin) || isEmployeeType(EmployeeTypes.Manager)) &&
         
         <IconButton size = "large" aria-label="Create" color="error">
           <CreateIcon />
           </IconButton>}
+
+        
         
       </Toolbar>
     </AppBar>
