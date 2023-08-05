@@ -16,7 +16,7 @@ const SignUp:React.FC = () => {
     const [lastName, setLastName] = useState("");
     const [birthday, setBirthday] = useState("");
     const [profilePicture] = useState("https://i.stack.imgur.com/l60Hf.png");
-    const [age] = useState(30);
+    const [age, setAge] = useState(30);
     const [phoneNumber, setPhoneNumber] = useState("");
     const [state, setState] = useState("");
     const [address] = useState([{}]);
@@ -25,6 +25,8 @@ const SignUp:React.FC = () => {
     const [zipCode, setZipCode] = useState("");
     const [country, setCountry] = useState("");
     const [password, setPassword] = useState("");
+    const [userName, setUserName] = useState("");
+    
 
             let isMounted = true;
             const controller = new AbortController();
@@ -56,7 +58,7 @@ const SignUp:React.FC = () => {
                     }
                     
                 ],
-                username: email,
+                username: userName,
                 password: password
                 };
                 console.log(data);
@@ -73,6 +75,7 @@ const SignUp:React.FC = () => {
                 
         
             }
+                
   
 
 
@@ -90,6 +93,7 @@ const SignUp:React.FC = () => {
             <TextField label = "Zip Code" type ="number" fullWidth value ={zipCode} onChange={(e) => setZipCode(e.target.value)}/>
             <TextField label = "Country" type ="text" fullWidth value ={country} onChange={(e) => setCountry(e.target.value)}/>
             <TextField label = "Email" type = "email" value ={email} onChange={(e) => setEmail(e.target.value)}fullWidth />
+            <TextField label = "Username" type = "text" fullWidth value ={userName} onChange={(e) => setUserName(e.target.value)}/>
             <TextField label = "Password" type = "password" fullWidth value ={password} onChange={(e) => setPassword(e.target.value)}/>
             <Button type = "submit" fullWidth variant = "contained" color = "primary" sx={{mt:3,mb:2}} onClick = {handleSubmit}>Create Account</Button>
         </form>

@@ -63,9 +63,11 @@ export default function ReusableBar(props: ReusableBarProps) {
             <SearchIcon />
         </IconButton>
         </Link>
+        <Link to = "/update-user">
         <IconButton size = "large" aria-label="Manage Accounts">
-          <ManageAccounts />    
+          <ManageAccounts />   
         </IconButton>
+        </Link>
         {props.showCreateIcon && (isEmployeeType(EmployeeTypes.Admin) || isEmployeeType(EmployeeTypes.Manager)) &&
         
         <IconButton size = "large" aria-label="Create" color="error">
