@@ -16,7 +16,6 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 
 
 
-
 interface ReusableBarProps {
   title: string;
   showInventoryIcon?: boolean;
@@ -46,7 +45,7 @@ export default function ReusableBar(props: ReusableBarProps) {
           <HomeIcon />
           </IconButton>
           </Link>
-        {props.showInventoryIcon && isEmployeeType(EmployeeTypes.Admin) &&
+        {isEmployeeType(EmployeeTypes.Admin) &&
         <Link to = "/inventory">
         <IconButton size="large" aria-label="Inventory" color = "error">
         <InventoryIcon />
@@ -72,11 +71,14 @@ export default function ReusableBar(props: ReusableBarProps) {
           <ReceiptIcon />
           </IconButton>
           </Link>
-        {props.showCreateIcon && (isEmployeeType(EmployeeTypes.Admin) || isEmployeeType(EmployeeTypes.Manager)) &&
+        { (isEmployeeType(EmployeeTypes.Admin) || isEmployeeType(EmployeeTypes.Manager)) &&
         
-        <IconButton size = "large" aria-label="Create" color="error">
-          <CreateIcon />
-          </IconButton>}
+        <Link to="/employee-list">
+          <IconButton size = "large" aria-label="Create" color="error">
+            <CreateIcon />
+          </IconButton>
+        </Link>
+          }
 
         
         

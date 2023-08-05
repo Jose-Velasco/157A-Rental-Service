@@ -1,4 +1,4 @@
-from app.schemas.pydantic.user import Employee, EmployeeCreate, EmployeeUpdate
+from app.schemas.pydantic.user import Employee, EmployeeCreate, EmployeeUpdate, EmployeeWithUserId
 from app.schemas.pydantic.address import Address, AddressCreate, AddressUpdate
 from app.schemas.pydantic.email import Email, EmailCreate, EmailUpdate
 from app.models.database_manager import DatabaseManager
@@ -88,7 +88,7 @@ class EmployeeDAO:
             print(e)
             raise Exception("Error on get employee by id")
     
-    def get_all_employees(self) -> List[Employee]:
+    def get_all_employees(self) -> List[EmployeeWithUserId]:
         try:
             with self.connection.cursor() as cursor:
                 sql = "SELECT * FROM `User` WHERE `user_id` IN (SELECT `user_id` FROM `Employee`)"
@@ -109,7 +109,7 @@ class EmployeeDAO:
                     user_id, first_name, last_name, birthday, profile_pic_URL, age, phone_number= row['user_id'], row['first_name'], row['last_name'], row['birthday'], row['profile_pic_URL'], row['age'], row['phone_number']
                     ssn, salary, start_date, employee_type = result_employee['ssn'], result_employee['salary'], result_employee['start_date'], result_employee['employee_type']
 
-                    employee = Employee(user_id=user_id, first_name=first_name, last_name=last_name, birthday=birthday, profile_pic_URL=profile_pic_URL, age=age, phone_number=phone_number, address=address_list, email=email_list, ssn=ssn, salary=salary, start_date=start_date, employee_type=employee_type)
+                    employee = EmployeeWithUserId(user_id=user_id, first_name=first_name, last_name=last_name, birthday=birthday, profile_pic_URL=profile_pic_URL, age=age, phone_number=phone_number, address=address_list, email=email_list, ssn=ssn, salary=salary, start_date=start_date, employee_type=employee_type)
                     employee_list.append(employee)
                 return employee_list
         except Exception as e:
