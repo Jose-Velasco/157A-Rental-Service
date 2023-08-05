@@ -102,5 +102,7 @@ class InventoryDAO:
         except Exception as e:
             print(e)
             raise Exception("Error on update inventory")
+        
+    
     
     
