@@ -44,8 +44,8 @@ class EmployeeCreate(EmployeeBase):
 class EmployeeUpdate(Employee):
     pass
 
-
-
+class EmployeeWithUserId(Employee):
+    user_id: int
 
 
 

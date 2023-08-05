@@ -11,6 +11,8 @@ import SearchMedia from './pages/SearchMedia';
 import MediaDetail from './pages/MediaDetail';
 import Inventory from './pages/Inventory';
 import CartCheckout from './pages/CartCheckout';
+import EmployeeList from './pages/EmployeeList';
+import EditEmployee from './pages/EditEmployee';
 import Transactions from './pages/Transactions';
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
         <Route path = "/inventory" element = {<Inventory/>}/>
         <Route path = "/cart-checkout" element = {<CartCheckout/>}/>
         <Route path = "/transactions" element = {<Transactions/>}/>
+        <Route path = "/employee-list" element={<EmployeeList/>}/>
+        <Route path = "/edit-employee/:employee_id" element={<EditEmployee/>}/>
       </Routes>
     </Router>
   )
