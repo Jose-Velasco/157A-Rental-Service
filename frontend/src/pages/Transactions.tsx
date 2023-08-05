@@ -25,48 +25,56 @@ const Transactions: React.FC = () => {
     const [transactions, setTransactions] = React.useState<Object>([]);
     const [returned, setReturned] = React.useState<{ [key: string]: boolean }>({});
 
-    const getTransactions = async (user_id: number) => {
-        let isMounted = true;
-        const controller = new AbortController();
-        try {
-            const response = await axiosPrivate.get(`/tran/transaction/user/${user_id}`, {
+
+
+    React.useEffect(() => {
+        const fetchTransactions = async () => {
+          if (user?.user_id) {
+            const controller = new AbortController();
+            try {
+              const transactionResponse = await axiosPrivate.get(`/tran/transaction/user/${user.user_id}`, {
                 signal: controller.signal,
-            });
-
-            if (isMounted) {
-                const transactions: Object = response.data;
-                setTransactions(transactions);
-            }
-
-
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    React.useEffect(() => {
-        if (user?.user_id) {
-            getTransactions(user.user_id);
-        }
-    }, []);
-
-    React.useEffect(() => {
-        if (transactions) {
-
-            const updatedReturned: { [key: string]: boolean } = {};
-            Object.entries(transactions).forEach(([transaction_id, media_titles]) => {
-                // Initialize each media_titles array with false values
+              });
+      
+              const transactions: Object = transactionResponse.data;
+      
+              const updatedReturned: { [key: string]: boolean } = {};
+              Object.entries(transactions).forEach(([transaction_id, media_titles]) => {
                 media_titles.forEach((title: string) => {
-                    updatedReturned[title] = false;
+                  const key = `${transaction_id} ${title}`;
+                  updatedReturned[key] = false;
                 });
-            });
-            setReturned(updatedReturned);
-            console.log(returned);
+              });
+      
+              const returnedResponse = await axiosPrivate.get(`/ret/returned/${user.user_id}`, {
+                signal: controller.signal,
+              });
+      
+              const returnedData: Object = returnedResponse.data;
+              Object.entries(returnedData).forEach(([key, bool]) => {
+                updatedReturned[key] = true;
+              });
+      
+              setTransactions(transactions);
+              setReturned(updatedReturned);
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        };
+      
+        fetchTransactions();
+      }, [user?.user_id]);
+
+    
+
+
+    const handleReturn = async (mediaTitle: string, transaction_id: string) => {
+        const id: number = +transaction_id;
+        const data = {
+            transaction_id: id,
+            title: mediaTitle
         }
-    }, []);
-
-
-    const handleReturn = async (mediaTitle: string) => {
         let isMounted = true;
         const controller = new AbortController();
         try {
@@ -74,9 +82,13 @@ const Transactions: React.FC = () => {
                 signal: controller.signal,
             });
 
+            const response2 = await axiosPrivate.post(`/ret/returned/`, data, {
+                signal: controller.signal,
+            });
+
             if (isMounted) {
                 const updatedReturned = { ...returned };
-                updatedReturned[mediaTitle] = true;
+                updatedReturned[`${transaction_id} ${mediaTitle}`] = true;
                 setReturned(updatedReturned);
             }
         } catch (error) {
@@ -103,7 +115,6 @@ const Transactions: React.FC = () => {
                                 </TableHead>
                                 <TableBody>
                                     {media_titles.map((title: string) => (
-
                                         <TableRow
                                             key={title}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -122,14 +133,16 @@ const Transactions: React.FC = () => {
                                                             marginRight: "20px"
                                                         }}>{title}</li>
 
+                                                        
+
                                                         <li>
 
                                                             <Button
                                                                 variant="outlined"
-                                                                onClick={() => handleReturn(title)}
-                                                                style={{ backgroundColor: returned[title] ? 'lightgreen' : 'lightcoral' }}
+                                                                onClick={() => returned[`${transaction_id} ${title}`] ? null : handleReturn(title, transaction_id)}
+                                                                style={{ backgroundColor: returned[`${transaction_id} ${title}`] ? 'lightgreen' : 'lightcoral' }}
                                                             >
-                                                                {returned[title] ? 'Returned' : 'Return?'}
+                                                                {returned[`${transaction_id} ${title}`] ? 'Returned' : 'Return?'}
                                                             </Button>
                                                         </li>
                                                     </ul>
