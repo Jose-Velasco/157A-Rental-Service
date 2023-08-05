@@ -2,10 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useUser from "../hooks/useUser";
-import { Token } from "../interfaces/token";
-import { User } from "../interfaces/user";
-import axios from "../axios";
-import { Transaction } from "../interfaces/Transactions";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,13 +10,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { MediaMixed } from "../interfaces/MediaInterfaces";
-import { Rented } from "../interfaces/Rented";
-import { MediaContent } from "../interfaces/MediaContentInterface";
 import ReusableBar from "../components/ReusableBar";
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 
 const Transactions: React.FC = () => {
@@ -32,7 +23,7 @@ const Transactions: React.FC = () => {
     const auth = authContextValue?.auth;
     const setUser = userContextValue?.setUser;
     const [transactions, setTransactions] = React.useState<Object>([]);
-    const [returned, setReturned] = React.useState<{ [key: string]: boolean[] }>({});
+    const [returned, setReturned] = React.useState<{ [key: string]: boolean }>({});
 
     const getTransactions = async (user_id: number) => {
         let isMounted = true;
@@ -61,16 +52,21 @@ const Transactions: React.FC = () => {
 
     React.useEffect(() => {
         if (transactions) {
-            const updatedReturned: { [key: string]: boolean[] } = {};
-            Object.entries(transactions).map(([transaction_id, media_titles]) => {
-                updatedReturned[transaction_id] = Array(media_titles.length).fill(false);
+
+            const updatedReturned: { [key: string]: boolean } = {};
+            Object.entries(transactions).forEach(([transaction_id, media_titles]) => {
+                // Initialize each media_titles array with false values
+                media_titles.forEach((title: string) => {
+                    updatedReturned[title] = false;
+                });
             });
             setReturned(updatedReturned);
+            console.log(returned);
         }
-    }, [transactions]);
-    
+    }, []);
 
-    const handleReturn = async (mediaTitle: string, transaction_id: string, index2: number) => {
+
+    const handleReturn = async (mediaTitle: string) => {
         let isMounted = true;
         const controller = new AbortController();
         try {
@@ -80,7 +76,7 @@ const Transactions: React.FC = () => {
 
             if (isMounted) {
                 const updatedReturned = { ...returned };
-                updatedReturned[transaction_id][index2] = true;
+                updatedReturned[mediaTitle] = true;
                 setReturned(updatedReturned);
             }
         } catch (error) {
@@ -91,9 +87,10 @@ const Transactions: React.FC = () => {
     return (
         <>
             <ReusableBar title="Transactions" />
+
             <div style={{ marginTop: '100px' }}>
                 <h1 style={{ fontFamily: "Trebuchet MS, sans-serif" }}>Transactions</h1>
-                {Object.entries(transactions || {}).map(([transaction_id, media_titles], index1: number) => (
+                {Object.entries(transactions || {}).map(([transaction_id, media_titles]) => (
                     //space tables apart
                     <React.Fragment key={transaction_id}>
                         <Box sx={{ bgcolor: '#757DE8', height: '1vh' }} />
@@ -105,8 +102,8 @@ const Transactions: React.FC = () => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {media_titles.map((title: string, index2: number) => (
-                                        
+                                    {media_titles.map((title: string) => (
+
                                         <TableRow
                                             key={title}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -124,16 +121,19 @@ const Transactions: React.FC = () => {
                                                         <li style={{
                                                             marginRight: "20px"
                                                         }}>{title}</li>
+
                                                         <li>
+
                                                             <Button
                                                                 variant="outlined"
-                                                                onClick={() => handleReturn(title, transaction_id, index2)}
-                                                                style={{ backgroundColor: returned[transaction_id]?.[index2] ? 'lightgreen' : '' }}
+                                                                onClick={() => handleReturn(title)}
+                                                                style={{ backgroundColor: returned[title] ? 'lightgreen' : 'lightcoral' }}
                                                             >
-                                                                {returned[transaction_id]?.[index2] ? 'Returned' : 'Return?'}
+                                                                {returned[title] ? 'Returned' : 'Return?'}
                                                             </Button>
                                                         </li>
                                                     </ul>
+
                                                 </TableCell>
                                             </div>
                                         </TableRow>
@@ -145,6 +145,7 @@ const Transactions: React.FC = () => {
                 ))}
             </div>
         </>
-    )};
+    )
+};
 
 export default Transactions;
