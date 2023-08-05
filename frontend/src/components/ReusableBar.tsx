@@ -13,7 +13,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import useUser from '../hooks/useUser';
 import { EmployeeTypes } from '../interfaces/user';
 import ReceiptIcon from '@mui/icons-material/Receipt';
-
+import PeopleIcon from '@mui/icons-material/People';
 
 
 interface ReusableBarProps {
@@ -76,6 +76,14 @@ export default function ReusableBar(props: ReusableBarProps) {
         <Link to="/employee-list">
           <IconButton size = "large" aria-label="Create" color="error">
             <CreateIcon />
+          </IconButton>
+        </Link>
+          }
+        { (isEmployeeType(EmployeeTypes.Admin) || isEmployeeType(EmployeeTypes.Manager)) &&
+        
+        <Link to="/employee-list-user">
+          <IconButton size = "large" aria-label="Create" color="error">
+            <PeopleIcon />
           </IconButton>
         </Link>
           }

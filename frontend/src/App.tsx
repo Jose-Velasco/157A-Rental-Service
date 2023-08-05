@@ -14,6 +14,7 @@ import CartCheckout from './pages/CartCheckout';
 import EmployeeList from './pages/EmployeeList';
 import EditEmployee from './pages/EditEmployee';
 import Transactions from './pages/Transactions';
+import EmployeeListUsers from './pages/EmployeeListUsers';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
         <Route path = "/transactions" element = {<Transactions/>}/>
         <Route path = "/employee-list" element={<EmployeeList/>}/>
         <Route path = "/edit-employee/:employee_id" element={<EditEmployee/>}/>
+        <Route path = "/employee-list-user" element={<EmployeeListUsers/>}/>
       </Routes>
     </Router>
   )
