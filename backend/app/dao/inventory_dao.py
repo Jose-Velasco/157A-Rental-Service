@@ -90,5 +90,17 @@ class InventoryDAO:
         except Exception as e:
             print(e)
             raise Exception("Error on update inventory")
+        
+    def update_from_title(self, title:str):
+        try:
+            with self.connection.cursor() as cursor:
+                sql = "UPDATE `Inventory` SET `rent_availability_status`=1 WHERE `media_id`=(SELECT `media_id` FROM `Media` WHERE `title`=%s)"
+                self.connection.ping(reconnect=True)
+                cursor.execute(sql, (title))
+                self.connection.commit()
+                return cursor.rowcount
+        except Exception as e:
+            print(e)
+            raise Exception("Error on update inventory")
     
     
