@@ -43,6 +43,7 @@ const EmployeeList: React.FC = () => {
     const [ employeeType, setEmployeeType] = useState<EmployeeTypes>(EmployeeTypes.Manager);
     // if there is an existing employee else it will be undefined
     const [ employee, setEmployee] = useState<Employee>();
+    const [ isUpdatingEmployee, setIsUpdatingEmployee] = useState<boolean>(false);
 
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -78,15 +79,12 @@ const EmployeeList: React.FC = () => {
         start_date: startDate,
         employee_type: employeeType,
         };
-        console.log(data);
         if (employee_id && employee_id !== "-1") {
             try{
                 // update existing employee
                 const response = axiosPrivate.put(`/user/employee/${employee_id}`, data).then((response) => { 
                   navigate("/employee-list")
                 });
-                console.log(response);
-                console.log(data)
             }
             catch(error){
                 console.log(error);
@@ -97,8 +95,6 @@ const EmployeeList: React.FC = () => {
                 const response = axiosPrivate.post("/user/employee/", data).then((response) => { 
                   navigate("/employee-list")
                 });
-                console.log(response);
-                console.log(data)
             }
             catch(error){
                 console.log(error);
@@ -139,7 +135,6 @@ const EmployeeList: React.FC = () => {
         try {
             const response = await axiosPrivate.get(`/user/employee/${employee_id}`);
             setEmployee(response.data);
-            console.log(response.data);
             setExistingEmployeeData();
         } catch (error) {
             console.log(error);
@@ -152,7 +147,10 @@ const EmployeeList: React.FC = () => {
 
     useEffect(() => {
         setExistingEmployeeData();
+        setIsUpdatingEmployee(checkIsUpdatingEmployee());
     }, [employee]);
+
+    const checkIsUpdatingEmployee = () => employee_id !== undefined && employee_id !== "-1";
 
     return (
         <form style={{padding: "2rem"}}>
@@ -163,14 +161,14 @@ const EmployeeList: React.FC = () => {
                 <TextField style={textfieldStyle} label = "Phone Number" type = "number"value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} fullWidth/>
                 <TextField style={textfieldStyle} label = "Birthday" type = "date" fullWidth value={birthday} onChange={(e) => setBirthday(e.target.value)}/>
                 <TextField style={textfieldStyle} label = "Street Address" type = "text"value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)} fullWidth/>
-                <TextField style={textfieldStyle} label = "City" type = "text" fullWidth value={city} onChange={(e) => setCity(e.target.value)}/>
-                <TextField style={textfieldStyle} label = "State" type = "text" fullWidth value={state} onChange={(e) => setState(e.target.value)}/>
+                <TextField style={textfieldStyle} required label = "City" type = "text" fullWidth value={city} onChange={(e) => setCity(e.target.value)}/>
+                <TextField style={textfieldStyle} required label = "State" type = "text" fullWidth value={state} onChange={(e) => setState(e.target.value)}/>
                 <TextField style={textfieldStyle} label = "Zip Code" type ="number" fullWidth value ={zipCode} onChange={(e) => setZipCode(e.target.value)}/>
                 <TextField style={textfieldStyle} label = "Country" type ="text" fullWidth value ={country} onChange={(e) => setCountry(e.target.value)}/>
-                <TextField style={textfieldStyle} label = "Email" type = "email" value ={email} onChange={(e) => setEmail(e.target.value)}fullWidth />
-                <TextField style={textfieldStyle} label = "username" type = "text" fullWidth value ={username} onChange={(e) => setUsername(e.target.value)}/>
-                <TextField style={textfieldStyle} label = "Password" type = "password" fullWidth value ={password} onChange={(e) => setPassword(e.target.value)}/>
-                <TextField style={textfieldStyle} label = "SSN" type = "number" fullWidth value ={ssn} onChange={(e) => setSsn(e.target.value)}/>
+                <TextField style={textfieldStyle} required label = "Email" type = "email" value ={email} onChange={(e) => setEmail(e.target.value)}fullWidth />
+                <TextField style={textfieldStyle} required disabled={isUpdatingEmployee} label = "username" type = "text" fullWidth value ={username} onChange={(e) => setUsername(e.target.value)}/>
+                <TextField style={textfieldStyle} required disabled={isUpdatingEmployee} label = "Password" type = "password" fullWidth value ={password} onChange={(e) => setPassword(e.target.value)}/>
+                <TextField style={textfieldStyle} required label = "SSN" type = "number" fullWidth value ={ssn} onChange={(e) => setSsn(e.target.value)}/>
                 <TextField style={textfieldStyle} label = "Salary" type = "number" fullWidth value ={salary} onChange={(e) => setSalary(e.target.value)}/>
                 <TextField style={textfieldStyle} label = "Start Date" type = "date" fullWidth value ={startDate} onChange={(e) => setStartDate(e.target.value)}/>
         </div>
