@@ -46,7 +46,7 @@ const LoginForm:React.FC = () => {
             })
             let user: User = response.data;
             if (!("employee_type" in user)) {
-                const cart_response = await axios.get(`/cart/${user.user_id}`, 
+                const cart_response = await axios.get(`/cart/user/${user.user_id}`, 
                 {
                     headers: {
                         Authorization: `Bearer ${token.access_token}`,

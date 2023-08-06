@@ -31,6 +31,10 @@ class TransactionDao:
                 sql = "INSERT INTO Transaction (user_id, rent_duration) VALUES (%s, %s)"
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (user_id, rent_duration))
+                if len(media_ids) == 0:
+                    #no media in cart, do not create transaction, rollback and return
+                    self.connection.rollback()
+                    return
                 self.connection.commit()
                 transaction_id = cursor.lastrowid
                 try:
@@ -109,14 +113,23 @@ class TransactionDao:
             raise Exception("Error on update transaction")
     
     #get all transactions for a specific user
-    def get_transactions_by_user_id(self, user_id: int) -> List[Transaction]:
+    def get_transactions_by_user_id(self, user_id: int) -> dict:
         try:
             with self.connection.cursor() as cursor:
-                sql = "SELECT * FROM `Transaction` WHERE `user_id`=%s"
+                sql = """SELECT T.transaction_id, M.title 
+                        FROM Transaction T, Media M, Rented R
+                        WHERE T.transaction_id = R.transaction_id AND R.media_id = M.media_id AND user_id=%s"""
                 self.connection.ping(reconnect=True)
                 cursor.execute(sql, (user_id))
                 result = cursor.fetchall()
-                return result
+
+                ret = {}
+                for row in result:
+                    if row['transaction_id'] not in ret:
+                        ret[row['transaction_id']] = []
+                    ret[row['transaction_id']].append(row['title'])
+
+                return ret
         except Exception as e:
             print(e)
             raise Exception("Error on get transactions by user id")

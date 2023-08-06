@@ -10,6 +10,10 @@ import MediaDetail from './pages/MediaDetail';
 import Inventory from './pages/Inventory';
 import CartCheckout from './pages/CartCheckout';
 import UpdateUser from './pages/UpdateUser';
+import EmployeeList from './pages/EmployeeList';
+import EditEmployee from './pages/EditEmployee';
+import Transactions from './pages/Transactions';
+import EmployeeListUsers from './pages/EmployeeListUsers';
 
 function App() {
 
@@ -24,6 +28,10 @@ function App() {
         <Route path = "/inventory" element = {<Inventory/>}/>
         <Route path = "/cart-checkout" element = {<CartCheckout/>}/>
         <Route path = "/update-user" element = {<UpdateUser/>}/>
+        <Route path = "/transactions" element = {<Transactions/>}/>
+        <Route path = "/employee-list" element={<EmployeeList/>}/>
+        <Route path = "/edit-employee/:employee_id" element={<EditEmployee/>}/>
+        <Route path = "/employee-list-user" element={<EmployeeListUsers/>}/>
       </Routes>
     </Router>
   )

@@ -12,8 +12,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import CreateIcon from '@mui/icons-material/Create';
 import useUser from '../hooks/useUser';
 import { EmployeeTypes } from '../interfaces/user';
-
-
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import PeopleIcon from '@mui/icons-material/People';
 
 
 interface ReusableBarProps {
@@ -45,7 +45,7 @@ export default function ReusableBar(props: ReusableBarProps) {
           <HomeIcon />
           </IconButton>
           </Link>
-        {props.showInventoryIcon && isEmployeeType(EmployeeTypes.Admin) &&
+        {isEmployeeType(EmployeeTypes.Admin) &&
         <Link to = "/inventory">
         <IconButton size="large" aria-label="Inventory" color = "error">
         <InventoryIcon />
@@ -67,12 +67,32 @@ export default function ReusableBar(props: ReusableBarProps) {
         <IconButton size = "large" aria-label="Manage Accounts">
           <ManageAccounts />   
         </IconButton>
+
         </Link>
         {props.showCreateIcon && (isEmployeeType(EmployeeTypes.Admin) || isEmployeeType(EmployeeTypes.Manager)) &&
+        <Link to="/transactions">
+        <IconButton size = "large" aria-label="Transactions">
+          <ReceiptIcon />
+          </IconButton>
+          </Link>
+        { (isEmployeeType(EmployeeTypes.Admin) || isEmployeeType(EmployeeTypes.Manager)) &&
         
-        <IconButton size = "large" aria-label="Create" color="error">
-          <CreateIcon />
-          </IconButton>}
+        <Link to="/employee-list">
+          <IconButton size = "large" aria-label="Create" color="error">
+            <CreateIcon />
+          </IconButton>
+        </Link>
+          }
+        { (isEmployeeType(EmployeeTypes.Admin) || isEmployeeType(EmployeeTypes.Manager)) &&
+        
+        <Link to="/employee-list-user">
+          <IconButton size = "large" aria-label="Create" color="error">
+            <PeopleIcon />
+          </IconButton>
+        </Link>
+          }
+
+        
         
       </Toolbar>
     </AppBar>

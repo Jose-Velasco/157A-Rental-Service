@@ -154,3 +154,25 @@ CREATE TABLE In_Cart(
     ON UPDATE CASCADE
 );
 
+CREATE TABLE Returned(
+    transaction_id INTEGER,
+    title VARCHAR(255),
+    PRIMARY KEY(transaction_id, title),
+    FOREIGN KEY(transaction_id) REFERENCES Transaction(transaction_id),
+    FOREIGN KEY(title) REFERENCES Media(title)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+DELIMITER //
+
+CREATE TRIGGER after_customer_insert AFTER INSERT ON User 
+FOR EACH ROW
+BEGIN
+    INSERT INTO Cart (user_id) VALUES (NEW.user_id);
+END;
+
+//
+
+DELIMITER ;
+

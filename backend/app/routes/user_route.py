@@ -3,7 +3,7 @@ from fastapi.exceptions import HTTPException
 from app.dao.customer_dao import CustomerDAO, Customer
 from app.dao.employee_dao import EmployeeDAO, Employee
 from app.schemas.pydantic.user import CustomerCreate
-from app.schemas.pydantic.user import EmployeeCreate
+from app.schemas.pydantic.user import EmployeeCreate, EmployeeWithUserId
 from app.auth.auth import *
 from typing import List
 
@@ -57,7 +57,7 @@ async def get_all_customers(current_user: Annotated[User, Depends(get_current_us
         raise HTTPException(status_code=500, detail="Error on get all customers")
     
 
-@user_router.get("/employee/", tags=["user"], summary="Get all employees", response_model=List[Employee])
+@user_router.get("/employee/", tags=["user"], summary="Get all employees", response_model=List[EmployeeWithUserId])
 def get_all_employees(current_user: Annotated[User, Depends(get_current_user)]):
     try:
         return EmployeeDAO().get_all_employees()
@@ -123,14 +123,14 @@ def delete_employee(user_id: int, current_user: Annotated[User, Depends(get_curr
     ],
     "email": [
         {
-            "email": "john.cena@yahoo.com"
+            "email": "john@yahoo.com"
         }
     ],
-    "ssn": 123456789,
+    "ssn": 8885555,
     "salary": 100000,
     "start_date": "2020-01-01",
     "employee_type": "Manager",
-    "username": "johncena",
+    "username": "cenajohn",
     "password": "cena123"
 }
 

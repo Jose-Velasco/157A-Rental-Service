@@ -64,6 +64,15 @@ def update_inventory(inventory: InventoryUpdate, current_user: Annotated[User, D
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error on update inventory")
+    
+@inventory_router.put("/inventory/return/{media_title}", tags=["inventory"], summary="Return a specific item")
+def update_availability(media_title: str, current_user: Annotated[User, Depends(get_current_user)]):
+    try:
+        InventoryDAO().update_from_title(media_title)
+        return {"message": "Inventory updated successfully"}
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error on update inventory")
 
 
 

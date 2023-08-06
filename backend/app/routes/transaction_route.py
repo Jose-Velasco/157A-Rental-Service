@@ -56,8 +56,8 @@ def update_transaction(transaction: UpdateTransaction, current_user: Annotated[U
         raise HTTPException(status_code=500, detail="Error on update transaction")
 
 #get transaction by user id
-@transaction_router.get("/transaction/user/{user_id}", tags=["transaction"], summary="Get transactions by user id", response_model=List[Transaction])
-def get_transactions_by_user_id(user_id: int, current_user: Annotated[User, Depends(get_current_user)]) -> List[Transaction]:
+@transaction_router.get("/transaction/user/{user_id}", tags=["transaction"], summary="Get transactions by user id", response_model=dict)
+def get_transactions_by_user_id(user_id: int, current_user: Annotated[User, Depends(get_current_user)]) -> dict:
     try:
         return TransactionDao().get_transactions_by_user_id(user_id)
     except Exception as e:

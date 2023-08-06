@@ -46,6 +46,7 @@ class CustomerDAO:
                     email = EmailCreate(user_id=user_id, email=email.email)
                     print(email)
                     EmailDao().create_email(email)
+                
 
                 return cursor.rowcount
         except Exception as e:

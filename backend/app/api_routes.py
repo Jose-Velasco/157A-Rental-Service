@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from app.routes.authentication import auth_router
 from app.routes.transaction_route import transaction_router
 from app.routes.user_route import user_router
-
+from app.routes.returned_route import returned_router
 from app.routes.review_route import review_router
 from app.routes.media_route import media_router
 from app.routes.inventory_route import inventory_router
@@ -28,3 +28,5 @@ api_router.include_router(transaction_router, prefix="/tran", tags=["transaction
 api_router.include_router(rented_router, prefix="/rent", tags=["rented"])
 
 api_router.include_router(cart_router, prefix="/cart", tags=["cart"])   
+
+api_router.include_router(returned_router, prefix="/ret", tags=["returned"])
