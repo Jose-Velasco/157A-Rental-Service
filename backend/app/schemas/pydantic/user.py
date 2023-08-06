@@ -25,7 +25,7 @@ class CustomerCreate(UserBase):
     username: str
     password: str
 
-class CustomerUpdate(CustomerCreate):
+class CustomerUpdate(UserBase):
     pass
 
 class EmployeeBase(UserBase):
