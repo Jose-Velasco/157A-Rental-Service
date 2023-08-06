@@ -92,9 +92,6 @@ const LoginForm:React.FC = () => {
                 {/* <Link to = "/home" style = {{textDecoration: 'none'}}> */}
                 <Button type = "submit" fullWidth variant = "contained" color = "primary" sx={{mt:3,mb:2}}>Sign In</Button>
                 {/* </Link> */}
-                <Link to = "/employeelogin" style = {{textDecoration: 'none'}}>
-                <Button type = "submit" fullWidth variant = "contained" color = "success" sx={{mt:3,mb:2}}>Employee Sign In</Button>
-                </Link>
                 <Link to = "/signup" style = {{textDecoration: 'none'}}>
                 <Button type = 'submit' fullWidth variant = "contained" color = "secondary" sx={{mt:3,mb:2}}>Sign Up</Button>
                 </Link>
