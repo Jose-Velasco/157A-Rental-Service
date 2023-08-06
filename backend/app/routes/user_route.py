@@ -2,8 +2,8 @@ from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
 from app.dao.customer_dao import CustomerDAO, Customer
 from app.dao.employee_dao import EmployeeDAO, Employee
-from app.schemas.pydantic.user import CustomerCreate
-from app.schemas.pydantic.user import EmployeeCreate, EmployeeWithUserId
+from app.schemas.pydantic.user import CustomerCreate, CustomerUpdate
+from app.schemas.pydantic.user import EmployeeCreate, EmployeeWithUserId, EmployeeUpdate
 from app.auth.auth import *
 from typing import List
 
@@ -67,7 +67,7 @@ def get_all_employees(current_user: Annotated[User, Depends(get_current_user)]):
     
 
 @user_router.put("/customer/{user_id}", tags=["user"], summary="Update a customer")
-def update_customer(user_id: int, customer: CustomerCreate, current_user: Annotated[User, Depends(get_current_user)]):
+def update_customer(user_id: int, customer: CustomerUpdate, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         CustomerDAO().update_customer(user_id, customer)
         return {"message": "Customer updated successfully"}
@@ -76,7 +76,7 @@ def update_customer(user_id: int, customer: CustomerCreate, current_user: Annota
         raise HTTPException(status_code=500, detail="Error on update customer")
 
 @user_router.put("/employee/{user_id}", tags=["user"], summary="Update an employee")
-def update_employee(user_id: int, employee: EmployeeCreate, current_user: Annotated[User, Depends(get_current_user)]):
+def update_employee(user_id: int, employee: EmployeeUpdate, current_user: Annotated[User, Depends(get_current_user)]):
     try:
         EmployeeDAO().update_employee(user_id, employee)
         return {"message": "Employee updated successfully"}
