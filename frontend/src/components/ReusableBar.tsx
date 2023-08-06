@@ -75,6 +75,7 @@ export default function ReusableBar(props: ReusableBarProps) {
           <ReceiptIcon />
           </IconButton>
           </Link>
+}
         { (isEmployeeType(EmployeeTypes.Admin) || isEmployeeType(EmployeeTypes.Manager)) &&
         
         <Link to="/employee-list">
