@@ -98,6 +98,24 @@ After installing the appropriate version of Nodejs, run the following commands i
 - `npm run dev` will spin up the frontend development server
 - After running `npm run dev` the frontend development server will be running on `http://localhost:4200/`
 
+#### Database
+
+The database uses MySQL.
+
+Pre-requisites:
+1. **MySQL version 8.0.26** or higher*
+
+* Specificity MySQL version 8.0.26 was used to develop the database. Other versions of MySQL may work but are not guaranteed to work. MySQL can be downloaded and install [HERE](https://www.mysql.com/downloads/)
+
+After installing the appropriate version of MySQL, run the following commands in your terminal in root directory of this project:
+
+
+1. `mysql < source DDL.sql`
+
+- `mysql < source DDL.sql` will create the database and tables needed for the backend to run
+- `DDL.sql` is located in **/backend/app/schemas/SQL**
+- the default database name used in this project is `apiDB` . One can create a database and call it whatever they want but make sure to update the appropriate environment variables in system
+
 #### Backend
 
 The backend uses Python with FastAPI. "FastAPI is a modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints."
@@ -121,21 +139,7 @@ After installing the appropriate version of Python, run the following commands i
 - `uvicorn main:app --reload` will spin up the backend development server
 - After running `uvicorn --host 0.0.0.0 app.main:app --reload` the backend development server will be running on `http://localhost:8000/`
 
-#### Database
-
-The database uses MySQL.
-
-Pre-requisites:
-1. **MySQL version 8.0.26** or higher*
-
-* Specificity MySQL version 8.0.26 was used to develop the database. Other versions of MySQL may work but are not guaranteed to work. MySQL can be downloaded and install [HERE](https://www.mysql.com/downloads/)
-
-After installing the appropriate version of MySQL, run the following commands in your terminal in root directory of this project:
-
-1. `mysql < source DDL.sql`
-
-- `mysql < source DDL.sql` will create the database and tables needed for the backend to run
-- `DDL.sql` is located in **/backend/app/schemas/SQL**
+- Environment variables must be set for the backend to run. See below for more details.
 
 ### Environment Variables
 
@@ -147,7 +151,7 @@ These are required for the backend to run.
 | SECRET_KEY                    | The secrete encryption key                      | SecretDevKey                                                                        |
 | BACKEND_CORS_ORIGINS          | Allowed CORS urls                               | ["http://localhost","http://localhost:4200","http://localhost:3306"]                |
 | ACCESS_TOKEN_EXPIRE_MINUTES   | Access Token default expiration time            | 30                                                                                  |
-| MYSQL_HOST                    | The host name or IP address of the MySQL serve  | db                                                                                  |
+| MYSQL_HOST                    | The host name or IP address of the MySQL serve  | localhost                                                                                  |
 | MYSQL_PORT                    | Mysql port                                      | 3306                                                                                |
 | MYSQL_USER                    | Mysql user                                      | root                                                                                |
 | MYSQL_PASSWORD                | Mysql password                                  | my-secret-pw                                                                        |
