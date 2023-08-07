@@ -159,9 +159,6 @@ const MediaDetail:React.FC = () => {
                         <Typography variant = "body2" color ="text.secondary" style={{fontWeight: "bold"}}>
                             {`Rating: ${media.rating}`}
                         </Typography>
-                        <Typography variant = "body2" color ="text.secondary" style={{fontWeight: "bold"}}>
-                            {`Price: ${media.rent_price}`}
-                        </Typography>
                         { "publisher" in media && "developer" in media &&
                             (
                                 <>
