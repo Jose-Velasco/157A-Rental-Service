@@ -63,7 +63,7 @@ const Home:React.FC = () => {
 
     return(
         <form style={{padding: "2rem"}}>
-            <ReusableBar title = {`${getUser?.first_name}`}  showInventoryIcon = {true} showCreateIcon = {true}/>
+            <ReusableBar title = {`Welcome`}  showInventoryIcon = {true} showCreateIcon = {true}/>
             <Typography marginTop= {15}align="left"  fontSize={35} color="#808080"> Recommended Games </Typography>
             <Grid container spacing={6}>
             {media?.slice(0,3).map ((item) => (

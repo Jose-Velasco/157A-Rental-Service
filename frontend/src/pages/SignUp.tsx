@@ -16,7 +16,7 @@ const SignUp:React.FC = () => {
     const [lastName, setLastName] = useState("");
     const [birthday, setBirthday] = useState("");
     const [profilePicture] = useState("https://i.stack.imgur.com/l60Hf.png");
-    const [age, setAge] = useState(30);
+    const [age, setAge] = useState(0);
     const [phoneNumber, setPhoneNumber] = useState("");
     const [state, setState] = useState("");
     const [address] = useState([{}]);
@@ -75,6 +75,27 @@ const SignUp:React.FC = () => {
                 
         
             }
+
+            const calculateAge = (birthday: string) => {
+                const today = new Date();
+                const birthDate = new Date(birthday);
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const month = today.getMonth() - birthDate.getMonth();
+                if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                console.log(age);
+                setAge(age);
+            };
+
+            
+
+            useEffect(() => {   
+                calculateAge(birthday);
+            }
+            , [birthday]);
+            
+
                 
   
 
@@ -86,7 +107,7 @@ const SignUp:React.FC = () => {
             <TextField label = "First Name" type = "text" value ={firstName} onChange={(e) => setFirstName(e.target.value)}fullWidth/>
             <TextField label = "Last Name*" type = "text"value={lastName} onChange={(e) => setLastName(e.target.value)} fullWidth/>
             <TextField label = "Phone Number" type = "number"value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} fullWidth/>
-            <TextField label = "Birthday" type = "text" fullWidth value={birthday} onChange={(e) => setBirthday(e.target.value)}/>
+            <TextField label = "" type = "date" fullWidth value={birthday} onChange={(e) => setBirthday(e.target.value)}/>
             <TextField label = "Street Address" type = "text"value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)} fullWidth/>
             <TextField label = "City" type = "text" fullWidth value={city} onChange={(e) => setCity(e.target.value)}/>
             <TextField label = "State" type = "text" fullWidth value={state} onChange={(e) => setState(e.target.value)}/>

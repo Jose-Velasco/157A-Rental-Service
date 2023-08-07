@@ -69,7 +69,7 @@ export default function ReusableBar(props: ReusableBarProps) {
         </IconButton>
 
         </Link>
-        {props.showCreateIcon && (isEmployeeType(EmployeeTypes.Admin) || isEmployeeType(EmployeeTypes.Manager)) &&
+        {props.showCreateIcon && (!isEmployeeType(EmployeeTypes.Admin) || !isEmployeeType(EmployeeTypes.Manager)) &&
         <Link to="/transactions">
         <IconButton size = "large" aria-label="Transactions">
           <ReceiptIcon />

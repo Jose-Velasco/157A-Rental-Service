@@ -4,19 +4,26 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import ReusableBar from "../components/ReusableBar";
 import useUser  from "../hooks/useUser";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import {Link, Navigate, useNavigate} from "react-router-dom";
+import { useParams } from 'react-router-dom';
 import axios from "../axios";
-import {Link, useNavigate} from "react-router-dom";
+import { User } from "../interfaces/user";
+
 
 const UpdateUser: React.FC = () => {
     
     const userContextValue = useUser();
+    const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
     const getUser = userContextValue?.user;
-
+    const [user, setUser] = useState<User>();
     const [email, setEmail] = useState("");
+    const { user_id } = useParams<{ user_id: string }>();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [birthday, setBirthday] = useState(Date); // [year, month, day
-    const [age] = useState(0);
+    const [birthday, setBirthday] = useState(""); // [year, month, day
+    const [age, setAge] = useState(0);
     const [profilePicture] = useState("https://i.stack.imgur.com/l60Hf.png");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [state, setState] = useState("");
@@ -25,8 +32,25 @@ const UpdateUser: React.FC = () => {
     const [city, setCity] = useState("");
     const [zipCode, setZipCode] = useState("");
     const [country, setCountry] = useState("");
-    const [password, setPassword] = useState("");
-    const [userName, setUserName] = useState("");
+    const [ isUpdatingUser, setIsUpdatingCustomer] = useState<boolean>(false);
+
+
+    const setExistingUserData = () => {
+        if (user) {
+            setFirstName(user.first_name);
+            setLastName(user.last_name);
+            setBirthday(String(user.birthday));
+            setPhoneNumber(String(user.phone_number));
+            setStreetAddress(user.address[0].street);
+            setCity(user.address[0].city);
+            setState(user.address[0].state);
+            setZipCode(String(user.address[0].zip_code));
+            setCountry(user.address[0].country);
+            setEmail(user.email[0].email);
+            setAge(user.age);
+        }
+ 
+    };
 
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -45,7 +69,6 @@ const UpdateUser: React.FC = () => {
                 zip_code : zipCode,
                 country: country,
                 state:state,
-
             }
         ],
             email: [
@@ -55,15 +78,16 @@ const UpdateUser: React.FC = () => {
             }
             
         ],
-        username: userName,
-        password: password
+        
         };
         console.log(data);
         try{
-            const response = axios.put("/user/customer", data).then((response) => { 
+            const response = axiosPrivate.put(`/user/customer/${getUser?.user_id}`, data).then((response) => { 
+                navigate("/home");
             });
             console.log(response);
             console.log(data)
+            
         }
         catch(error){
             console.log(error);
@@ -72,17 +96,49 @@ const UpdateUser: React.FC = () => {
 
     };
 
-    const initializeProfile = () => {
-        setFirstName(getUser?.first_name ? getUser.first_name : "");
-        setLastName(getUser?.last_name ? getUser.last_name : "");
-        setPhoneNumber(getUser?.phone_number ? getUser.phone_number : 0);
-        setStreetAddress(getUser?.address[0].street ? getUser.address[0].street : "");
-        setCity(getUser?.address[0].city ? getUser.address[0].city : "");
-        setZipCode(getUser?.address[0].zip_code ? getUser.address[0].zip_code : 0);
-        setCountry(getUser?.address[0].country ? getUser.address[0].country : "");
-        setState(getUser?.address[0].state ? getUser.address[0].state : "");
-        setEmail(getUser?.email[0].email ? getUser.email[0].email : "");
+
+    const getCustomer = async () => {
+        try {
+            const response = await axiosPrivate.get(`/user/customer/${getUser?.user_id}`);
+            setUser(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
+
+
+    const calculateAge =  async (birthday: string) => {
+        const today = new Date();
+        const birthDate = new Date(birthday);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const month = today.getMonth() - birthDate.getMonth();
+        if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        console.log(age);
+        setAge(age);
+    };
+
+    
+
+
+
+    useEffect(() => {
+        getCustomer();
+    }, []);
+
+    useEffect(() => {
+        setExistingUserData();
+        setIsUpdatingCustomer(checkisUpdatingUser());
+    }, [user]);
+
+      useEffect(() => {   
+        calculateAge(birthday);
+    }
+    , [birthday]);
+    const checkisUpdatingUser = () => user_id !== undefined && user_id !== "-1";
+
+
 
 
     return(
@@ -90,13 +146,11 @@ const UpdateUser: React.FC = () => {
          <div style={{marginBottom: 75}}>
                 <ReusableBar title = {"Update "+ `${getUser?.first_name}`} showInventoryIcon = {false} />
             </div>
-            initializeProfile();
-
-            <Typography align="center" gutterBottom fontSize={35}> Create Account</Typography>
+            <Typography align="center" gutterBottom fontSize={35}>Update Account</Typography>
             <TextField label = "First Name" type = "text" value ={firstName} onChange={(e) => setFirstName(e.target.value)}fullWidth/>
             <TextField label = "Last Name*" type = "text"value={lastName} onChange={(e) => setLastName(e.target.value)} fullWidth/>
             <TextField label = "Phone Number" type = "number"value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} fullWidth/>
-            <TextField label = "Birthday" type = "Date" fullWidth value={birthday} onChange={(e) => setBirthday(e.target.value)}/>
+            <TextField label = "" type = "Date" fullWidth value={birthday} onChange={(e) => setBirthday(e.target.value)}/>
             <TextField label = "Street Address" type = "text"value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)} fullWidth/>
             <TextField label = "City" type = "text" fullWidth value={city} onChange={(e) => setCity(e.target.value)}/>
             <TextField label = "State" type = "text" fullWidth value={state} onChange={(e) => setState(e.target.value)}/>
