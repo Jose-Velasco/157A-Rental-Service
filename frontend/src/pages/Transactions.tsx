@@ -110,7 +110,7 @@ const Transactions: React.FC = () => {
                             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell align="center" style={{ background: "lightblue", fontSize: "large" }}>Transaction {transaction_id}</TableCell>
+                                        <TableCell align="center" style={{ background: "lightblue", fontSize: "large" }}>Transaction ID #{transaction_id}</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
