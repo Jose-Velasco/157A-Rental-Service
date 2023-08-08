@@ -1,0 +1,23 @@
+meeting 0:
+120 minutes
+
+meeting 1:
+60 minutes
+
+meeting 2:
+95 minutes
+
+meeting 3:
+35 minutes
+
+meeting 4:
+45 minutes
+
+meeting 5:
+55 minutes
+
+meeting 6:
+5 minutes
+
+meeting 7:
+180 minutes
